@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Travel-Guide
 =======
 # travel_guide
@@ -25,3 +26,7 @@ samples, guidance on mobile development, and a full API reference.
 >>>>>>> e99f937 (first commit)
 =======
 >>>>>>> new-main
+=======
+# Travel-Guide
+This is Mücahit GÖKÇE peaces.
+>>>>>>> ce20154 (first)
