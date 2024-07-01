@@ -1,6 +1,6 @@
 {
-    "name": "travel_guide",
-    "short_name": "travel_guide",
+    "name": "travelguide",
+    "short_name": "travelguide",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
