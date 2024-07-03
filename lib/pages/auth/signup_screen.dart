@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -33,15 +34,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         });
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Registration successful: ${userCredential.user?.email}"),
+            content: Text(AppLocalizations.of(context)!.registrationSuccessful(userCredential.user!.email!)),
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Registration error: $e"),
+            content: Text(AppLocalizations.of(context)!.registrationError(e.toString()),
           ),
-        );
+        ));
       }
     }
   }
@@ -67,8 +68,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               alignment: Alignment.bottomLeft,
               height: 264,
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              child: const Text(
-                'Sign Up',
+              child: Text(AppLocalizations.of(context)!.signUp,
                 style: TextStyle(
                     fontSize: 64,
                     fontWeight: FontWeight.bold,
@@ -96,12 +96,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               children: [
                                 TextFormField(
                                   controller: _usernameController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Username',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.username,
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your username';
+                                      return AppLocalizations.of(context)!.pleaseEnterYourUsername;
                                     }
                                     return null;
                                   },
@@ -109,12 +109,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 const SizedBox(height: 20),
                                 TextFormField(
                                   controller: _emailController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Email',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.email,
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your email';
+                                      return AppLocalizations.of(context)!.pleaseEnterYourEmail;
                                     }
                                     return null;
                                   },
@@ -122,13 +122,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 const SizedBox(height: 20),
                                 TextFormField(
                                   controller: _passwordController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Password',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.password,
                                   ),
                                   obscureText: true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your password';
+                                      return AppLocalizations.of(context)!.pleaseEnterYourPassword;
                                     }
                                     return null;
                                   },
@@ -136,16 +136,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 const SizedBox(height: 20),
                                 TextFormField(
                                   controller: _confirmPasswordController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Confirm Password',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.confirmPassword,
                                   ),
                                   obscureText: true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please confirm your password';
+                                      return AppLocalizations.of(context)!.pleaseConfirmYourPassword;
                                     }
                                     if (value != _passwordController.text) {
-                                      return 'Passwords do not match';
+                                      return AppLocalizations.of(context)!.passwordsDoNotMatch;
                                     }
                                     return null;
                                   },
@@ -156,21 +156,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               children: [
                                 ElevatedButton(
                                   onPressed: _signUp,
-                                  child: const Text('Sign Up'),
+                                  child: Text(AppLocalizations.of(context)!.signUp),
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text('Already have an account?',
-                                        style: TextStyle(
+                                    Text(AppLocalizations.of(context)!.alreadyHaveAccount,
+                                        style: const TextStyle(
                                             fontSize: 21,
                                             fontWeight: FontWeight.bold)),
                                     TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: const Text('Login'),
+                                      child: Text(AppLocalizations.of(context)!.login),
                                     ),
                                   ],
                                 ),

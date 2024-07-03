@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -25,13 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
         );
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login successful: ${userCredential.user?.email}'),
+            content: Text(AppLocalizations.of(context)!.loginSuccessful(userCredential.user!.email!)),
           ),
         );
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("Login error: $e"),
+            content: Text(AppLocalizations.of(context)!.loginError(e.toString())),
           ),
         );
       }
@@ -57,9 +58,9 @@ class _LoginScreenState extends State<LoginScreen> {
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               height: 264,
-              child: const Text(
-                'Login',
-                style: TextStyle(
+              child: Text(
+                AppLocalizations.of(context)!.login,
+                style: const TextStyle(
                     fontSize: 64,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
@@ -86,12 +87,12 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 TextFormField(
                                   controller: _emailController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Email',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.email,
                                   ),
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your email';
+                                      return AppLocalizations.of(context)!.pleaseEnterYourEmail;
                                     }
                                     return null;
                                   },
@@ -99,13 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                 const SizedBox(height: 20),
                                 TextFormField(
                                   controller: _passwordController,
-                                  decoration: const InputDecoration(
-                                    labelText: 'Password',
+                                  decoration: InputDecoration(
+                                    labelText: AppLocalizations.of(context)!.password,
                                   ),
                                   obscureText: true,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return 'Please enter your password';
+                                      return AppLocalizations.of(context)!.pleaseEnterYourPassword;
                                     }
                                     return null;
                                   },
@@ -121,8 +122,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 const ForgotPasswordScreen()),
                                       );
                                     },
-                                    child: const Text('Forgot Password?',
-                                        style: TextStyle(fontSize: 18)),
+                                    child: Text(AppLocalizations.of(context)!.forgotPassword,
+                                        style: const TextStyle(fontSize: 18)),
                                   ),
                                 ),
                               ],
@@ -131,14 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 ElevatedButton(
                                   onPressed: _login,
-                                  child: const Text('Login'),
+                                  child:  Text(AppLocalizations.of(context)!.login),
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    const Text('Don\'t have an account?',
-                                        style: TextStyle(
+                                    Text(AppLocalizations.of(context)!.dontHaveAccount,
+                                        style: const TextStyle(
                                             fontSize: 21,
                                             fontWeight: FontWeight.bold)),
                                     TextButton(
@@ -150,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                   const SignUpScreen()),
                                         );
                                       },
-                                      child: const Text('Sign Up'),
+                                      child: Text(AppLocalizations.of(context)!.signUp),
                                     ),
                                   ],
                                 ),

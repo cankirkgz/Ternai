@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -17,14 +18,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
       await _auth.sendPasswordResetEmail(email: _emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("A password reset email was sent to ${_emailController.text.trim()}."),
+          content: Text(AppLocalizations.of(context)!.passwordResetEmailSent(_emailController.text.trim())),
         ),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text("Error: $e"),
-        ),
+          content: Text(AppLocalizations.of(context)!.error(e.toString()),
+        )),
       );
     }
   }
@@ -52,21 +53,21 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.lock_outline_rounded, size: 96, color: Color(0xF12fa4cf)),
-              const Text(
-                'Forgot Password?',
-                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xF12fa4cf)),
+              Text(
+                AppLocalizations.of(context)!.forgotPassword,
+                style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold, color: Color(0xF12fa4cf)),
               ),
               const SizedBox(height: 50),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.email,
                 ),
               ),
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _sendPasswordResetEmail,
-                child: const Text('Send'),
+                child: Text(AppLocalizations.of(context)!.send),
               ),
             ],
           ),
