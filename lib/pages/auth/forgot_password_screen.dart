@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:travelguide/l10n/error_code_to_message_key.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -21,11 +22,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
           content: Text(AppLocalizations.of(context)!.passwordResetEmailSent(_emailController.text.trim())),
         ),
       );
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
+      String messageKey = errorCodeToMessageKey[e.code] ?? "";
+      String errorMessage =  AppLocalizations.of(context)!.getString(messageKey) != "" ? AppLocalizations.of(context)!.getString(messageKey) : e.message.toString();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalizations.of(context)!.error(e.toString()),
-        )),
+          content: Text(errorMessage),
+        ),
       );
     }
   }

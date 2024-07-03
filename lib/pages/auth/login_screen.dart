@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelguide/l10n/error_code_to_message_key.dart';
 import 'signup_screen.dart';
 import 'forgot_password_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
+      print(Localizations.localeOf(context).languageCode.toString());
       try {
         UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -29,10 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
             content: Text(AppLocalizations.of(context)!.loginSuccessful(userCredential.user!.email!)),
           ),
         );
-      } catch (e) {
+      } on FirebaseAuthException catch (e) {
+        String messageKey = errorCodeToMessageKey[e.code] ?? "";
+        String errorMessage =  AppLocalizations.of(context)!.getString(messageKey) != "" ? AppLocalizations.of(context)!.getString(messageKey) : e.message.toString();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.loginError(e.toString())),
+            content: Text(errorMessage),
           ),
         );
       }

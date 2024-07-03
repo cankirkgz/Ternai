@@ -1,5 +1,16 @@
 {
   "@@locale": "tr",
+
+  "apiErrorUserNotFound": "Kullanıcı bulunamadı.",
+  "apiErrorWrongPassword": "Yanlış şifre.",
+  "apiErrorUserDisabled": "Kullanıcı hesabı devre dışı bırakılmış.",
+  "apiErrorInvalidEmail": "Geçersiz mail türü.",
+  "apiErrorChannelError": "Kanal hatası.",
+  "apiErrorWeakPassword": "Zayıf şifre, en az 6 karakter içermeli.",
+  "apiErrorEmailAlreadyInUse": "Bu e-posta adresi zaten kullanımda.",
+  "apiErrorUsernameAlreadyInUse": "Bu kullanıcı adı zaten kullanımda.",
+  "apiErrorInvalidCredential": "Geçersiz kimlik bilgisi.",
+
   "signUp": "Kayıt Ol",
   "enterUsername": "Kullanıcı adınızı giriniz",
   "enterEmail": "E-posta adresinizi giriniz",

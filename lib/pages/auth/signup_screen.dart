@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:travelguide/l10n/error_code_to_message_key.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -37,12 +38,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
             content: Text(AppLocalizations.of(context)!.registrationSuccessful(userCredential.user!.email!)),
           ),
         );
-      } catch (e) {
+      } on FirebaseAuthException catch (e) {
+        String messageKey = errorCodeToMessageKey[e.code] ?? "";
+        String errorMessage =  AppLocalizations.of(context)!.getString(messageKey) != "" ? AppLocalizations.of(context)!.getString(messageKey) : e.message.toString();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(AppLocalizations.of(context)!.registrationError(e.toString()),
+            content: Text(errorMessage),
           ),
-        ));
+        );
       }
     }
   }
@@ -69,7 +72,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               height: 264,
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               child: Text(AppLocalizations.of(context)!.signUp,
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 64,
                     fontWeight: FontWeight.bold,
                     color: Colors.white),
@@ -159,8 +162,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   child: Text(AppLocalizations.of(context)!.signUp),
                                 ),
                                 const SizedBox(height: 20),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                Wrap(
+                                  alignment: WrapAlignment.center,
+                                  runAlignment: WrapAlignment.center,
+                                  crossAxisAlignment: WrapCrossAlignment.center,
                                   children: [
                                     Text(AppLocalizations.of(context)!.alreadyHaveAccount,
                                         style: const TextStyle(
