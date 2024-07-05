@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/views/login_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -50,7 +51,12 @@ class WelcomeScreen extends StatelessWidget {
                     text: "Giriş Yap",
                     color: AppColors.primaryColor,
                     width: screenWidth * 0.8,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginPage()),
+                      );
+                    },
                   ),
                   const SizedBox(height: 16),
                   CustomButton(
