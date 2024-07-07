@@ -6,7 +6,7 @@ class SignUpScreen extends StatelessWidget {
     return Stack(
       children: <Widget>[
         Image.asset(
-          "assets/images/1.0x/Backgroung-image_1x.png",
+          "assets/images/3.0x/image_checker.png",
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           fit: BoxFit.fill,
