@@ -40,6 +40,8 @@ dependencies:
   firebase_auth: ^5.1.1
   icons_plus: ^4.0.0
   smooth_page_indicator: ^1.1.0
+  provider: ^6.1.2
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travelguide/theme/theme.dart';
-import 'package:travelguide/views/login_page.dart';
-import 'package:travelguide/views/signup_page.dart';
+import 'package:travelguide/views/authentication_screens/login_page.dart';
+import 'package:travelguide/views/authentication_screens/signup_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
