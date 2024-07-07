@@ -75,7 +75,7 @@
 </ul>
 
 <h1>Sprints</h1>
-![screenshot1](https://github.com/cankirkgz/Travel-Guide/assets/73443107/e95470a0-4b1f-49b1-8d85-3d13e318935d)
+https://github.com/cankirkgz/Travel-Guide/assets/73443107/e95470a0-4b1f-49b1-8d85-3d13e318935d
 
 <h2>Sprint 1</h2>
     
@@ -83,17 +83,21 @@
         <summary>Sprint 1 - App Screenshots</summary>
         <h2>Onboarding Sayfaları</h2>
         <div class="screenshot">
-            <img src="![screenshot1](https://github.com/cankirkgz/Travel-Guide/assets/73443107/e95470a0-4b1f-49b1-8d85-3d13e318935d)" alt="Onboarding Screenshot 1">
-            <img src="file-kLNnINPFRvK8qdLSrypuWnzv" alt="Onboarding Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/e95470a0-4b1f-49b1-8d85-3d13e318935d" alt="Onboarding Screenshot 1">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/4ba2300d-0779-439c-b102-0ae14ecac82f" alt="Onboarding Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/e3730ce2-a664-4601-944e-8e4c668a70ae" alt="Onboarding Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/5e0b1bb4-a76f-49c9-916d-4c522cf6025d" alt="Onboarding Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/9e84015d-1737-4129-9f94-ad45358af116" alt="Onboarding Screenshot 2">
         </div>
         <h2>Authentication Sayfaları</h2>
         <div class="screenshot">
-            <img src="file-cVPRCW3tSvQgP9v1Zab2V3mb" alt="Authentication Screenshot 1">
-            <img src="file-NfdNUO4fVFNAkW6NgEMPa323" alt="Authentication Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/1be2441a-7d9d-4743-951f-445cf2eb318d" alt="Authentication Screenshot 1">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/e44f95cd-ecff-499b-97d2-3a8dc165f947" alt="Authentication Screenshot 2">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/f1242a1a-ca9a-45d9-8b79-41ec35cab44f" alt="Authentication Screenshot 2">
         </div>
         <h2>Ana Sayfa</h2>
         <div class="screenshot">
-            <img src="file-BoON06NkMoFXaEkUSilRbeHR" alt="Ana Sayfa Screenshot 1">
+            <img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/b04223cc-d3ca-49f6-a877-88cdf3a4fa25" alt="Ana Sayfa Screenshot 1">
         </div>
     </details>
     </details>
