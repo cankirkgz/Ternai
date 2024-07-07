@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final Color color;
-  final double? width; // Opsiyonel genişlik parametresi
+  final double? width;
   final VoidCallback? onPressed;
 
   CustomButton(
@@ -16,7 +16,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: width, // Genişlik parametresi eklendi
+      width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
