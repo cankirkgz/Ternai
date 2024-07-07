@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:travelguide/views/forgot_password_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -68,11 +69,13 @@ class _LoginPageState extends State<LoginPage> {
                     topRight: Radius.circular(60),
                   ),
                 ),
-                height: MediaQuery.of(context).size.height - 280, // Değişiklik burada
+                height: MediaQuery.of(context).size.height -
+                    280, // Değişiklik burada
                 width: double.infinity,
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 40),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -89,12 +92,14 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(color: Colors.black26),
+                              borderSide:
+                                  const BorderSide(color: Colors.black26),
                               gapPadding: 10,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(color: Colors.black26),
+                              borderSide:
+                                  const BorderSide(color: Colors.black26),
                               gapPadding: 10,
                             ),
                             suffixIcon: const Padding(
@@ -120,12 +125,14 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(color: Colors.black26),
+                              borderSide:
+                                  const BorderSide(color: Colors.black26),
                               gapPadding: 10,
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(30),
-                              borderSide: const BorderSide(color: Colors.black26),
+                              borderSide:
+                                  const BorderSide(color: Colors.black26),
                               gapPadding: 10,
                             ),
                             suffixIcon: const Padding(
@@ -163,6 +170,14 @@ class _LoginPageState extends State<LoginPage> {
                               ],
                             ),
                             GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPasswordPage()),
+                                );
+                              },
                               child: const Text(
                                 'Şifreni mi unuttun?',
                                 style: TextStyle(
@@ -228,10 +243,7 @@ class _LoginPageState extends State<LoginPage> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Logo(Logos.facebook_f),
-                            Logo(Logos.twitter),
                             Logo(Logos.google),
-                            Logo(Logos.apple),
                           ],
                         ),
                         const SizedBox(height: 50),

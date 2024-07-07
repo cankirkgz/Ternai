@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/login_page.dart';
+import 'package:travelguide/views/signup_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -54,7 +55,8 @@ class WelcomeScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
                       );
                     },
                   ),
@@ -63,7 +65,13 @@ class WelcomeScreen extends StatelessWidget {
                     text: "Kayıt ol",
                     color: AppColors.primaryColor,
                     width: screenWidth * 0.8,
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()),
+                      );
+                    },
                   ),
                   const SizedBox(height: 20.0),
                   GestureDetector(
