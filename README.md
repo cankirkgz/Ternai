@@ -75,8 +75,6 @@
 </ul>
 
 <h1>Sprints</h1>
-https://github.com/cankirkgz/Travel-Guide/assets/73443107/e95470a0-4b1f-49b1-8d85-3d13e318935d
-
 <h2>Sprint 1</h2>
     
   <details>
