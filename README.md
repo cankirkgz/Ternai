@@ -135,6 +135,89 @@
         <li>Profil sayfasının olması ve oluşturduğu tatil planlarını görebilmesi sağlanmıştır.</li>
         <li>Zaman kalırsa kullanıcıların tatil planlarını ve tatillerini paylaşabileceği bir ortam oluşturulması hedeflenmiştir.</li>
     </ul>
+        <li><strong>Puanlama Sistemi:</strong></li>
+    <ul>
+        <li>Sprint içinde tamamlanması tahmin edilen puan: 100 Puan</li>
+        <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 400 puanlık backlog bulunmaktadır. 4 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
+        <li>Backlog düzeni ve Story seçimleri: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.</li>
+        <li>Story'ler yapılacak işlere (task'lere) bölünmüştür: Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.</li>
+        <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır. https://github.com/cankirkgz/Travel-Guide/assets/73443107/c140da6f-23ed-479b-bfba-ab558312ad93 https://github.com/cankirkgz/Travel-Guide/assets/73443107/9a743f8e-99ae-46f3-9d2a-4d3817d30114</li>
+        <li>Sprint board update: Sprint board screenshotları:</li>
+    </ul>
+    <h2>Puanlama Mantığı</h2>
+    <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
+    <p>Toplamda 400 puanlık backlog 4 sprint'e bölünerek, her sprint'in 100 puan olması hedeflenmiştir.</p>
+    <h2>Puan Tablosu</h2>
+    <table>
+        <tr>
+            <th>Story/Task</th>
+            <th>Puan</th>
+        </tr>
+        <tr>
+            <td>Onboarding sayfalarının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Giriş Yap sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Kayıt ol sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Şifremi Unuttum sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Firebase entegrasyonu ve test edilmesi</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Kullanıcı giriş işlemlerinin Firebase Authentication ile ayarlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Kullanıcı kayıt işlemlerinin Firebase Authentication ile ayarlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Şifre sıfırlama e-postasının gönderilmesi</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Profil sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Fiyat arama sayfalarının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Ürün ve hizmet fiyatları için gerekli API'lerin oluşturulması</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Yapay zeka bağlantısının yapılması</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Kullanıcı verilerinin Firebase Firestore'a kaydedilmesi</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Geçmiş seyahatlerin görüntülenebileceği sayfanın kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Yeni seyahat oluşturma sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td><strong>Toplam</strong></td>
+            <td><strong>200</strong></td>
+        </tr>
+    </table>
     <li><strong>Görev Dağılımı:</strong></li>
     <ul>
         <li>Grupta kim hangi konuda güçlü ise ona göre görev dağılımı yapılmıştır.</li>
@@ -160,8 +243,8 @@
     </ul>
     <li><strong>Sprint Retrospective:</strong></li>
     <ul>
+        <li>Takım içindeki görev dağılımıyla ilgili düzenleme yapılması kararı alınmıştır.</li>
         <li>Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı.</li>
-        <li>Günlük ayrılan efor/saat arttırılmalı.</li>
+        <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
     </ul>
-</ul>
 </details>
