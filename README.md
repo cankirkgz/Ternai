@@ -74,6 +74,9 @@
     <li><b>Tatil Planlamada Zorluk Çekenler:</b> Tatil planlamada zorlanan ve rehberliğe ihtiyaç duyan herkes.</li>
 </ul>
 
+<h1>7. Product Backlog URL</h1>
+<p><a href="https://miro.com/app/board/uXjVK0Tb8mI=/?share_link_id=177784574279">Product Backlog</a></p>
+
 <h1>Sprints</h1>
 <h2>Sprint 1</h2>
     
@@ -151,23 +154,15 @@
     </ul>
     <li><strong>Sprint Review:</strong></li>
     <ul>
-        <li>Tarih: 07.07.2024 akşamı yapılacaktır.</li>
-        <li>İkinci sprint için planlar oluşturulacaktır. Kullanıcı geri bildirimleri ve yapılacak iyileştirmeler gözden geçirilecektir.</li>
+        <li>Uygulamanın ana fikri ve özellikleri belirlendi. Onboarding sayfaları yapıldı. Giriş yapma, kayıt olma ve şifremi unuttum sayfaları yapıldı. Firebase bağlantıları yapıldı. Hedeflenen yere gelindi.</li>
+        <li>Sonraki hafta yeni tatil planı oluşturma, fiyat araştırması yapma, profil sayfası ve tatil planlarının listelenmesi sayfalarını yapılması, gerekli API'lerin hazırlanması, fiyat araştırma sayfaları ile birleştirilmesi, yapay zeka entegrasyonu yapılacak.</li>
+        <li>Sprint Review katılımcıları: Tüm takım üyeleri</li>
     </ul>
     <li><strong>Sprint Retrospective:</strong></li>
     <ul>
-        <li>Tarih: 07.07.2024 akşamı yapılacaktır.</li>
-        <li>Sprint boyunca yaşanan zorluklar ve bu zorlukların üstesinden gelme yöntemleri tartışılacaktır.</li>
-        <li>İkinci Sprint Hedefleri:</li>
-        <ul>
-            <li>Ücretsiz API bulunamadığı için kendi API'mizi oluşturmak.</li>
-            <li>Uygulamanın API'lerini tamamlamak.</li>
-            <li>Bir ürün ya da hizmetin anlık fiyatını araştırabileceğimiz sayfaların tasarımını yapmak ve kodlamak.</li>
-            <li>API bağlantısını yapmak ve çalışır hale getirmek.</li>
-            <li>Yeni tatil oluşturma sayfalarını tasarlamak ve kodlamak.</li>
-            <li>Yapay zeka bağlantısını yapmak.</li>
-            <li>Profil sayfasını tasarlamak ve kodlamak.</li>
-        </ul>
+        <li>Takım içindeki görev dağılımıyla ilgili düzenleme yapılması kararı alınmıştır.</li>
+        <li>Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı.</li>
+        <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
     </ul>
 </ul>
 </details>
