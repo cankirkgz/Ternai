@@ -7,7 +7,6 @@ class NewTripScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         title: const Text('Yeni Tatil Planı'),
       ),
       body: const Center(

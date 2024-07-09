@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/user_model.dart';
 import 'firestore_service.dart';
+import '../utils/firebase_error_messages.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -25,7 +26,8 @@ class AuthService {
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+      print("HATA: ${e.code}");
+      throw FirebaseErrorMessages.getErrorMessage(e.code);
     }
   }
 
@@ -48,7 +50,7 @@ class AuthService {
 
       await _firestoreService.createUser(newUser);
     } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+      throw FirebaseErrorMessages.getErrorMessage(e.code);
     }
   }
 
@@ -56,7 +58,7 @@ class AuthService {
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
     } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+      throw FirebaseErrorMessages.getErrorMessage(e.code);
     }
   }
 

@@ -53,6 +53,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
@@ -68,6 +70,7 @@ class _HomePageState extends State<HomePage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
           ),
+          elevation: 0.0,
           child: const Icon(
             Icons.add,
             color: Colors.white,
@@ -75,6 +78,7 @@ class _HomePageState extends State<HomePage> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: AnimatedBottomNavigationBar.builder(
+          height: screenHeight * 0.07,
           itemCount: _icons.length,
           tabBuilder: (int index, bool isActive) {
             final color = isActive ? Colors.white : Colors.white;
