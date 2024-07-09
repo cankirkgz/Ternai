@@ -160,9 +160,8 @@
     </ul>
     <li><strong>Sprint Retrospective:</strong></li>
     <ul>
-        <li>Takım içindeki görev dağılımıyla ilgili düzenleme yapılması kararı alınmıştır.</li>
         <li>Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı.</li>
-        <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
+        <li>Günlük ayrılan efor/saat arttırılmalı.</li>
     </ul>
 </ul>
 </details>
