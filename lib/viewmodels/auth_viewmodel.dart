@@ -42,7 +42,12 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
-    await _authService.sendPasswordResetEmail(email);
+    try {
+      await _authService.sendPasswordResetEmail(email);
+      notifyListeners();
+    } catch (e) {
+      throw e.toString();
+    }
   }
 
   Future<void> signOut() async {

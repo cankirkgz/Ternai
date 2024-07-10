@@ -26,7 +26,6 @@ class AuthService {
         password: password.trim(),
       );
     } on FirebaseAuthException catch (e) {
-      print("HATA: ${e.code}");
       throw FirebaseErrorMessages.getErrorMessage(e.code);
     }
   }

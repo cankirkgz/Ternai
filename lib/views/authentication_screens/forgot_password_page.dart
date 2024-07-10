@@ -86,7 +86,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Password reset email sent to ${_emailController.text.trim()}'),
+                                'Şifre sıfırlama e-postası ${_emailController.text.trim()} adresine gönderildi'),
                           ),
                         );
                       } catch (e) {
