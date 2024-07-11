@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final VoidCallback? onPressed;
 
-  CustomButton(
+  const CustomButton(
       {required this.text,
       required this.color,
       this.width,
@@ -15,7 +15,7 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width,
       child: ElevatedButton(
         onPressed: onPressed,
@@ -26,7 +26,8 @@ class CustomButton extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: Text(
             text,
-            style: TextStyle(fontSize: 20.0, color: Colors.white),
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 20.0, color: Colors.white),
           ),
         ),
       ),
