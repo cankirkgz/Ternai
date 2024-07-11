@@ -84,6 +84,6 @@ class BottomNavigationBarNotifier extends StateNotifier<int> {
   }
 }
 
-final bottomNavigationBarProvider = StateNotifierProvider<BottomNavigationBarNotifier, int>((ref) {
+final bottomNavigationBarProvider = AutoDisposeStateNotifierProvider<BottomNavigationBarNotifier, int>((ref) {
   return BottomNavigationBarNotifier();
 });

@@ -8,6 +8,11 @@ class NewTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          title: const Text('Tatil Planı Oluştur'),
+        ),
         body: Container(
           decoration: const BoxDecoration(
             image: DecorationImage(

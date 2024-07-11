@@ -31,33 +31,37 @@ class ButcePage extends ConsumerWidget {
           Container(
             decoration: const BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
             ),
-            child: ListView(
-              shrinkWrap: true,
-              children: [
-                ListTile(
-                  title: Text('Gidiş-Dönüş Uçak Bileti'),
-                  trailing: Text('₺${ucakBileti.toStringAsFixed(2)}'),
-                ),
-                ListTile(
-                  title: Text('Konaklama'),
-                  trailing: Text('₺${konaklama.toStringAsFixed(2)}'),
-                ),
-                ListTile(
-                  title: Text('Yemek'),
-                  trailing: Text('₺${yemek.toStringAsFixed(2)}'),
-                ),
-                ListTile(
-                  title: Text('Ulaşım'),
-                  trailing: Text('₺${ulasim.toStringAsFixed(2)}'),
-                ),
-                ListTile(
-                  title: Text('Aktiviteler'),
-                  trailing: Text('₺${aktiviteler.toStringAsFixed(2)}'),
-                ),
-              ],
-          ),
+            child: MediaQuery.removePadding(
+              removeTop: true,
+              context: context,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  ListTile(
+                    title: const Text('Gidiş-Dönüş Uçak Bileti'),
+                    trailing: Text('₺${ucakBileti.toStringAsFixed(2)}'),
+                  ),
+                  ListTile(
+                    title: const Text('Konaklama'),
+                    trailing: Text('₺${konaklama.toStringAsFixed(2)}'),
+                  ),
+                  ListTile(
+                    title: const Text('Yemek'),
+                    trailing: Text('₺${yemek.toStringAsFixed(2)}'),
+                  ),
+                  ListTile(
+                    title: const Text('Ulaşım'),
+                    trailing: Text('₺${ulasim.toStringAsFixed(2)}'),
+                  ),
+                  ListTile(
+                    title: const Text('Aktiviteler'),
+                    trailing: Text('₺${aktiviteler.toStringAsFixed(2)}'),
+                  ),
+                ],
+                        ),
+            ),
               ),
           const SizedBox(height: 20),
           CustomButton(
