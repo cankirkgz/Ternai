@@ -16,6 +16,16 @@ class TatilVerileri {
     required this.cocukVarMi,
   });
 
+  factory TatilVerileri.initial() {
+    return TatilVerileri(
+      ulke: '',
+      kisiSayisi: 2,
+      gunSayisi: 15,
+      gezilecekYerler: [],
+      cocukVarMi: false,
+    );
+  }
+
   TatilVerileri copyWith({
     String? ulke,
     int? kisiSayisi,
@@ -35,14 +45,11 @@ class TatilVerileri {
 
 // TatilVerileri için StateNotifier
 class TatilVerileriNotifier extends StateNotifier<TatilVerileri> {
-  TatilVerileriNotifier()
-      : super(TatilVerileri(
-    ulke: '',
-    kisiSayisi: 1,
-    gunSayisi: 1,
-    gezilecekYerler: [],
-    cocukVarMi: false,
-  ));
+  TatilVerileriNotifier() : super(TatilVerileri.initial());
+
+  void reset() {
+    state = TatilVerileri.initial();
+  }
 
   void updateUlke(String ulke) {
     state = state.copyWith(ulke: ulke);
