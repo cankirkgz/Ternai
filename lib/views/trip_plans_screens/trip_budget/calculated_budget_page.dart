@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
+import 'package:travelguide/views/widgets/custom_button.dart';
 
 class ButcePage extends ConsumerWidget {
   // Bu değerler normalde hesaplanacak
@@ -15,89 +16,56 @@ class ButcePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, ref) {
     final toplamButce = ref.watch(butceProvider);
-    final tatilVerileri = ref.watch(tatilVerileriProvider);
 
-
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/sea_background.jpg"),
-            fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Text(
+            'Mükemmel bir tatil için ayırmanız gereken bütçe',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Mükemmel bir tatil için ayırmanız gereken bütçe',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              Table(
-                border: TableBorder.all(),
-                children: [
-                  TableRow(children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Gidiş-Dönüş Uçak Bileti'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('₺${ucakBileti.toStringAsFixed(2)}'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Konaklama'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('₺${konaklama.toStringAsFixed(2)}'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Yemek'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('₺${yemek.toStringAsFixed(2)}'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Ulaşım'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('₺${ulasim.toStringAsFixed(2)}'),
-                    ),
-                  ]),
-                  TableRow(children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text('Aktiviteler'),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('₺${aktiviteler.toStringAsFixed(2)}'),
-                    ),
-                  ]),
-                ],
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Toplam bütçe: ₺${toplamButce.toStringAsFixed(2)}',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
+          const SizedBox(height: 20),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                ListTile(
+                  title: Text('Gidiş-Dönüş Uçak Bileti'),
+                  trailing: Text('₺${ucakBileti.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text('Konaklama'),
+                  trailing: Text('₺${konaklama.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text('Yemek'),
+                  trailing: Text('₺${yemek.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text('Ulaşım'),
+                  trailing: Text('₺${ulasim.toStringAsFixed(2)}'),
+                ),
+                ListTile(
+                  title: Text('Aktiviteler'),
+                  trailing: Text('₺${aktiviteler.toStringAsFixed(2)}'),
+                ),
+              ],
           ),
-        ),
+              ),
+          const SizedBox(height: 20),
+          CustomButton(
+            text: 'Toplam bütçe:\n₺${toplamButce.toStringAsFixed(2)}',
+            onPressed: () {},
+            color: Colors.blue,
+          ),
+        ],
       ),
     );
   }

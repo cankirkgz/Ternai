@@ -1,29 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/views/widgets/custom_button.dart';
 class KalacakGunSayisiPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tatilVerileri = ref.watch(tatilVerileriProvider);
 
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage("assets/sea_background.jpg"),
-            fit: BoxFit.cover,
-          ),
-        ),
-        child: Center(
+    return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
                 'Mükemmel bir tatil için bütçe oluşturalım!',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
               ),
               const SizedBox(height: 20),
-              const Text('Kalacak gün sayısı:'),
+              const Text('Kalacak gün sayısı:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -47,16 +41,14 @@ class KalacakGunSayisiPage extends ConsumerWidget {
                 ],
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                child: const Text('Devam'),
+              CustomButton(
+                text: 'Devam',
                 onPressed: () {
-                  // Navigate to next page
-                },
+                  ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+                }, color: Colors.blue,
               ),
             ],
           ),
-        ),
-      ),
-    );
+        );
   }
 }

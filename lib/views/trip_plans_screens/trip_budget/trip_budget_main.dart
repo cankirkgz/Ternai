@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_plan_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/calculated_budget_page.dart';
@@ -15,9 +16,9 @@ class TatilButcesiMainPage extends StatefulWidget {
 }
 
 class _TatilButcesiMainPageState extends State<TatilButcesiMainPage> {
-  int _currentIndex = 0;
+
   final List<Widget> _pages = [
-    UlkeSecimiPage(),
+    const UlkeSecimiPage(),
     const KisiSayisiPage(),
     KalacakGunSayisiPage(),
     GezilecekYerlerPage(),
@@ -28,12 +29,36 @@ class _TatilButcesiMainPageState extends State<TatilButcesiMainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
+      extendBodyBehindAppBar: true,
+      backgroundColor: Colors.white.withOpacity(0.65),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: const Text('Tatil Bütçesi Hesaplama'),
+      ),
+      body: Consumer(
+        builder: (context, ref, _) {
+          final _currentIndex = ref.watch(bottomNavigationBarProvider);
+          return Container(
+                decoration: const BoxDecoration(
+                image: DecorationImage(
+                  opacity: 0.65,
+                  image: AssetImage("assets/images/welcome_page.jpeg"),
+            fit: BoxFit.cover,
+            ),
+            ),
+            child: _pages[_currentIndex]);
+        },
+      ),
+      bottomNavigationBar: Consumer(
+        builder: (context, ref, _) {
+      final _currentIndex = ref.watch(bottomNavigationBarProvider);
+      return BottomNavigationBar(
+        backgroundColor: Colors.blue,
+        useLegacyColorScheme: false,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index;
+            ref.read(bottomNavigationBarProvider.notifier).changePage(index);
           });
         },
         items: const [
@@ -44,7 +69,21 @@ class _TatilButcesiMainPageState extends State<TatilButcesiMainPage> {
           BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
           BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Bütçe'),
         ],
-      ),
+      );
+        }
+    )
     );
   }
 }
+
+class BottomNavigationBarNotifier extends StateNotifier<int> {
+  BottomNavigationBarNotifier() : super(0);
+
+  void changePage(int index) {
+    state = index;
+  }
+}
+
+final bottomNavigationBarProvider = StateNotifierProvider<BottomNavigationBarNotifier, int>((ref) {
+  return BottomNavigationBarNotifier();
+});
