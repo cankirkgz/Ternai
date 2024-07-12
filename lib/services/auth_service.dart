@@ -64,4 +64,14 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+  Future<void> sendProfileChange(String email, String password, String name) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+    } on FirebaseAuthException catch (e) {
+      throw FirebaseErrorMessages.getErrorMessage(e.code);
+    }
+  }
+
+
 }

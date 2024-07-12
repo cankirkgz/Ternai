@@ -24,4 +24,22 @@ class FirestoreService {
       throw e;
     }
   }
+
+
+  Future<UserModel?> updateUser(String userId) async {
+    try {
+      DocumentSnapshot doc =
+          await _firestore.collection('users').doc(userId).get();
+      if (doc.exists) {
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+      }
+      return null;
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  collection(String s) {}
+
+
 }
