@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class KisiSayisiPage extends ConsumerWidget {
-  const KisiSayisiPage({super.key});
+class BudgetChoosingPeoplePage extends ConsumerWidget {
+  const BudgetChoosingPeoplePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

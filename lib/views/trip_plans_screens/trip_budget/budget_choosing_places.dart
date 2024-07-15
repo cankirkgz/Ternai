@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class GezilecekYerlerPage extends ConsumerWidget {
+class BudgetChoosingPlacesPage extends ConsumerWidget {
   final List<String> yerler = ['Sahiller', 'Tarihi yerler', 'Hayvanat bahçesi', 'Müzeler', 'Sanat'];
 
-  GezilecekYerlerPage({super.key});
+  BudgetChoosingPlacesPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

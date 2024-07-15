@@ -1,33 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/viewmodels/day_plan_model.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/travel_day_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class UlkeSecimiPage extends ConsumerWidget {
-  const UlkeSecimiPage({super.key});
+class DayChoosingCountryPage extends ConsumerWidget {
+  const DayChoosingCountryPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tatilVerileri = ref.watch(tatilVerileriProvider);
+    final travelInformation = ref.watch(travelinformationProvider);
 
     return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Mükemmel bir tatil için bütçe oluşturalım!',
+              'Tatilde kalacağınız gün sayısını belirleyelim!',
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
             ),
             const SizedBox(height: 20),
             const Text('Gideceğiniz ülke:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             DropdownButton<String>(
 
-              value: tatilVerileri.ulke.isEmpty ? null : tatilVerileri.ulke,
+              value: travelInformation.country.isEmpty ? null : travelInformation.country,
               hint: const Text('Ülke seçin'),
               onChanged: (String? newValue) {
                 if (newValue != null) {
-                  ref.read(tatilVerileriProvider.notifier).updateUlke(newValue);
+                  ref.read(travelinformationProvider.notifier).updateCountry(newValue);
                 }
               },
               items: <String>['Hollanda', 'Fransa', 'İtalya', 'İspanya']

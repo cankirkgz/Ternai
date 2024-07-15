@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class TatilPlaniPage extends ConsumerWidget {
+class BudgetPlanPage extends ConsumerWidget {
   // Bu değerler normalde önceki sayfalardan alınacak
   final String ulke = 'Hollanda';
   final int kalacakGun = 15;
   final int kisiSayisi = 2;
   final List<String> gezilecekYerler = ['Müzeler'];
 
-  TatilPlaniPage({super.key});
+  BudgetPlanPage({super.key});
 
   @override
   Widget build(BuildContext context, ref) {

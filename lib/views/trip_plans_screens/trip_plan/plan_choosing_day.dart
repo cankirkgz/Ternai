@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/trip_budget_main.dart';
+import 'package:travelguide/viewmodels/travel_plan_model.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_plan/travel_plan_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
-class KalacakGunSayisiPage extends ConsumerWidget {
+
+class PlanChoosingDayPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tatilVerileri = ref.watch(tatilVerileriProvider);
+    final travelInformation = ref.watch(travelinformationProvider);
 
     return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Mükemmel bir tatil için bütçe oluşturalım!',
+                'Mükemmel bir tatil planı oluşturalım!',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
               ),
               const SizedBox(height: 20),
@@ -24,18 +25,18 @@ class KalacakGunSayisiPage extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.remove),
                     onPressed: () {
-                      if (tatilVerileri.gunSayisi > 1) {
-                        ref.read(tatilVerileriProvider.notifier)
-                            .updateGunSayisi(tatilVerileri.gunSayisi - 1);
+                      if (travelInformation.numberOfDays > 1) {
+                        ref.read(travelinformationProvider.notifier)
+                            .updateNumberOfDays(travelInformation.numberOfDays - 1);
                       }
                     },
                   ),
-                  Text('${tatilVerileri.gunSayisi}', style: const TextStyle(fontSize: 24)),
+                  Text('${travelInformation.numberOfDays}', style: const TextStyle(fontSize: 24)),
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      ref.read(tatilVerileriProvider.notifier)
-                          .updateGunSayisi(tatilVerileri.gunSayisi + 1);
+                      ref.read(travelinformationProvider.notifier)
+                          .updateNumberOfDays(travelInformation.numberOfDays + 1);
                     },
                   ),
                 ],
