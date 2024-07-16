@@ -1,3 +1,4 @@
+// ignore: unused_import
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -61,7 +62,7 @@ class PreviousTripsScreen extends StatelessWidget {
                           height: 120,
                           fit: BoxFit.fill,),
                           Padding(
-                            padding: EdgeInsets.only(top: 15, left: 15,right: 15),
+                            padding: const EdgeInsets.only(top: 15, left: 15,right: 15),
                             child: Text(
                               textAlign:TextAlign.center,
                               'İtalya\'da 9000\$ bütçe ile 4 kişilik 7 günlük tatil planı',

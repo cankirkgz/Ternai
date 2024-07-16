@@ -58,6 +58,7 @@ class _HomePageState extends State<HomePage> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
+        extendBody: true,
         body: _pages[_selectedIndex],
         floatingActionButton: FloatingActionButton(
           onPressed: () {
