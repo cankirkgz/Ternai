@@ -88,9 +88,8 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(
-              "https://th.bing.com/th/id/R.865012e4c2d7c2c7ed619e854c6ca579?rik=L%2fIYeFhS%2f3Z5Rg&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fzwCETTo.jpg&ehk=zPBHsOuOj3D5bw4VQJ5PRbR4xoiD8K2S6uk2p%2bTMadk%3d&risl=&pid=ImgRaw&r=0",
-            ),
+            opacity: 0.65,
+            image: AssetImage("assets/images/welcome_page.jpeg"),
             fit: BoxFit.cover,
           ),
         ),
@@ -100,6 +99,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
           child: Form(
             key: _formKey,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Padding(
                   padding: EdgeInsets.only(bottom: 10.0),
