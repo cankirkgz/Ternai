@@ -53,12 +53,23 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-
     return WillPopScope(
       onWillPop: _onWillPop,
       child: Scaffold(
-        body: _pages[_selectedIndex],
+        extendBody: true,
+        body: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.network(
+                'https://th.bing.com/th/id/R.865012e4c2d7c2c7ed619e854c6ca579?rik=L%2fIYeFhS%2f3Z5Rg&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fzwCETTo.jpg&ehk=zPBHsOuOj3D5bw4VQJ5PRbR4xoiD8K2S6uk2p%2bTMadk%3d&risl=&pid=ImgRaw&r=0',
+                fit: BoxFit.fill,
+              ),
+            ),
+            Positioned.fill(
+              child: _pages[_selectedIndex],
+            ),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -77,40 +88,43 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: AnimatedBottomNavigationBar.builder(
-          height: screenHeight * 0.07,
-          itemCount: _icons.length,
-          tabBuilder: (int index, bool isActive) {
-            final color = isActive ? Colors.white : Colors.white;
-            final size = isActive ? selectedIconSize : unselectedIconSize;
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  _icons[index],
-                  size: size,
-                  color: color,
-                ),
-                const SizedBox(height: 4),
-                if (isActive)
-                  Container(
-                    width: 5,
-                    height: 5,
-                    decoration: BoxDecoration(
-                      color: color,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  )
-              ],
-            );
-          },
-          backgroundColor: AppColors.primaryColor,
-          activeIndex: _selectedIndex,
-          splashColor: AppColors.primaryColor,
-          notchSmoothness: NotchSmoothness.smoothEdge,
-          gapLocation: GapLocation.center,
-          onTap: (index) => _onItemTapped(index),
+        bottomNavigationBar: Container(
+          color: Colors.transparent,
+          child: AnimatedBottomNavigationBar.builder(
+            height: 70,
+            itemCount: _icons.length,
+            tabBuilder: (int index, bool isActive) {
+              final color = isActive ? Colors.white : Colors.white;
+              final size = isActive ? selectedIconSize : unselectedIconSize;
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    _icons[index],
+                    size: size,
+                    color: color,
+                  ),
+                  const SizedBox(height: 4),
+                  if (isActive)
+                    Container(
+                      width: 5,
+                      height: 5,
+                      decoration: BoxDecoration(
+                        color: color,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    )
+                ],
+              );
+            },
+            backgroundColor: AppColors.primaryColor,
+            activeIndex: _selectedIndex,
+            splashColor: AppColors.primaryColor,
+            notchSmoothness: NotchSmoothness.smoothEdge,
+            gapLocation: GapLocation.center,
+            onTap: (index) => _onItemTapped(index),
+          ),
         ),
       ),
     );

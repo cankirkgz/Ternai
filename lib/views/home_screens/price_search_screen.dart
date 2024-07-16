@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:travelguide/models/category_model.dart';
 import 'package:travelguide/models/country_model.dart';
@@ -81,105 +83,118 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
         automaticallyImplyLeading: false,
         title: const Text("Fiyat arama sayfası"),
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.1, vertical: screenHeight * 0.1),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  "Bilgi almak istediğiniz hizmet ile ilgili:",
-                  style: TextStyle(fontSize: 24, color: AppColors.primaryColor),
-                ),
-              ),
-              CustomDropDownButton(
-                listName: "Ülke",
-                items: {
-                  for (var country in countries) country.id: country.name
-                },
-                validator: (value) =>
-                    value == null ? "Lütfen bir ülke seçiniz" : null,
-                onChanged: (value) {
-                  setState(() {
-                    selectedCountry =
-                        countries.firstWhere((c) => c.id == value);
-                  });
-                },
-              ),
-              CustomDropDownButton(
-                listName: "Kategori",
-                items: {
-                  for (var category in categories) category.id: category.name
-                },
-                validator: (value) =>
-                    value == null ? "Lütfen bir kategori seçiniz" : null,
-                onChanged: (value) {
-                  setState(() {
-                    selectedCategory =
-                        categories.firstWhere((c) => c.id == value);
-                    selectedSubCategory = null;
-                    productServices = [];
-                  });
-                  _loadProductServices(value!);
-                },
-              ),
-              if (selectedCategory != null && productServices.isNotEmpty)
-                CustomDropDownButton(
-                  listName: "Ürün veya Hizmet",
-                  items: {for (var ps in productServices) ps.id: ps.name},
-                  validator: (value) => value == null
-                      ? "Lütfen bir ürün veya hizmet seçiniz"
-                      : null,
-                  onChanged: (value) {
-                    setState(() {
-                      selectedSubCategory =
-                          productServices.firstWhere((ps) => ps.id == value);
-                    });
-                  },
-                ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    isLoading
-                        ? CircularProgressIndicator()
-                        : CustomButton(
-                            text: "Ara",
-                            onPressed: () async {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                setState(() {
-                                  isLoading = true;
-                                });
-
-                                //await _apiService.addPrices();
-                                await Future.delayed(Duration(seconds: 1));
-                                setState(() {
-                                  isLoading = false;
-                                });
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ResultScreen(
-                                      country: selectedCountry!,
-                                      category: selectedCategory!,
-                                      subCategory: selectedSubCategory,
-                                    ),
-                                  ),
-                                );
-                              }
-                            },
-                            color: AppColors.primaryColor,
-                          ),
-                  ],
-                ),
-              ),
-            ],
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.network(
+              "https://th.bing.com/th/id/R.865012e4c2d7c2c7ed619e854c6ca579?rik=L%2fIYeFhS%2f3Z5Rg&riu=http%3a%2f%2fwallpapercave.com%2fwp%2fzwCETTo.jpg&ehk=zPBHsOuOj3D5bw4VQJ5PRbR4xoiD8K2S6uk2p%2bTMadk%3d&risl=&pid=ImgRaw&r=0",
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.1, vertical: screenHeight * 0.1),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 10.0),
+                    child: Text(
+                      "Bilgi almak istediğiniz hizmet ile ilgili:",
+                      style: TextStyle(
+                          fontSize: 24, color: AppColors.primaryColor),
+                    ),
+                  ),
+                  CustomDropDownButton(
+                    listName: "Ülke",
+                    items: {
+                      for (var country in countries) country.id: country.name
+                    },
+                    validator: (value) =>
+                        value == null ? "Lütfen bir ülke seçiniz" : null,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCountry =
+                            countries.firstWhere((c) => c.id == value);
+                      });
+                    },
+                  ),
+                  CustomDropDownButton(
+                    listName: "Kategori",
+                    items: {
+                      for (var category in categories)
+                        category.id: category.name
+                    },
+                    validator: (value) =>
+                        value == null ? "Lütfen bir kategori seçiniz" : null,
+                    onChanged: (value) {
+                      setState(() {
+                        selectedCategory =
+                            categories.firstWhere((c) => c.id == value);
+                        selectedSubCategory = null;
+                        productServices = [];
+                      });
+                      _loadProductServices(value!);
+                    },
+                  ),
+                  if (selectedCategory != null && productServices.isNotEmpty)
+                    CustomDropDownButton(
+                      listName: "Ürün veya Hizmet",
+                      items: {for (var ps in productServices) ps.id: ps.name},
+                      validator: (value) => value == null
+                          ? "Lütfen bir ürün veya hizmet seçiniz"
+                          : null,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedSubCategory = productServices
+                              .firstWhere((ps) => ps.id == value);
+                        });
+                      },
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        isLoading
+                            ? CircularProgressIndicator()
+                            : CustomButton(
+                                text: "Ara",
+                                onPressed: () async {
+                                  if (_formKey.currentState?.validate() ??
+                                      false) {
+                                    setState(() {
+                                      isLoading = true;
+                                    });
+
+                                    //await _apiService.addPrices();
+                                    await Future.delayed(Duration(seconds: 1));
+                                    setState(() {
+                                      isLoading = false;
+                                    });
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ResultScreen(
+                                          country: selectedCountry!,
+                                          category: selectedCategory!,
+                                          subCategory: selectedSubCategory,
+                                        ),
+                                      ),
+                                    );
+                                  }
+                                },
+                                color: AppColors.primaryColor,
+                              ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
