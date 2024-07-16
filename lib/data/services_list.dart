@@ -1,4 +1,3 @@
-// lib/data/services_list.dart
 const Map<String, dynamic> servicesList = {
   'Transportation': 'Ulaşım',
   'Public Transport': {
@@ -137,52 +136,27 @@ const Map<String, dynamic> servicesList = {
       'Dress': 'Elbise',
       'Jacket': 'Ceket',
       'Shoes': 'Ayakkabı',
-      'Accessories': {
-        'name': 'Aksesuarlar',
-        'subcategories': {
-          'Hat': 'Şapka',
-          'Scarf': 'Atkı',
-          'Gloves': 'Eldiven',
-          'Belt': 'Kemer',
-          'Sunglasses': 'Güneş Gözlüğü'
-        }
-      },
-      'Underwear': {
-        'name': 'İç Çamaşırı',
-        'subcategories': {
-          'Socks': 'Çorap',
-          'Underpants': 'Külot',
-          'Bra': 'Sütyen',
-          'Undershirt': 'Atlet'
-        }
-      },
-      'Sportswear': {
-        'name': 'Spor Giyim',
-        'subcategories': {
-          'Tracksuit': 'Eşofman',
-          'Sports Shorts': 'Spor Şortu',
-          'Sports Bra': 'Spor Sütyeni',
-          'Running Shoes': 'Koşu Ayakkabısı'
-        }
-      },
-      'Outerwear': {
-        'name': 'Dış Giyim',
-        'subcategories': {
-          'Coat': 'Mont',
-          'Raincoat': 'Yağmurluk',
-          'Blazer': 'Blazer Ceket',
-          'Trench Coat': 'Trençkot'
-        }
-      },
-      'Formalwear': {
-        'name': 'Resmi Giyim',
-        'subcategories': {
-          'Suit': 'Takım Elbise',
-          'Dress Shirt': 'Gömlek',
-          'Tie': 'Kravat',
-          'Blouse': 'Bluz'
-        }
-      }
+      'Hat': 'Şapka',
+      'Scarf': 'Atkı',
+      'Gloves': 'Eldiven',
+      'Belt': 'Kemer',
+      'Sunglasses': 'Güneş Gözlüğü',
+      'Socks': 'Çorap',
+      'Underpants': 'Külot',
+      'Bra': 'Sütyen',
+      'Undershirt': 'Atlet',
+      'Tracksuit': 'Eşofman',
+      'Sports Shorts': 'Spor Şortu',
+      'Sports Bra': 'Spor Sütyeni',
+      'Running Shoes': 'Koşu Ayakkabısı',
+      'Coat': 'Mont',
+      'Raincoat': 'Yağmurluk',
+      'Blazer': 'Blazer Ceket',
+      'Trench Coat': 'Trençkot',
+      'Suit': 'Takım Elbise',
+      'Dress Shirt': 'Gömlek',
+      'Tie': 'Kravat',
+      'Blouse': 'Bluz'
     }
   },
   'Taxi': 'Taksi',
