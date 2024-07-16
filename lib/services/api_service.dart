@@ -72,7 +72,7 @@ class ApiService {
     }
   }
 
-  Future<void> addPrices() async {
+  /*Future<void> addPrices() async {
     List<ProductService> products = [
       ProductService(id: 'apple', categoryId: 'market', name: 'Elma'),
       ProductService(id: 'bread', categoryId: 'market', name: 'Ekmek'),
@@ -348,5 +348,5 @@ class ApiService {
     } catch (e) {
       throw e;
     }
-  }
+  }*/
 }

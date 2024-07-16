@@ -24,4 +24,32 @@ class FirestoreService {
       throw e;
     }
   }
+
+  Future<void> updateUser(UserModel user) async {
+    try {
+      await _firestore
+          .collection('users')
+          .doc(user.userId)
+          .update(user.toMap());
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> updateUserField(
+      String userId, Map<String, dynamic> fields) async {
+    try {
+      await _firestore.collection('users').doc(userId).update(fields);
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<void> deleteUser(String userId) async {
+    try {
+      await _firestore.collection('users').doc(userId).delete();
+    } catch (e) {
+      throw e;
+    }
+  }
 }
