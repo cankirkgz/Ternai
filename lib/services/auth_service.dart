@@ -21,9 +21,14 @@ class AuthService {
 
   Future<void> signInWithEmail(String email, String password) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email.trim(),
         password: password.trim(),
+      );
+
+      await _firestoreService.updateUserField(
+        userCredential.user!.uid,
+        {'updated_at': DateTime.now().toIso8601String()},
       );
     } on FirebaseAuthException catch (e) {
       throw FirebaseErrorMessages.getErrorMessage(e.code);
