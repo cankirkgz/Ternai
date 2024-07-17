@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:travelguide/theme/theme.dart';
-import 'package:travelguide/views/widgets/custom_button.dart';
 
 class OnboardingScreen3 extends StatelessWidget {
   const OnboardingScreen3({super.key});
