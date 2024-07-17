@@ -6,7 +6,7 @@ class CustomButton extends StatelessWidget {
   final double? width;
   final VoidCallback? onPressed;
 
-  CustomButton(
+  const CustomButton(
       {required this.text,
       required this.color,
       this.width,
@@ -15,12 +15,15 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: width,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: color, // Butonun arka plan rengi
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
