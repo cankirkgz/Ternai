@@ -32,6 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -85,7 +86,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                'Password reset email sent to ${_emailController.text.trim()}'),
+                                'Şifre sıfırlama e-postası ${_emailController.text.trim()} adresine gönderildi'),
                           ),
                         );
                       } catch (e) {

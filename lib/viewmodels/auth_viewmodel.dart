@@ -1,49 +1,58 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../models/user_model.dart';
+import '../services/auth_service.dart';
+import '../services/firestore_service.dart';
 
 class AuthViewModel extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final AuthService _authService = AuthService();
+  final FirestoreService _firestoreService = FirestoreService();
 
-  User? get currentUser => _auth.currentUser;
+  UserModel? _user;
+  UserModel? get user => _user;
+
+  AuthViewModel() {
+    _initializeUser();
+  }
+
+  Future<void> _initializeUser() async {
+    _user = await _authService.getCurrentUser();
+    if (_user != null) {
+      _user = await _firestoreService.getUser(_user!.userId);
+    }
+    notifyListeners();
+  }
 
   Future<void> signInWithEmail(String email, String password) async {
-    try {
-      await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+    await _authService.signInWithEmail(email, password);
+    _user = await _authService.getCurrentUser();
+    if (_user != null) {
+      _user = await _firestoreService.getUser(_user!.userId);
     }
+    notifyListeners();
   }
 
   Future<void> signUpWithEmail(
-      String email, String password, String username) async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-
-      await userCredential.user?.updateDisplayName(username);
-      notifyListeners();
-    } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+      String email, String password, String name) async {
+    await _authService.signUpWithEmail(email, password, name);
+    _user = await _authService.getCurrentUser();
+    if (_user != null) {
+      _user = await _firestoreService.getUser(_user!.userId);
     }
+    notifyListeners();
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
     try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
-    } on FirebaseAuthException catch (e) {
-      throw e.message.toString();
+      await _authService.sendPasswordResetEmail(email);
+      notifyListeners();
+    } catch (e) {
+      throw e.toString();
     }
   }
 
   Future<void> signOut() async {
-    await _auth.signOut();
+    await _authService.signOut();
+    _user = null;
     notifyListeners();
   }
 }

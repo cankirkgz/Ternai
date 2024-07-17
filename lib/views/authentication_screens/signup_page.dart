@@ -1,13 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:provider/provider.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
+import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_or_divider.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';
-import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -25,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? _usernameValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Lütfen kullanıcı adınızı giriniz';
+      return 'Lütfen isiminizi ve soyisminizi giriniz';
     }
     return null;
   }
@@ -130,8 +131,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 20),
                         CustomTextField(
                           controller: _usernameController,
-                          labelText: "Kullanıcı Adı",
-                          hintText: "Kullanıcı Adı",
+                          labelText: "İsim Soyisim",
+                          hintText: "İsim Soyisim",
                           suffixIcon: CupertinoIcons.person,
                           validator: _usernameValidator,
                         ),
@@ -169,11 +170,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                   _passwordController.text,
                                   _usernameController.text,
                                 );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                        'Registration successful for ${_emailController.text}'),
-                                  ),
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
                                 );
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
