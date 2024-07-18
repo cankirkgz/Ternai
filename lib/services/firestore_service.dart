@@ -16,7 +16,7 @@ class FirestoreService {
     try {
       DocumentSnapshot doc =
           await _firestore.collection('users').doc(userId).get();
-      if (doc.exists) {
+      if (doc.exists && doc.data() != null) {
         return UserModel.fromMap(doc.data() as Map<String, dynamic>);
       }
       return null;

@@ -5,7 +5,6 @@ class UserModel {
   final String userId;
   final String name;
   final String email;
-  final String? phoneNumber;
   final int? age;
   final Country? country;
   final String? profileUrl;
@@ -18,7 +17,6 @@ class UserModel {
     required this.email,
     required this.createdAt,
     required this.updatedAt,
-    this.phoneNumber,
     this.age,
     this.country,
     this.profileUrl,
@@ -33,7 +31,6 @@ class UserModel {
           .now(), // Placeholder, should come from Firestore or other source
       updatedAt: DateTime
           .now(), // Placeholder, should come from Firestore or other source
-      phoneNumber: user.phoneNumber,
     );
   }
 
@@ -44,7 +41,6 @@ class UserModel {
       'email': email,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
-      'phone_number': phoneNumber,
       'age': age,
       'country': country?.toMap(),
       'profile_url': profileUrl,
@@ -53,17 +49,20 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
-      userId: map['user_id'],
-      name: map['name'],
-      email: map['email'],
-      createdAt: DateTime.parse(map['created_at']),
-      updatedAt: DateTime.parse(map['updated_at']),
-      phoneNumber: map['phone_number'],
-      age: map['age'],
+      userId: map['user_id'] ?? '',
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      createdAt: map['created_at'] != null
+          ? DateTime.parse(map['created_at'])
+          : DateTime.now(),
+      updatedAt: map['updated_at'] != null
+          ? DateTime.parse(map['updated_at'])
+          : DateTime.now(),
+      age: map['age'] ?? 0,
       country: map['country'] != null
           ? Country.fromMap(map['country'], map['country_id'])
           : null,
-      profileUrl: map['profile_url'],
+      profileUrl: map['profile_url'] ?? '',
     );
   }
 }
