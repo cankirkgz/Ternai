@@ -6,8 +6,8 @@ class UserModel {
   final String name;
   final String email;
   final int? age;
+  final DateTime? birthDate;
   final Country? country;
-  final String? profileUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -18,8 +18,8 @@ class UserModel {
     required this.createdAt,
     required this.updatedAt,
     this.age,
+    this.birthDate,
     this.country,
-    this.profileUrl,
   });
 
   factory UserModel.fromFirebaseUser(User user) {
@@ -27,10 +27,8 @@ class UserModel {
       userId: user.uid,
       name: user.displayName ?? '',
       email: user.email!,
-      createdAt: DateTime
-          .now(), // Placeholder, should come from Firestore or other source
-      updatedAt: DateTime
-          .now(), // Placeholder, should come from Firestore or other source
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
   }
 
@@ -42,12 +40,16 @@ class UserModel {
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
       'age': age,
+      'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
-      'profile_url': profileUrl,
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) {
+      throw ArgumentError("Veri null olmamalı");
+    }
+
     return UserModel(
       userId: map['user_id'] ?? '',
       name: map['name'] ?? '',
@@ -58,11 +60,12 @@ class UserModel {
       updatedAt: map['updated_at'] != null
           ? DateTime.parse(map['updated_at'])
           : DateTime.now(),
-      age: map['age'] ?? 0,
-      country: map['country'] != null
-          ? Country.fromMap(map['country'], map['country_id'])
-          : null,
-      profileUrl: map['profile_url'] ?? '',
+      age: map['age'],
+      birthDate: map['birth_date'] != null
+          ? DateTime.parse(map['birth_date'])
+          : null, // Yeni eklenen alan
+      country:
+          map['country'] != null ? Country.fromMap(map['country'], '') : null,
     );
   }
 }

@@ -4,7 +4,6 @@ import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/services/api_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
-import 'package:travelguide/views/authentication_screens/phone_number_select_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_dropdown_button.dart';

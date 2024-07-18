@@ -14,10 +14,12 @@ class FirestoreService {
 
   Future<UserModel?> getUser(String userId) async {
     try {
+      print("userId: $userId");
       DocumentSnapshot doc =
           await _firestore.collection('users').doc(userId).get();
       if (doc.exists && doc.data() != null) {
-        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
+        final data = doc.data() as Map<String, dynamic>;
+        return UserModel.fromMap(data);
       }
       return null;
     } catch (e) {
