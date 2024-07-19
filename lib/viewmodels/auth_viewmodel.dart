@@ -55,4 +55,15 @@ class AuthViewModel extends ChangeNotifier {
     _user = null;
     notifyListeners();
   }
+
+  Future<void> updateUserField(String userId, Map<String, dynamic> data) async {
+    try {
+      await _firestoreService.updateUserField(userId, data);
+      // Eğer _user'da güncelleme yapmak istiyorsanız, burada yapabilirsiniz
+      notifyListeners();
+    } catch (e) {
+      print("Kullanıcı bilgilerini güncellerken hata oluştu: $e");
+      throw e; // Hata yönetimini burada gerçekleştirin
+    }
+  }
 }

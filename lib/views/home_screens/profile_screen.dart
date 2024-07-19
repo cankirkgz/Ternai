@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
+
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/services/auth_service.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/settings_screen.dart';
-import 'package:travelguide/views/widgets/custom_button.dart';
-import 'package:travelguide/views/widgets/custom_text_field.dart';
 
-// final AuthService _authService = AuthService();
+ final AuthService _authService = AuthService();
 //   final FirebaseAuth _auth = FirebaseAuth.instance;
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -18,58 +21,71 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _usernameController = TextEditingController();
-  final _birthDateController = TextEditingController();
-  final _contactController = TextEditingController();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  // final _confirmPasswordController = TextEditingController();
+  File? _image;
+  String? _profileImageUrl;
+  final ImagePicker _picker = ImagePicker();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
-  String? _usernameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen isiminizi ve soyisminizi giriniz';
-    }
-    return null;
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileImage();
   }
 
-  String? _emailValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen e-mailinizi giriniz';
+  Future<void> _loadProfileImage() async {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final userId = authViewModel.user!.userId;
+
+    // Firestore'dan profil fotoğrafı URL'sini al
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    if (userDoc.exists && userDoc['profileImageUrl'] != null) {
+      setState(() {
+        _profileImageUrl = userDoc['profileImageUrl'];
+      });
     }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Geçerli bir e-mail giriniz';
-    }
-    return null;
   }
 
-  String? _passwordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen şifrenizi giriniz';
+  Future<void> _pickImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
     }
-    return null;
   }
 
-  String? _confirmPasswordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen şifrenizi onaylayınız';
+  Future<void> _uploadImage(BuildContext context) async {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final userId = authViewModel.user!.userId;
+    if (_image == null) return;
+
+    try {
+      String fileName = 'profile_pics/${userId}.png';
+      await _storage.ref(fileName).putFile(_image!);
+
+      String downloadURL = await _storage.ref(fileName).getDownloadURL();
+      print('Download URL: $downloadURL');
+      
+      // Profil fotoğrafı URL'sini Firestore'a kaydet
+      await FirebaseFirestore.instance.collection('users').doc(userId).update({
+        'profileImageUrl': downloadURL,
+      });
+
+      // Yeni URL'yi state'e yükle
+      setState(() {
+        _profileImageUrl = downloadURL;
+      });
+    } catch (e) {
+      print('Upload error: $e');
     }
-    if (value != _passwordController.text) {
-      return 'Şifreler eşleşmiyor';
-    }
-    return null;
   }
 
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
-    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
-
     final userName = authViewModel.user?.displayName ?? 'Mücahit Gökçe';
-    final userMail = authViewModel.user?.email ?? 'Kullanıcı';
+    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -136,28 +152,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - keyboardHeight,
-              child: IgnorePointer(
-                child: Container(
-                    height: 20,
-                    decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image:
-                            AssetImage("assets/images/1.0X/profile_front.png"),
-                        fit: BoxFit.fill,
-                      ),
+              child: Container(
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image:
+                          AssetImage("assets/images/1.0X/profile_front.png"),
+                      fit: BoxFit.fill,
                     ),
-                    child: Column(
-                      children: [
-                        SizedBox(height: 120),
-                        CircleAvatar(
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 120),
+                      InkWell(
+                        onTap: _pickImage,
+                        child: CircleAvatar(
                           radius: 80,
-                          backgroundImage: NetworkImage(
-                            'https://picsum.photos/200/300',
-                          ),
+                          backgroundImage: _profileImageUrl != null
+                              ? NetworkImage(
+                             
+                                _profileImageUrl!,
+                                   scale: 1.0,)
+                              : null,
+                          child: _image != null
+                              ? Image.file(_image!)
+                              : _profileImageUrl == null
+                                  ? Text('Bir resim seçin')
+                                  : null,
+                                  
                         ),
-                      ],
-                    )),
-              ),
+                      ),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          _uploadImage(context);
+                        },
+                        child: Text('Resmi Yükle'),
+                      ),
+                      Text(authViewModel.user!.userId)
+                    ],
+                  )),
             ),
           )
         ],
@@ -181,3 +215,192 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
+
+
+
+// import 'dart:io';
+
+// import 'package:firebase_storage/firebase_storage.dart';
+// import 'package:flutter/material.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:provider/provider.dart';
+// import 'package:travelguide/services/auth_service.dart';
+// import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+// import 'package:travelguide/views/authentication_screens/login_page.dart';
+// import 'package:travelguide/views/home_screens/settings_screen.dart';
+
+// final AuthService _authService = AuthService();
+// //   final FirebaseAuth _auth = FirebaseAuth.instance;
+// class ProfileScreen extends StatefulWidget {
+//   const ProfileScreen({super.key});
+
+//   @override
+//   State<ProfileScreen> createState() => _ProfileScreenState();
+// }
+
+// class _ProfileScreenState extends State<ProfileScreen> {
+  
+//   File? _image;
+
+//   final ImagePicker _picker = ImagePicker();
+//   final FirebaseStorage _storage = FirebaseStorage.instance;
+
+//   Future<void> _pickImage() async {
+//     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+//     if (pickedFile != null) {
+//       setState(() {
+//         _image = File(pickedFile.path);
+//       });
+//     }
+//   }
+
+//   Future<void> _uploadImage(
+//     BuildContext context,
+//   ) async {
+//         final authViewModel = Provider.of<AuthViewModel>(context,listen: false);
+//         final userId = authViewModel.user!.userId;
+//     if (_image == null) return;
+
+//     try {
+//       String fileName =
+//                 // 'profile_pics/${DateTime.now().millisecondsSinceEpoch}.png';
+
+//           'default_user_sourses/${userId}user_photo_test.png';
+//       await _storage.ref(fileName).putFile(_image!);
+
+//       String downloadURL = await _storage.ref(fileName).getDownloadURL();
+//       print('Download URL: $downloadURL');
+//       // Burada downloadURL'yi Firestore veya Realtime Database gibi bir yere kaydedebilirsiniz
+//     } catch (e) {
+//       print('Upload error: $e');
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+    
+//     final authViewModel = Provider.of<AuthViewModel>(context);
+//     final userName = authViewModel.user?.displayName ?? 'Mücahit Gökçe';
+//     // double screenWidth = MediaQuery.of(context).size.width;
+//     // double screenHeight = MediaQuery.of(context).size.height;
+//     double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+
+//     return Scaffold(
+//       extendBodyBehindAppBar: true,
+//       appBar: AppBar(
+//         backgroundColor: Colors.transparent,
+//         title: Text(userName),
+//         centerTitle: true,
+//         titleTextStyle: TextStyle(
+//             color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
+//         actions: [
+//           PopupMenuButton<String>(
+//             onSelected: (value) {
+//               if (value == 'logout') {
+//                 _logout(context);
+//               } else if (value == 'settings') {
+//                 _settings(context);
+//               }
+//             },
+//             itemBuilder: (BuildContext context) {
+//               return [
+//                 const PopupMenuItem<String>(
+//                   value: 'settings',
+//                   child: Row(
+//                     children: const [
+//                       Icon(Icons.settings),
+//                       SizedBox(width: 8),
+//                       Text('Ayarlar'),
+//                     ],
+//                   ),
+//                 ),
+//                 const PopupMenuItem<String>(
+//                   value: 'logout',
+//                   child: Row(
+//                     children: const [
+//                       Icon(Icons.logout),
+//                       SizedBox(width: 8),
+//                       Text('Çıkış Yap'),
+//                     ],
+//                   ),
+//                 ),
+//               ];
+//             },
+//           ),
+//         ],
+//       ),
+//       resizeToAvoidBottomInset: true,
+//       body: Stack(
+//         children: [
+//           Container(
+//             decoration: const BoxDecoration(
+//               image: DecorationImage(
+//                 image: AssetImage("assets/images/profile_background.png"),
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//             child: Align(
+//               alignment: Alignment.bottomCenter,
+//               child: Text('sfdsd'),
+//             ),
+//           ),
+//           Positioned.fill(
+//             top: 0,
+//             left: 0,
+//             child: SizedBox(
+//               width: MediaQuery.of(context).size.width,
+//               height: MediaQuery.of(context).size.height - keyboardHeight,
+//               child: Container(
+//                   height: 20,
+//                   decoration: const BoxDecoration(
+//                     image: DecorationImage(
+//                       image:
+//                           AssetImage("assets/images/1.0X/profile_front.png"),
+//                       fit: BoxFit.fill,
+//                     ),
+//                   ),
+//                   child: Column(
+//                     children: [
+//                       SizedBox(height: 120),
+//                       InkWell(
+//                         onTap: _pickImage,
+//                         child: CircleAvatar(
+//                             radius: 80,
+//                             child: _image != null
+//                                 ? Image.file(_image!)
+//                                 : Text('Bir resim seçin')),
+//                       ),
+//                       SizedBox(height: 20),
+//                       ElevatedButton(
+//                         onPressed: (){
+//                           _uploadImage(context);
+//                         },
+//                         child: Text('Resmi Yükle'),
+//                       ),
+//                       Text(authViewModel.user!.userId)
+//                     ],
+//                   )),
+//             ),
+//           )
+//         ],
+//       ),
+//     );
+//   }
+
+//   void _settings(BuildContext context) {
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (context) => const SettingsScreen()),
+//     );
+//   }
+
+//   void _logout(BuildContext context) async {
+//     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+//     await authViewModel.signOut();
+//     Navigator.pushReplacement(
+//       context,
+//       MaterialPageRoute(builder: (context) => const LoginPage()),
+//     );
+//   }
+// }

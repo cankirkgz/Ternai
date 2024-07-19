@@ -6,10 +6,9 @@ UserModel {
   final String userId;
   final String name;
   final String email;
-  final String? phoneNumber;
   final int? age;
+  final DateTime? birthDate;
   final Country? country;
-  final String? profileUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
 
@@ -19,10 +18,9 @@ UserModel {
     required this.email,
     required this.createdAt,
     required this.updatedAt,
-    this.phoneNumber,
     this.age,
+    this.birthDate,
     this.country,
-    this.profileUrl,
   });
 
   factory UserModel.fromFirebaseUser(User user) {
@@ -30,11 +28,8 @@ UserModel {
       userId: user.uid,
       name: user.displayName ?? '',
       email: user.email!,
-      createdAt: DateTime
-          .now(), // Placeholder, should come from Firestore or other source
-      updatedAt: DateTime
-          .now(), // Placeholder, should come from Firestore or other source
-      phoneNumber: user.phoneNumber,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
   }
 
@@ -47,26 +42,33 @@ UserModel {
       'email': email,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
-      'phone_number': phoneNumber,
       'age': age,
+      'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
-      'profile_url': profileUrl,
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
+  factory UserModel.fromMap(Map<String, dynamic>? map) {
+    if (map == null) {
+      throw ArgumentError("Veri null olmamalı");
+    }
+
     return UserModel(
-      userId: map['user_id'],
-      name: map['name'],
-      email: map['email'],
-      createdAt: DateTime.parse(map['created_at']),
-      updatedAt: DateTime.parse(map['updated_at']),
-      phoneNumber: map['phone_number'],
+      userId: map['user_id'] ?? '',
+      name: map['name'] ?? '',
+      email: map['email'] ?? '',
+      createdAt: map['created_at'] != null
+          ? DateTime.parse(map['created_at'])
+          : DateTime.now(),
+      updatedAt: map['updated_at'] != null
+          ? DateTime.parse(map['updated_at'])
+          : DateTime.now(),
       age: map['age'],
-      country: map['country'] != null
-          ? Country.fromMap(map['country'], map['country_id'])
-          : null,
-      profileUrl: map['profile_url'],
+      birthDate: map['birth_date'] != null
+          ? DateTime.parse(map['birth_date'])
+          : null, // Yeni eklenen alan
+      country:
+          map['country'] != null ? Country.fromMap(map['country'], '') : null,
     );
   }
 }
