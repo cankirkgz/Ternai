@@ -44,6 +44,8 @@ dependencies:
   shared_preferences: ^2.2.3
   animated_bottom_navigation_bar: ^1.3.3
   flutter_riverpod: ^2.5.1
+  dropdown_search: ^5.0.6
+  currency_converter: ^2.0.0
 
 dev_dependencies:
   flutter_test:
@@ -82,12 +84,12 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+  #fonts:
+  #- family: Open Sans
   # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  #    - asset: fonts/Open Sans-Regular.ttf
+  #     - asset: fonts/Schyler-Italic.ttf
+  #     weight: 400
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

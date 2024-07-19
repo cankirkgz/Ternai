@@ -20,14 +20,16 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: color, // Butonun arka plan rengi
+          backgroundColor: color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30.0),
+          ),
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
           child: Text(
             text,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20.0, color: Colors.white),
+            style: TextStyle(fontSize: 20.0, color: Colors.white),
           ),
         ),
       ),

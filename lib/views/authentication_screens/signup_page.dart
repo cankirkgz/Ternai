@@ -4,6 +4,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/views/authentication_screens/birth_date_select_page.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
@@ -173,7 +174,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const HomePage()),
+                                      builder: (context) =>
+                                          const BirthDateSelectPage()),
                                 );
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
