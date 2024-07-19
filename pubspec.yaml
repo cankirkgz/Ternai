@@ -46,6 +46,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   dropdown_search: ^5.0.6
   currency_converter: ^2.0.0
+  image_picker: ^1.1.2
+  firebase_storage: ^12.1.1
 
 dev_dependencies:
   flutter_test:
@@ -72,6 +74,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/
+    - assets/images/1.0X/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
