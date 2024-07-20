@@ -7,6 +7,7 @@ class TatilVerileri {
   final int gunSayisi;
   final List<String> gezilecekYerler;
   final bool cocukVarMi;
+  final String tatilPlanDetaylari;
 
   TatilVerileri({
     required this.ulke,
@@ -14,6 +15,7 @@ class TatilVerileri {
     required this.gunSayisi,
     required this.gezilecekYerler,
     required this.cocukVarMi,
+    required this.tatilPlanDetaylari,
   });
 
   factory TatilVerileri.initial() {
@@ -23,6 +25,7 @@ class TatilVerileri {
       gunSayisi: 15,
       gezilecekYerler: [],
       cocukVarMi: false,
+      tatilPlanDetaylari: '',
     );
   }
 
@@ -32,6 +35,7 @@ class TatilVerileri {
     int? gunSayisi,
     List<String>? gezilecekYerler,
     bool? cocukVarMi,
+    String? tatilPlanDetaylari,
   }) {
     return TatilVerileri(
       ulke: ulke ?? this.ulke,
@@ -39,6 +43,7 @@ class TatilVerileri {
       gunSayisi: gunSayisi ?? this.gunSayisi,
       gezilecekYerler: gezilecekYerler ?? this.gezilecekYerler,
       cocukVarMi: cocukVarMi ?? this.cocukVarMi,
+      tatilPlanDetaylari: tatilPlanDetaylari ?? this.tatilPlanDetaylari,
     );
   }
 }
@@ -70,11 +75,15 @@ class TatilVerileriNotifier extends StateNotifier<TatilVerileri> {
   void updateCocukVarMi(bool cocukVarMi) {
     state = state.copyWith(cocukVarMi: cocukVarMi);
   }
+
+  void updateTatilPlanDetails(String tatilPlanDetaylari) {
+    state = state.copyWith(tatilPlanDetaylari: tatilPlanDetaylari);
+  }
 }
 
 // Global provider
 final tatilVerileriProvider =
-StateNotifierProvider<TatilVerileriNotifier, TatilVerileri>((ref) {
+    StateNotifierProvider<TatilVerileriNotifier, TatilVerileri>((ref) {
   return TatilVerileriNotifier();
 });
 
@@ -85,10 +94,21 @@ final butceProvider = Provider<double>((ref) {
   // Basit bir bütçe hesaplama örneği
   double toplamButce = 0;
   toplamButce += tatilVerileri.kisiSayisi * 1500; // Uçak bileti
-  toplamButce += tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 150; // Konaklama
-  toplamButce += tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 100; // Yemek
-  toplamButce += tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 30; // Ulaşım
-  toplamButce += tatilVerileri.kisiSayisi * tatilVerileri.gezilecekYerler.length * 60; // Aktiviteler
+  toplamButce +=
+      tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 150; // Konaklama
+  toplamButce +=
+      tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 100; // Yemek
+  toplamButce +=
+      tatilVerileri.kisiSayisi * tatilVerileri.gunSayisi * 30; // Ulaşım
+  toplamButce += tatilVerileri.kisiSayisi *
+      tatilVerileri.gezilecekYerler.length *
+      60; // Aktiviteler
+
+  // Örnek olarak, tatil planı detaylarından bütçeye ekleyebileceğimiz bir kalem:
+  if (tatilVerileri.tatilPlanDetaylari.isNotEmpty) {
+    toplamButce +=
+        500; // Tatil planı detayları için ek bütçe (örneğin eğlence, ekstra aktiviteler)
+  }
 
   return toplamButce;
 });
