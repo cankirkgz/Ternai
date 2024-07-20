@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
@@ -11,7 +13,21 @@ class BudgetPlanPage extends ConsumerWidget {
   final int kisiSayisi = 2;
   final List<String> gezilecekYerler = ['Müzeler'];
 
+  final model = GenerativeModel(
+    model: "gemini-pro",
+    apiKey: "AIzaSyAtPwLEa-Hlw7Mb1NChsjLySrZx32s_bsI",
+  );
+
   BudgetPlanPage({super.key});
+
+  Future<String> _calculateBudget() async {
+    final content = [
+      Content.text(
+          'Ben ${ulke} ülkesine ${kalacakGun} günlüğüne, ${kisiSayisi} kişiyle seyahat etmeyi planlıyorum. Gezilecek yerler: ${gezilecekYerler.join(", ")}. Bu seyahat için ne kadar bütçe ayırmam gerekiyor?')
+    ];
+    final response = await model.generateContent(content);
+    return response.text ?? 'Bir hata oluştu.';
+  }
 
   @override
   Widget build(BuildContext context, ref) {
@@ -96,7 +112,9 @@ class BudgetPlanPage extends ConsumerWidget {
                 const SizedBox(height: 20),
                 CustomButton(
                   text: 'Sonraki',
-                  onPressed: () {
+                  onPressed: () async {
+                    final budget = await _calculateBudget();
+                    ref.read(budgetProvider.notifier).state = budget;
                     ref.read(bottomNavigationBarProvider.notifier).changePage(5);
                   }, color: Colors.blue,
                 ),

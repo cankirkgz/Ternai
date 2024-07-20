@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
 
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_plan_page.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/calculated_budget_page.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_places.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_day.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_people.dart';
@@ -24,7 +24,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
     BudgetChoosingDayPage(),
     BudgetChoosingPlacesPage(),
     BudgetPlanPage(),
-    const ButcePage(),
+    BudgetResultPage(),
   ];
 
   @override

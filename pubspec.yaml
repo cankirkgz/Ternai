@@ -46,6 +46,8 @@ dependencies:
   flutter_riverpod: ^2.5.1
   dropdown_search: ^5.0.6
   currency_converter: ^2.0.0
+  http: ^1.2.2
+  google_generative_ai: ^0.4.3
 
 dev_dependencies:
   flutter_test:
