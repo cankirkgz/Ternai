@@ -69,4 +69,33 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
+Future<void> updateEmail(String userId, String newEmail) async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        await currentUser.updateEmail(newEmail.trim());
+        await currentUser.reload();
+        currentUser = _auth.currentUser;
+
+        // Firestore'daki kullanıcı belgesini güncelle
+        await _firestoreService.updateUserField(
+          userId,
+          {'email': newEmail.trim(), 'updated_at': DateTime.now().toIso8601String()},
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      throw FirebaseErrorMessages.getErrorMessage(e.code);
+    }
+  }
+//   Future<void> updateEmail(String userId, String email) async {
+
+// try {
+//       await _auth.currentUser!.updateEmail(email);
+//       await _auth.currentUser?.reload();
+//     } on FirebaseAuthException catch (e) {
+//       throw FirebaseErrorMessages.getErrorMessage(e.code);
+//     }
+
+//   }
 }

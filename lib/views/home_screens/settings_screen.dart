@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/views/home_screens/profile_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';
 
@@ -17,7 +18,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _usernameController;
   late TextEditingController _birthDateController;
-  late TextEditingController _contactController;
+  // late TextEditingController _contactController;
   late TextEditingController _emailController;
   final _passwordController = TextEditingController();
 
@@ -28,9 +29,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _usernameController = TextEditingController(
       text: authViewModel.user?.name ?? '',
     );
-    // _birthDateController = TextEditingController(
-    //   text: authViewModel.user?.birthDate ?? '',
-    // );
+    _birthDateController = TextEditingController(
+      text: authViewModel.user?.birthDate.toString() ?? '',
+    );
     // _contactController = TextEditingController(
     //   text: authViewModel.user?.contact ?? '',
     // );
@@ -79,11 +80,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final userName = authViewModel.user?.name ?? 'Kullanıcı';
     final userMail = authViewModel.user?.email ?? 'Kullanıcı';
+    final userId = authViewModel.user?.userId ?? 'Kullanıcı';
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+    appBar: AppBar(
+    
+    leading: IconButton(
+      
+      onPressed: () {
+        Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => ProfileScreen()),
+            );
+      },
+      icon: const Icon(
+        
+        color: Colors.black,
+        Icons.arrow_back),
+    ),  
+    ),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -115,12 +133,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     suffixIcon: CupertinoIcons.calendar_today,
                     validator: _usernameValidator,
                   ),
-                  CustomTextField(
-                    controller: _contactController,
-                    labelText: 'İrtibat',
-                    suffixIcon: CupertinoIcons.phone_fill,
-                    validator: _usernameValidator,
-                  ),
+                  // CustomTextField(
+                  //   controller: _contactController,
+                  //   labelText: 'İrtibat',
+                  //   suffixIcon: CupertinoIcons.phone_fill,
+                  //   validator: _usernameValidator,
+                  // ),
                   CustomTextField(
                     controller: _emailController,
                     labelText: "E-mail",
@@ -139,21 +157,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     text: "Profili güncelle",
                     color: AppColors.primaryColor,
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        try {
-                          await authViewModel.signUpWithEmail(
-                            _emailController.text,
-                            _passwordController.text,
-                            _usernameController.text,
-                          );
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(e.toString()),
-                            ),
-                          );
-                        }
-                      }
+                      if (_usernameController.text != userName) {
+                        Map<String, dynamic> data = {
+                          'name': _usernameController.text,
+                        };
+                        await authViewModel.updateUserField(userId, data);
+
+                        
+                      };
+                      if (_emailController.text != userMail) {
+                        Map<String, dynamic> data = {
+                          'email': _emailController.text,
+                        };
+                        await authViewModel.updateEmail(userId, data , _emailController.text.trim());
+
+                        
+                      };
+                    //   if (_passwordController.text != '') {
+                    //     Map<String, dynamic> data = {
+                    //       'password': _passwordController.text,
+                    //     };
+                    //     await authViewModel.updateUserField(userId, data);
+                    //   }
+                   
+                      
                     },
                     width: screenWidth * 0.7,
                   ),

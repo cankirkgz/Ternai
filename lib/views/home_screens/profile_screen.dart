@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,8 @@ import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/settings_screen.dart';
 
- final AuthService _authService = AuthService();
+final AuthService _authService = AuthService();
+
 //   final FirebaseAuth _auth = FirebaseAuth.instance;
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -26,6 +26,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
+  get math => null;
+
   @override
   void initState() {
     super.initState();
@@ -37,7 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userId = authViewModel.user!.userId;
 
     // Firestore'dan profil fotoğrafı URL'sini al
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('users').doc(userId).get();
     if (userDoc.exists && userDoc['profileImageUrl'] != null) {
       setState(() {
         _profileImageUrl = userDoc['profileImageUrl'];
@@ -66,7 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       String downloadURL = await _storage.ref(fileName).getDownloadURL();
       print('Download URL: $downloadURL');
-      
+
       // Profil fotoğrafı URL'sini Firestore'a kaydet
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
         'profileImageUrl': downloadURL,
@@ -146,6 +149,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text('sfdsd'),
             ),
           ),
+          // ListView.builder(
+          //     itemCount: 100,
+          //     itemBuilder: (context, index) {
+          //       return Container(
+          //         color: Colors.red,
+          //         child: Text('Random Color'),
+          //       );
+          //     }),
           Positioned.fill(
             top: 0,
             left: 0,
@@ -156,8 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   height: 20,
                   decoration: const BoxDecoration(
                     image: DecorationImage(
-                      image:
-                          AssetImage("assets/images/1.0X/profile_front.png"),
+                      image: AssetImage("assets/images/1.0X/profile_front.png"),
                       fit: BoxFit.fill,
                     ),
                   ),
@@ -170,16 +180,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           radius: 80,
                           backgroundImage: _profileImageUrl != null
                               ? NetworkImage(
-                             
-                                _profileImageUrl!,
-                                   scale: 1.0,)
+                                  _profileImageUrl!,
+                                  scale: 1.0,
+                                )
                               : null,
                           child: _image != null
                               ? Image.file(_image!)
                               : _profileImageUrl == null
                                   ? Text('Bir resim seçin')
                                   : null,
-                                  
                         ),
                       ),
                       SizedBox(height: 20),

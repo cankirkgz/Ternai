@@ -66,4 +66,19 @@ class AuthViewModel extends ChangeNotifier {
       throw e; // Hata yönetimini burada gerçekleştirin
     }
   }
+
+  Future<void> updateEmail(String userId, Map<String, dynamic> data, String email) async {
+
+    try {
+      await _authService.updateEmail(userId, email);
+      await _firestoreService.updateUserField(userId, data);
+
+      // Eğer _user'da güncelleme yapmak istiyorsanız, burada yapabilirsiniz
+      notifyListeners();
+    } catch (e) {
+      print("Kullanıcı bilgilerini güncellerken hata oluştu: $e");
+      throw e; // Hata yönetimini burada gerçekleştirin
+    }
+
+  }
 }
