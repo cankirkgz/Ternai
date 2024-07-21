@@ -220,27 +220,33 @@
     <h2>Fiyat Arama Sayfaları</h2>
     <table>
         <tr>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image1" alt="Fiyat Arama Screenshot 1"></td>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image2" alt="Fiyat Arama Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/27a73c3d-b227-419f-88b1-314504e9eb8d" alt="Fiyat Arama Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/7010fe7d-d9a7-4d30-b3bb-b4a6ee35f2a1" alt="Fiyat Arama Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/201f4ffd-82e6-4450-a4ee-be3dd6865bc5" alt="Fiyat Arama Screenshot 3"></td>
         </tr>
     </table>
     <h2>Yeni Tatil Planı Oluşturma Sayfaları</h2>
     <table>
         <tr>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image3" alt="Yeni Tatil Planı Screenshot 1"></td>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image4" alt="Yeni Tatil Planı Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/b221cc39-e54c-469e-bf4a-29083efe3f82" alt="Yeni Tatil Planı Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/63e4c95c-de3c-49f5-bc2f-d4784642f3bf" alt="Yeni Tatil Planı Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/9ab0e682-30f8-4a33-ad65-7248a51726a6" alt="Yeni Tatil Planı Screenshot 3"></td>
+            <td><img src="https://github.com/user-attachments/assets/3c0c9dfc-7488-40f5-956a-5bc74835b24a" alt="Yeni Tatil Planı Screenshot 4"></td>
+            <td><img src="https://github.com/user-attachments/assets/e0868cf7-a44e-4fbd-bcda-034d7fd9c60e" alt="Yeni Tatil Planı Screenshot 5"></td>
+            <td><img src="https://github.com/user-attachments/assets/5073148f-5d14-466d-923b-0522827c00ea" alt="Yeni Tatil Planı Screenshot 6"></td>
         </tr>
     </table>
     <h2>Önceki Tatil Planlarım Sayfası</h2>
     <table>
         <tr>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image5" alt="Önceki Tatil Planlarım Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/b26e634c-1714-4cfd-947c-f9d9e8376c55" alt="Önceki Tatil Planlarım Screenshot 1"></td>
         </tr>
     </table>
     <h2>Profil Sayfası</h2>
     <table>
         <tr>
-            <td><img src="https://github.com/cankirkgz/Travel-Guide/assets/73443107/example_image6" alt="Profil Sayfası Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/18a62287-2494-4c90-811f-2ec90e71ad17" alt="Profil Sayfası Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/50018460-d00b-454e-aa54-40bb3d025c59" alt="Profil Sayfası Screenshot 2"></td>
         </tr>
     </table>
 </details>
@@ -271,7 +277,7 @@
         <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 300 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde her sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
         <li>Backlog düzeni ve Story seçimleri: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.</li>
         <li>Story'ler yapılacak işlere (task'lere) bölünmüştür: Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.</li>
-        <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır.</li>
+        <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. https://github.com/user-attachments/assets/c5464c15-51e8-4ea1-a79f-66f3f0c338a9 https://github.com/user-attachments/assets/b99ee8db-5796-400b-8197-b5a956da7c64</li>
     </ul>
     <h2>Puanlama Mantığı</h2>
     <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
