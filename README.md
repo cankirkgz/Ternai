@@ -135,7 +135,7 @@
         <li>Profil sayfasının olması ve oluşturduğu tatil planlarını görebilmesi sağlanmıştır.</li>
         <li>Zaman kalırsa kullanıcıların tatil planlarını ve tatillerini paylaşabileceği bir ortam oluşturulması hedeflenmiştir.</li>
     </ul>
-        <li><strong>Puanlama Sistemi:</strong></li>
+    <li><strong>Puanlama Sistemi:</strong></li>
     <ul>
         <li>Sprint içinde tamamlanması tahmin edilen puan: 100 Puan</li>
         <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 300 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
@@ -185,6 +185,7 @@
             <td>Şifre sıfırlama e-postasının gönderilmesi</td>
             <td>10</td>
         </tr>
+    </table>
     <li><strong>Görev Dağılımı:</strong></li>
     <ul>
         <li>Grupta kim hangi konuda güçlü ise ona göre görev dağılımı yapılmıştır.</li>
@@ -214,7 +215,9 @@
         <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
     </ul>
 </details>
+
 <h2>Sprint 2</h2>
+
 <details>
     <summary>Sprint 2 - App Screenshots</summary>
     <h2>Fiyat Arama Sayfaları</h2>
@@ -250,6 +253,7 @@
         </tr>
     </table>
 </details>
+
 <h2>Sprint Notes:</h2>
 <ul>
     <li><strong>İlk Hafta Hedefleri:</strong></li>
@@ -278,6 +282,7 @@
         <li>Backlog düzeni ve Story seçimleri: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.</li>
         <li>Story'ler yapılacak işlere (task'lere) bölünmüştür: Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.</li>
         <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. https://github.com/user-attachments/assets/c5464c15-51e8-4ea1-a79f-66f3f0c338a9 https://github.com/user-attachments/assets/b99ee8db-5796-400b-8197-b5a956da7c64</li>
+        <li>Sprint board update: Sprint board screenshotları: https://github.com/user-attachments/assets/39a7f372-e986-4937-9c55-6e1801e0fd61 https://github.com/user-attachments/assets/bf68791a-ccc0-48a4-925a-dd4cd621222a https://github.com/user-attachments/assets/eedfa7a8-fdb8-4e87-ada3-d9897467e4c1 </li>
     </ul>
     <h2>Puanlama Mantığı</h2>
     <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
@@ -315,6 +320,7 @@
         <tr>
             <td>Önceki Tatil Planlarım Sayfasının backend'e bağlanması</td>
             <td>10</td>
+        </tr>
     </table>
     <li><strong>Görev Dağılımı:</strong></li>
     <ul>
