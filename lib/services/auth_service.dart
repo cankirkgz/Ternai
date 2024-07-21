@@ -1,71 +1,37 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../models/user_model.dart';
-import 'firestore_service.dart';
-import '../utils/firebase_error_messages.dart';
+import 'package:travelguide/models/country_model.dart';
+import 'package:travelguide/models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirestoreService _firestoreService = FirestoreService();
-
-  UserModel? _userFromFirebase(User? user) {
-    return user != null ? UserModel.fromFirebaseUser(user) : null;
-  }
-
-  Stream<UserModel?> get user {
-    return _auth.authStateChanges().map(_userFromFirebase);
-  }
 
   Future<UserModel?> getCurrentUser() async {
-    return _userFromFirebase(_auth.currentUser);
+    User? user = _auth.currentUser;
+    if (user != null) {
+      return UserModel.fromFirebaseUser(user);
+    }
+    return null;
   }
 
   Future<void> signInWithEmail(String email, String password) async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-
-      await _firestoreService.updateUserField(
-        userCredential.user!.uid,
-        {'updated_at': DateTime.now().toIso8601String()},
-      );
-    } on FirebaseAuthException catch (e) {
-      throw FirebaseErrorMessages.getErrorMessage(e.code);
-    }
+    await _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
   Future<void> signUpWithEmail(
       String email, String password, String name) async {
-    try {
-      UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
-        email: email.trim(),
-        password: password.trim(),
-      );
-
-      UserModel newUser = UserModel(
-        userId: userCredential.user!.uid,
-        name: name,
-        email: email.trim(),
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        emailVerified: userCredential.user!.emailVerified,
-        profileImageUrl: userCredential.user!.photoURL, // Yeni eklenen alan
-      );
-
-      await _firestoreService.createUser(newUser);
-    } on FirebaseAuthException catch (e) {
-      throw FirebaseErrorMessages.getErrorMessage(e.code);
+    UserCredential result = await _auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+    User? user = result.user;
+    if (user != null) {
+      await user.updateDisplayName(name);
+      await user.sendEmailVerification();
     }
   }
 
   Future<void> sendPasswordResetEmail(String email) async {
-    try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
-    } on FirebaseAuthException catch (e) {
-      throw FirebaseErrorMessages.getErrorMessage(e.code);
-    }
+    await _auth.sendPasswordResetEmail(email: email);
   }
 
   Future<void> signOut() async {
@@ -74,45 +40,48 @@ class AuthService {
 
   Future<void> updateEmailIfVerified(
       String userId, String newEmail, String password) async {
-    User? currentUser = _auth.currentUser;
+    User? user = _auth.currentUser;
+    if (user != null) {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: password,
+      );
 
-    if (currentUser != null) {
-      await currentUser.reload(); // Kullanıcı bilgilerini yeniden yükle
-      if (!currentUser.emailVerified) {
-        await sendEmailVerification();
-        throw Exception(
-            'E-posta doğrulama gerekli. Lütfen e-postanızı doğrulayın.');
-      } else {
-        AuthCredential credential = EmailAuthProvider.credential(
-          email: currentUser.email!,
-          password: password,
-        );
-
-        await currentUser.reauthenticateWithCredential(credential);
-
-        await currentUser.updateEmail(newEmail.trim());
-        await _firestoreService
-            .updateUserField(userId, {'email': newEmail.trim()});
-      }
+      await user.reauthenticateWithCredential(credential);
+      await user.updateEmail(newEmail);
+      await user.sendEmailVerification();
     }
   }
 
   Future<void> sendEmailVerification() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null && !currentUser.emailVerified) {
-      await currentUser.sendEmailVerification();
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await user.sendEmailVerification();
     }
   }
 
   Future<void> reloadCurrentUser() async {
-    User? currentUser = _auth.currentUser;
-    if (currentUser != null) {
-      await currentUser.reload();
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await user.reload();
     }
   }
 
-  bool isEmailVerified() {
-    User? currentUser = _auth.currentUser;
-    return currentUser?.emailVerified ?? false;
+  Future<void> changePassword(String newPassword) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await user.updatePassword(newPassword);
+    }
+  }
+
+  Future<void> reauthenticate(String currentPassword) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      AuthCredential credential = EmailAuthProvider.credential(
+        email: user.email!,
+        password: currentPassword,
+      );
+      await user.reauthenticateWithCredential(credential);
+    }
   }
 }

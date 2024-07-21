@@ -33,32 +33,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _loadProfileImage() async {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final userId = authViewModel.user!.userId;
+    final userId = authViewModel.user?.userId;
 
-    // Firestore'dan profil fotoğrafı URL'sini al
-    DocumentSnapshot userDoc =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    if (userDoc.exists && userDoc['profileImageUrl'] != null) {
-      setState(() {
-        _profileImageUrl = userDoc['profileImageUrl'];
-      });
+    if (userId != null) {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .get();
+      if (userDoc.exists && userDoc['profile_image_url'] != null) {
+        setState(() {
+          _profileImageUrl = userDoc['profile_image_url'];
+        });
+      }
     }
   }
 
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedFile = await _picker.pickImage(source: source);
 
     if (pickedFile != null) {
       setState(() {
         _image = File(pickedFile.path);
       });
+      _showConfirmationDialog();
     }
   }
 
   Future<void> _uploadImage(BuildContext context) async {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final userId = authViewModel.user!.userId;
-    if (_image == null) return;
+    final userId = authViewModel.user?.userId;
+    if (_image == null || userId == null) return;
 
     try {
       String fileName = 'profile_pics/${userId}.png';
@@ -67,21 +71,79 @@ class _ProfileScreenState extends State<ProfileScreen> {
       String downloadURL = await _storage.ref(fileName).getDownloadURL();
       print('Download URL: $downloadURL');
 
-      // Profil fotoğrafı URL'sini Firestore'a kaydet
       await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'profileImageUrl': downloadURL,
+        'profile_image_url': downloadURL,
       });
 
-      // Yeni URL'yi state'e yükle
       setState(() {
         _profileImageUrl = downloadURL;
+        _image = null; // Resim yüklendikten sonra local değişkeni temizle
       });
 
-      // Kullanıcı modelini güncelle
-      authViewModel.updateUserField(userId, {'profileImageUrl': downloadURL});
+      authViewModel.updateUserField(userId, {'profile_image_url': downloadURL});
     } catch (e) {
       print('Upload error: $e');
     }
+  }
+
+  void _showImageSourceDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Profil fotoğrafını güncelle'),
+          content: const Text('Kaynak seçin'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.camera);
+              },
+              child: const Text('Kamera'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _pickImage(ImageSource.gallery);
+              },
+              child: const Text('Galeri'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _showConfirmationDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Fotoğrafı onayla'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              _image != null ? Image.file(_image!) : Container(),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Vazgeç'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _uploadImage(context);
+              },
+              child: const Text('Kaydet'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -96,7 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         backgroundColor: Colors.transparent,
         title: Text(userName),
         centerTitle: true,
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
             color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
         actions: [
           PopupMenuButton<String>(
@@ -151,44 +213,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - keyboardHeight,
-              child: Container(
-                height: 20,
-                decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage("assets/images/1.0X/profile_front.png"),
-                    fit: BoxFit.fill,
+              child: Column(
+                children: [
+                  const SizedBox(height: 120),
+                  InkWell(
+                    onTap: _showImageSourceDialog,
+                    child: CircleAvatar(
+                      radius: 80,
+                      backgroundImage: _profileImageUrl != null
+                          ? NetworkImage(_profileImageUrl!)
+                          : const AssetImage(
+                                  "assets/images/default_profile.png")
+                              as ImageProvider,
+                      child: _image == null && _profileImageUrl == null
+                          ? const Icon(Icons.camera_alt, size: 80)
+                          : null,
+                    ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    SizedBox(height: 120),
-                    InkWell(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
-                        radius: 80,
-                        backgroundImage: _profileImageUrl != null
-                            ? NetworkImage(
-                                _profileImageUrl!,
-                                scale: 1.0,
-                              )
-                            : null,
-                        child: _image != null
-                            ? Image.file(_image!)
-                            : _profileImageUrl == null
-                                ? Text('Bir resim seçin')
-                                : null,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        _uploadImage(context);
-                      },
-                      child: Text('Resmi Yükle'),
-                    ),
-                    Text(authViewModel.user!.userId),
-                  ],
-                ),
+                ],
               ),
             ),
           )
@@ -198,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _settings(BuildContext context) {
-    Navigator.pushReplacement(
+    Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const SettingsScreen()),
     );

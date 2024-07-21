@@ -59,6 +59,8 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> updateUserField(String userId, Map<String, dynamic> data) async {
     try {
       await _firestoreService.updateUserField(userId, data);
+      _user =
+          await _firestoreService.getUser(userId); // Kullanıcıyı yeniden yükle
       notifyListeners();
     } catch (e) {
       print("Kullanıcı bilgilerini güncellerken hata oluştu: $e");
@@ -97,6 +99,28 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Kullanıcı bilgilerini yeniden yüklerken hata oluştu: $e");
+      throw e;
+    }
+  }
+
+  Future<void> changePassword(String newPassword) async {
+    try {
+      await _authService.changePassword(newPassword);
+      notifyListeners();
+    } catch (e) {
+      print("Şifre değiştirme hatası: $e");
+      throw e;
+    }
+  }
+
+  Future<void> reauthenticateAndChangePassword(
+      String currentPassword, String newPassword) async {
+    try {
+      await _authService.reauthenticate(currentPassword);
+      await _authService.changePassword(newPassword);
+      notifyListeners();
+    } catch (e) {
+      print("Şifre değiştirme hatası: $e");
       throw e;
     }
   }

@@ -8,7 +8,8 @@ class CustomTextField extends StatelessWidget {
   final IconData suffixIcon;
   final String? Function(String?)? validator;
   final InputDecoration? decoration;
-  final  TextStyle? style;
+  final TextStyle? style;
+  final bool enabled;
 
   const CustomTextField({
     required this.controller,
@@ -19,20 +20,19 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.style,
     this.decoration,
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(
-        left:20, right: 20,
-        top: 8.0, bottom: 8.0)
-      ,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: TextFormField(
         controller: controller,
         keyboardType: TextInputType.emailAddress,
         obscureText: obscureText,
+        enabled: enabled,
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,

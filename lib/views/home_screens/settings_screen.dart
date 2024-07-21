@@ -1,9 +1,9 @@
+import 'dart:async'; // Timer sınıfı için gerekli import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
-import 'package:travelguide/views/home_screens/profile_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';
 
@@ -19,37 +19,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late TextEditingController _usernameController;
   late TextEditingController _birthDateController;
   late TextEditingController _emailController;
-  final _passwordController = TextEditingController();
+  late TextEditingController _passwordController;
+  late TextEditingController _newPasswordController;
+  late TextEditingController _confirmPasswordController;
+  bool _isChanged = false;
 
   @override
   void initState() {
     super.initState();
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    _initializeControllers(authViewModel);
+  }
+
+  void _initializeControllers(AuthViewModel authViewModel) {
     _usernameController = TextEditingController(
       text: authViewModel.user?.name ?? '',
     );
     _birthDateController = TextEditingController(
-      text: authViewModel.user?.birthDate.toString() ?? '',
+      text: authViewModel.user?.birthDate != null
+          ? "${authViewModel.user!.birthDate!.day}/${authViewModel.user!.birthDate!.month}/${authViewModel.user!.birthDate!.year}"
+          : '',
     );
     _emailController = TextEditingController(
       text: authViewModel.user?.email ?? '',
     );
+    _passwordController = TextEditingController();
+    _newPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+
+    _usernameController.addListener(() {
+      setState(() {
+        final currentUserName = authViewModel.user?.name ?? '';
+        _isChanged = _usernameController.text != currentUserName;
+      });
+    });
   }
 
   String? _usernameValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Lütfen isiminizi ve soyisminizi giriniz';
-    }
-    return null;
-  }
-
-  String? _emailValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen e-mailinizi giriniz';
-    }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Geçerli bir e-mail giriniz';
+      return 'Lütfen isminizi ve soyisminizi giriniz';
     }
     return null;
   }
@@ -61,31 +69,118 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return null;
   }
 
+  Future<void> _changePassword(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Şifre Değiştir'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CustomTextField(
+                controller: _passwordController,
+                labelText: 'Mevcut Şifre',
+                obscureText: true,
+                suffixIcon: CupertinoIcons.lock,
+                validator: _passwordValidator,
+              ),
+              CustomTextField(
+                controller: _newPasswordController,
+                labelText: 'Yeni Şifre',
+                obscureText: true,
+                suffixIcon: CupertinoIcons.lock,
+                validator: _passwordValidator,
+              ),
+              CustomTextField(
+                controller: _confirmPasswordController,
+                labelText: 'Yeni Şifreyi Tekrar Girin',
+                obscureText: true,
+                suffixIcon: CupertinoIcons.lock,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Lütfen şifrenizi tekrar giriniz';
+                  }
+                  if (value != _newPasswordController.text) {
+                    return 'Şifreler eşleşmiyor';
+                  }
+                  return null;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('İptal'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (_newPasswordController.text ==
+                    _confirmPasswordController.text) {
+                  try {
+                    await Provider.of<AuthViewModel>(context, listen: false)
+                        .reauthenticateAndChangePassword(
+                      _passwordController.text,
+                      _newPasswordController.text,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Şifreniz başarıyla değiştirildi'),
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(e.toString()),
+                      ),
+                    );
+                  }
+                }
+              },
+              child: const Text('Değiştir'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _startVerificationPolling() {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      await authViewModel.reloadUser();
+      if (authViewModel.user?.emailVerified ?? false) {
+        await authViewModel.updateUserField(authViewModel.user!.userId, {
+          'email_verified': true,
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('E-posta adresiniz doğrulandı.'),
+          ),
+        );
+        timer.cancel();
+        setState(() {});
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final userName = authViewModel.user?.name ?? 'Kullanıcı';
     final userMail = authViewModel.user?.email ?? 'Kullanıcı';
     final userId = authViewModel.user?.userId ?? 'Kullanıcı';
+    final emailVerified = authViewModel.user?.emailVerified ?? false;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfileScreen()),
-            );
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Colors.black,
-          ),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Ayarlar')),
       body: Container(
         decoration: const BoxDecoration(
           color: Colors.transparent,
@@ -107,7 +202,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   SizedBox(height: 230),
                   CustomTextField(
                     controller: _usernameController,
-                    labelText: ' Kullanıcı Adı',
+                    labelText: 'Kullanıcı Adı',
                     suffixIcon: CupertinoIcons.person,
                     validator: _usernameValidator,
                   ),
@@ -115,59 +210,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     controller: _birthDateController,
                     labelText: 'Doğum Tarihi',
                     suffixIcon: CupertinoIcons.calendar_today,
-                    validator: _usernameValidator,
+                    validator: null,
+                    enabled: false,
                   ),
                   CustomTextField(
                     controller: _emailController,
                     labelText: "E-mail",
                     suffixIcon: CupertinoIcons.envelope,
-                    validator: _emailValidator,
-                  ),
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: "Şifre",
-                    obscureText: true,
-                    suffixIcon: CupertinoIcons.lock,
-                    validator: _passwordValidator,
+                    validator: null,
+                    enabled: false,
                   ),
                   SizedBox(height: 20),
                   CustomButton(
-                    text: "Profili güncelle",
+                    text: "Profili Güncelle",
                     color: AppColors.primaryColor,
-                    onPressed: () async {
-                      if (_formKey.currentState!.validate()) {
-                        if (_usernameController.text != userName) {
-                          Map<String, dynamic> data = {
-                            'name': _usernameController.text,
-                          };
-                          await authViewModel.updateUserField(userId, data);
-                        }
-                        if (_emailController.text != userMail) {
-                          try {
-                            await authViewModel.updateEmail(
-                              userId,
-                              _emailController.text.trim(),
-                              _passwordController.text.trim(),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('E-posta adresi güncellendi.'),
-                              ),
-                            );
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                              ),
-                            );
+                    onPressed: _isChanged
+                        ? () async {
+                            if (_formKey.currentState!.validate()) {
+                              final currentUserName =
+                                  authViewModel.user?.name ?? '';
+                              if (_usernameController.text != currentUserName) {
+                                Map<String, dynamic> data = {
+                                  'name': _usernameController.text,
+                                };
+                                await authViewModel.updateUserField(
+                                    userId, data);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Kullanıcı adı güncellendi.'),
+                                  ),
+                                );
+                                setState(() {
+                                  _isChanged = false;
+                                });
+                              }
+                            }
                           }
-                        }
-                      }
+                        : null,
+                    width: screenWidth * 0.7,
+                  ),
+                  SizedBox(height: 20),
+                  CustomButton(
+                    text: "Şifreyi Değiştir",
+                    color: AppColors.primaryColor,
+                    onPressed: () {
+                      _changePassword(context);
                     },
                     width: screenWidth * 0.7,
                   ),
                   SizedBox(height: 20),
-                  if (!authViewModel.user!.emailVerified)
+                  if (!emailVerified)
                     CustomButton(
                       text: "Doğrulama E-postası Gönder",
                       color: Colors.orange,
@@ -179,19 +271,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               content: Text('Doğrulama e-postası gönderildi.'),
                             ),
                           );
-
-                          // Bir süre bekledikten sonra kullanıcı bilgilerini yeniden yükle
-                          await Future.delayed(Duration(seconds: 5));
-                          await authViewModel.reloadUser();
-
-                          // Eğer doğrulandıysa, kullanıcıyı bilgilendir
-                          if (authViewModel.user!.emailVerified) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('E-posta adresiniz doğrulandı.'),
-                              ),
-                            );
-                          }
+                          _startVerificationPolling();
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
