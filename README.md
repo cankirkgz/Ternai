@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+# Travel-Guide
+This is Mücahit GÖKÇE peaces.
+=======
 <h1>1. Takım İsmi</h1>
 <p>Flutter Grup 22</p>
 
@@ -247,3 +251,4 @@
         <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
     </ul>
 </details>
+>>>>>>> 0288499e51f1b36b06f651d5102f3588bd2dd4d1

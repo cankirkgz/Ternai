@@ -59,11 +59,69 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> updateUserField(String userId, Map<String, dynamic> data) async {
     try {
       await _firestoreService.updateUserField(userId, data);
-      // Eğer _user'da güncelleme yapmak istiyorsanız, burada yapabilirsiniz
+      _user =
+          await _firestoreService.getUser(userId); // Kullanıcıyı yeniden yükle
       notifyListeners();
     } catch (e) {
       print("Kullanıcı bilgilerini güncellerken hata oluştu: $e");
-      throw e; // Hata yönetimini burada gerçekleştirin
+      throw e;
+    }
+  }
+
+  Future<void> updateEmail(
+      String userId, String newEmail, String password) async {
+    try {
+      await _authService.updateEmailIfVerified(userId, newEmail, password);
+      notifyListeners();
+    } catch (e) {
+      print("E-posta güncelleme hatası: $e");
+      throw e;
+    }
+  }
+
+  Future<void> sendEmailVerification() async {
+    try {
+      await _authService.sendEmailVerification();
+      notifyListeners();
+    } catch (e) {
+      print("E-posta doğrulama hatası: $e");
+      throw e;
+    }
+  }
+
+  Future<void> reloadUser() async {
+    try {
+      await _authService.reloadCurrentUser();
+      _user = await _authService.getCurrentUser();
+      if (_user != null) {
+        _user = await _firestoreService.getUser(_user!.userId);
+      }
+      notifyListeners();
+    } catch (e) {
+      print("Kullanıcı bilgilerini yeniden yüklerken hata oluştu: $e");
+      throw e;
+    }
+  }
+
+  Future<void> changePassword(String newPassword) async {
+    try {
+      await _authService.changePassword(newPassword);
+      notifyListeners();
+    } catch (e) {
+      print("Şifre değiştirme hatası: $e");
+      throw e;
+    }
+  }
+
+  Future<void> reauthenticateAndChangePassword(
+      String currentPassword, String newPassword) async {
+    try {
+      await _authService.reauthenticate(currentPassword);
+      await _authService.changePassword(newPassword);
+      notifyListeners();
+    } catch (e) {
+      print("Şifre değiştirme hatası: $e");
+      throw e;
     }
   }
 }

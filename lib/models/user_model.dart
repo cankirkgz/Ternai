@@ -10,6 +10,8 @@ class UserModel {
   final Country? country;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final bool emailVerified;
+  final String? profileImageUrl; // Yeni eklenen alan
 
   UserModel({
     required this.userId,
@@ -17,9 +19,11 @@ class UserModel {
     required this.email,
     required this.createdAt,
     required this.updatedAt,
+    required this.emailVerified,
     this.age,
     this.birthDate,
     this.country,
+    this.profileImageUrl, // Yeni eklenen alan
   });
 
   factory UserModel.fromFirebaseUser(User user) {
@@ -29,6 +33,8 @@ class UserModel {
       email: user.email!,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      emailVerified: user.emailVerified,
+      profileImageUrl: user.photoURL, // Yeni eklenen alan
     );
   }
 
@@ -42,6 +48,8 @@ class UserModel {
       'age': age,
       'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
+      'email_verified': emailVerified,
+      'profile_image_url': profileImageUrl, // Yeni eklenen alan
     };
   }
 
@@ -61,11 +69,12 @@ class UserModel {
           ? DateTime.parse(map['updated_at'])
           : DateTime.now(),
       age: map['age'],
-      birthDate: map['birth_date'] != null
-          ? DateTime.parse(map['birth_date'])
-          : null, // Yeni eklenen alan
+      birthDate:
+          map['birth_date'] != null ? DateTime.parse(map['birth_date']) : null,
       country:
           map['country'] != null ? Country.fromMap(map['country'], '') : null,
+      emailVerified: map['email_verified'] ?? false,
+      profileImageUrl: map['profile_image_url'], // Yeni eklenen alan
     );
   }
 }
