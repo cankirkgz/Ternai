@@ -65,6 +65,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   ),
                 );
               } else {
+                print(tatilVerileri.gezilecekYerler);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(4);
               }
             },
