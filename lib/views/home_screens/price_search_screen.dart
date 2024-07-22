@@ -1,10 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:travelguide/models/category_model.dart';
 import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/models/product_service_model.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_dropdown_button.dart';
 import 'result_screen.dart'; // ResultScreen'i import ediyoruz
@@ -75,6 +77,8 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -182,6 +186,8 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
                                         country: selectedCountry!,
                                         category: selectedCategory!,
                                         subCategory: selectedSubCategory,
+                                        userCountry:
+                                            authViewModel.user!.country,
                                       ),
                                     ),
                                   );

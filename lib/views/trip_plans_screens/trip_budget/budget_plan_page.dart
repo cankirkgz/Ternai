@@ -8,7 +8,6 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 
 class BudgetPlanPage extends ConsumerWidget {
   // Bu değerler normalde önceki sayfalardan alınacak
-  
 
   final model = GenerativeModel(
     model: "gemini-pro",
@@ -45,22 +44,26 @@ class BudgetPlanPage extends ConsumerWidget {
     final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
-          child: Padding(
-            padding: const EdgeInsets.all(18.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Mükemmel bir tatil planı oluşturalım!',
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue),
+            ),
+            const SizedBox(height: 20),
+            Table(
+              border: TableBorder.all(),
               children: [
-                const Text(
-                  'Mükemmel bir tatil planı oluşturalım!',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
-                ),
-                const SizedBox(height: 20),
-                Table(
-                  border: TableBorder.all(),
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                        children: [
+                TableRow(
+                    decoration:
+                        BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                    children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text('Ülke'),
@@ -70,9 +73,10 @@ class BudgetPlanPage extends ConsumerWidget {
                         child: Text(travelInformation.country),
                       ),
                     ]),
-                    TableRow(
-                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                        children: [
+                TableRow(
+                    decoration:
+                        BoxDecoration(color: Colors.white.withOpacity(0.65)),
+                    children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text('Kalacak gün'),
@@ -82,21 +86,24 @@ class BudgetPlanPage extends ConsumerWidget {
                         child: Text(travelInformation.numberOfDays.toString()),
                       ),
                     ]),
-                    TableRow(
-                        decoration: BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                        children: [
+                TableRow(
+                    decoration:
+                        BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                    children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text('Kişi sayısı'),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(travelInformation.numberOfPeople.toString()),
+                        child:
+                            Text(travelInformation.numberOfPeople.toString()),
                       ),
                     ]),
-                    TableRow(
-                        decoration: BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                        children: [
+                TableRow(
+                    decoration:
+                        BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                    children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Text('Çocuk var mı'),
@@ -106,20 +113,21 @@ class BudgetPlanPage extends ConsumerWidget {
                         child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
                       ),
                     ]),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                CustomButton(
-                  text: 'Sonraki',
-                  onPressed: () async {
-                    final budget = await _calculateBudget(travelInformation);
-                    ref.read(budgetProvider.notifier).state = budget;
-                    ref.read(bottomNavigationBarProvider.notifier).changePage(5);
-                  }, color: Colors.blue,
-                ),
               ],
             ),
-          ),
-        );
+            const SizedBox(height: 20),
+            CustomButton(
+              text: 'Sonraki',
+              onPressed: () async {
+                final budget = await _calculateBudget(travelInformation);
+                ref.read(budgetProvider.notifier).state = budget;
+                ref.read(bottomNavigationBarProvider.notifier).changePage(5);
+              },
+              color: Colors.blue,
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

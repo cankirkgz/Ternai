@@ -75,7 +75,9 @@ class _BudgetChoosingCountryPageState
               onChanged: (value) {
                 setState(() {
                   selectedCountry = countries.firstWhere((c) => c.id == value);
-                  ref.read(travelInformationProvider.notifier).updateCountry(selectedCountry!.name);
+                  ref
+                      .read(travelInformationProvider.notifier)
+                      .updateCountry(selectedCountry!.name);
                 });
               },
             ),

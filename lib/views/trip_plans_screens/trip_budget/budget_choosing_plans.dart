@@ -9,10 +9,14 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
   BudgetChoosingPlansPage({super.key});
 
   final TextEditingController kahvaltiController = TextEditingController();
-  final TextEditingController yemekTercihleriController = TextEditingController();
-  final TextEditingController gezilecekYerlerController = TextEditingController();
-  final TextEditingController eglenceTercihleriController = TextEditingController();
-  final TextEditingController alisverisPlanlariController = TextEditingController();
+  final TextEditingController yemekTercihleriController =
+      TextEditingController();
+  final TextEditingController gezilecekYerlerController =
+      TextEditingController();
+  final TextEditingController eglenceTercihleriController =
+      TextEditingController();
+  final TextEditingController alisverisPlanlariController =
+      TextEditingController();
   final TextEditingController ozelIsteklerController = TextEditingController();
 
   @override
@@ -54,7 +58,8 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     maxLines: 3,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
+                      hintText:
+                          'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
                     ),
                     onChanged: (value) {
                       ref
@@ -126,7 +131,8 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     maxLines: 3,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
+                      hintText:
+                          'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
                     ),
                     onChanged: (value) {
                       ref
@@ -144,7 +150,8 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     maxLines: 3,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
-                      hintText: 'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',
+                      hintText:
+                          'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',
                     ),
                     onChanged: (value) {
                       ref
@@ -167,7 +174,8 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     ozelIsteklerController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                      content:
+                          Text('Lütfen tüm tatil planı alanlarını doldurun!'),
                       backgroundColor: Colors.red,
                     ),
                   );

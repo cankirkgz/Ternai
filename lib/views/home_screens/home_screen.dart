@@ -13,7 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    final userName = authViewModel.user?.name ?? 'Kullanıcı';
+    final userName = authViewModel.user?.email ?? 'Kullanıcı';
 
     return Scaffold(
       appBar: AppBar(
