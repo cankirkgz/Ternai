@@ -9,7 +9,7 @@ class PlanChoosingBudgetPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelinformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
@@ -26,7 +26,7 @@ class PlanChoosingBudgetPage extends ConsumerWidget {
             hint: const Text('Bütçe seçin'),
             onChanged: (double? newValue) {
               if (newValue != null) {
-                ref.read(travelinformationProvider.notifier).updateBudget(newValue);
+                ref.read(travelInformationProvider.notifier).updateBudget(newValue);
               }
             },
             items: <double>[

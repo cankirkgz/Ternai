@@ -9,14 +9,14 @@ class DayChoosingPeoplePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelinformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                'Tatilde kalacağınız gün sayısını belirleyelim!',
+                'Tatilde geçireceğiniz gün sayısını hesaplayalım!',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
               ),
               const SizedBox(height: 20),
@@ -28,7 +28,7 @@ class DayChoosingPeoplePage extends ConsumerWidget {
                     icon: const Icon(Icons.remove),
                     onPressed: () {
                       if (travelInformation.numberOfPeople > 1) {
-                        ref.read(travelinformationProvider.notifier)
+                        ref.read(travelInformationProvider.notifier)
                             .updateNumberOfPeople(travelInformation.numberOfPeople - 1);
                       }
                     },
@@ -37,7 +37,7 @@ class DayChoosingPeoplePage extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      ref.read(travelinformationProvider.notifier)
+                      ref.read(travelInformationProvider.notifier)
                           .updateNumberOfPeople(travelInformation.numberOfPeople + 1);
                     },
                   ),

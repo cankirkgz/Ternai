@@ -4,7 +4,7 @@ import 'package:travelguide/viewmodels/budget_plan_model.dart';
 
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_plan_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_places.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_plans.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_day.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_people.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_country.dart';
@@ -22,7 +22,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
     const BudgetChoosingCountryPage(),
     const BudgetChoosingPeoplePage(),
     BudgetChoosingDayPage(),
-    BudgetChoosingPlacesPage(),
+    BudgetChoosingPlansPage(),
     BudgetPlanPage(),
     BudgetResultPage(),
   ];
@@ -31,7 +31,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (bool) {
-        ref.read(tatilVerileriProvider.notifier).reset();
+        ref.read(travelInformationProvider.notifier).reset();
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,

@@ -4,7 +4,9 @@ import 'package:travelguide/viewmodels/day_plan_model.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_day/day_choosing_budget.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_day/day_choosing_country.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_day/day_choosing_people.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_day/day_choosing_places.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/day_choosing_plans.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/day_plan_page.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/day_result_page.dart';
 
 class TravelDayMain extends ConsumerStatefulWidget {
   const TravelDayMain({super.key});
@@ -19,14 +21,16 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
     const DayChoosingCountryPage(),
     const DayChoosingPeoplePage(),
     const DayChoosingBudgetPage(),
-    DayChoosingPlacesPage(),
+    DayChoosingPlansPage(),
+    DayPlanPage(),
+    DayResultPage()
   ];
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (bool) {
-        ref.read(travelinformationProvider.notifier).reset();
+        ref.read(travelInformationProvider.notifier).reset();
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -66,7 +70,8 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
             BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Kişi Sayısı'),
             BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Bütçe'),
             BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Yerler'),
-            BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
+            BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
+            BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Gün Sayısı')
           ],
         );
           }

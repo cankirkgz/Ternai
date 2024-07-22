@@ -9,7 +9,7 @@ class PlanChoosingPeoplePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelinformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
           child: Column(
@@ -28,7 +28,7 @@ class PlanChoosingPeoplePage extends ConsumerWidget {
                     icon: const Icon(Icons.remove),
                     onPressed: () {
                       if (travelInformation.numberOfPeople > 1) {
-                        ref.read(travelinformationProvider.notifier)
+                        ref.read(travelInformationProvider.notifier)
                             .updateNumberOfPeople(travelInformation.numberOfPeople - 1);
                       }
                     },
@@ -37,7 +37,7 @@ class PlanChoosingPeoplePage extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      ref.read(travelinformationProvider.notifier)
+                      ref.read(travelInformationProvider.notifier)
                           .updateNumberOfPeople(travelInformation.numberOfPeople + 1);
                     },
                   ),

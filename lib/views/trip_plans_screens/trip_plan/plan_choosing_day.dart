@@ -7,7 +7,7 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 class PlanChoosingDayPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelinformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
           child: Column(
@@ -26,7 +26,7 @@ class PlanChoosingDayPage extends ConsumerWidget {
                     icon: const Icon(Icons.remove),
                     onPressed: () {
                       if (travelInformation.numberOfDays > 1) {
-                        ref.read(travelinformationProvider.notifier)
+                        ref.read(travelInformationProvider.notifier)
                             .updateNumberOfDays(travelInformation.numberOfDays - 1);
                       }
                     },
@@ -35,7 +35,7 @@ class PlanChoosingDayPage extends ConsumerWidget {
                   IconButton(
                     icon: const Icon(Icons.add),
                     onPressed: () {
-                      ref.read(travelinformationProvider.notifier)
+                      ref.read(travelInformationProvider.notifier)
                           .updateNumberOfDays(travelInformation.numberOfDays + 1);
                     },
                   ),

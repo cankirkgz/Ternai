@@ -5,26 +5,26 @@ class TravelInformation {
   final double budget;
   final int numberOfDays;
   final int numberOfPeople;
-  final List<String> placesToVisit;
   final bool kid;
+  final String travelPlanDetails;
 
   TravelInformation({
     required this.country,
     required this.budget,
     required this.numberOfDays,
     required this.numberOfPeople,
-    required this.placesToVisit,
-    required this.kid
+    required this.kid,
+    required this.travelPlanDetails,
   });
 
   factory TravelInformation.initial() {
     return TravelInformation(
       country: '',
       budget: 0.0,
-      numberOfDays: 15,
-      numberOfPeople: 3,
-      placesToVisit: [],
+      numberOfDays: 0,
+      numberOfPeople: 0,
       kid: false,
+      travelPlanDetails: '',
     );
   }
 
@@ -33,16 +33,16 @@ class TravelInformation {
     double? budget,
     int? numberOfDays,
     int? numberOfPeople,
-    List<String>? placesToVisit,
     bool? kid,
+    String? travelPlanDetails,
   }) {
     return TravelInformation(
       country: country ?? this.country,
       budget: budget ?? this.budget,
       numberOfDays: numberOfDays ?? this.numberOfDays,
       numberOfPeople: numberOfPeople ?? this.numberOfPeople,
-      placesToVisit: placesToVisit ?? this.placesToVisit,
-      kid: kid ?? this.kid
+      kid: kid ?? this.kid,
+      travelPlanDetails: travelPlanDetails ?? this.travelPlanDetails,
     );
   }
 }
@@ -71,17 +71,17 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
     state = state.copyWith(numberOfPeople: numberOfPeople);
   }
 
-  void updatePlacesToVisit(List<String> placesToVisit) {
-    state = state.copyWith(placesToVisit: placesToVisit);
-  }
-
   void updateKid(bool kid) {
     state = state.copyWith(kid: kid);
+  }
+
+  void updateTravelPlanDetails(String travelPlanDetails) {
+    state = state.copyWith(travelPlanDetails: travelPlanDetails);
   }
 }
 
 // Global provider
-final travelinformationProvider =
+final travelInformationProvider =
 StateNotifierProvider<TravelInformationNotifier, TravelInformation>((ref) {
   return TravelInformationNotifier();
 });

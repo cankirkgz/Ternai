@@ -4,24 +4,24 @@ class TravelInformation {
   final String country;
   final int numberOfPeople;
   final double budget;
-  final List<String> placesToVisit;
   final bool kid;
+  final String travelPlanDetails;
 
   TravelInformation({
     required this.country,
     required this.numberOfPeople,
     required this.budget,
-    required this.placesToVisit,
-    required this.kid
+    required this.kid,
+    required this.travelPlanDetails,
   });
 
   factory TravelInformation.initial() {
     return TravelInformation(
       country: '',
-      numberOfPeople: 3,
+      numberOfPeople: 0,
       budget: 0.0,
-      placesToVisit: [],
       kid: false,
+      travelPlanDetails: '',
     );
   }
 
@@ -29,15 +29,15 @@ class TravelInformation {
     String? country,
     int? numberOfPeople,
     double? budget,
-    List<String>? placesToVisit,
     bool? kid,
+    String? travelPlanDetails,
   }) {
     return TravelInformation(
       country: country ?? this.country,
       numberOfPeople: numberOfPeople ?? this.numberOfPeople,
       budget: budget ?? this.budget,
-      placesToVisit: placesToVisit ?? this.placesToVisit,
-      kid: kid ?? this.kid
+      kid: kid ?? this.kid,
+      travelPlanDetails: travelPlanDetails ?? this.travelPlanDetails,
     );
   }
 }
@@ -62,17 +62,17 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
     state = state.copyWith(budget: budget);
   }
 
-  void updatePlacesToVisit(List<String> placesToVisit) {
-    state = state.copyWith(placesToVisit: placesToVisit);
-  }
-
   void updateKid(bool kid) {
     state = state.copyWith(kid: kid);
+  }
+
+  void updateTravelPlanDetails(String travelPlanDetails) {
+    state = state.copyWith(travelPlanDetails: travelPlanDetails);
   }
 }
 
 // Global provider
-final travelinformationProvider =
+final travelInformationProvider =
 StateNotifierProvider<TravelInformationNotifier, TravelInformation>((ref) {
   return TravelInformationNotifier();
 });

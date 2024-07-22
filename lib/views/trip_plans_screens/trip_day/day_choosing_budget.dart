@@ -9,14 +9,14 @@ class DayChoosingBudgetPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelinformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
-            'Tatilde kalacağınız gün sayısını belirleyelim!',
+            'Tatilde geçireceğiniz gün sayısını hesaplayalım!',
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           const SizedBox(height: 20),
@@ -26,7 +26,7 @@ class DayChoosingBudgetPage extends ConsumerWidget {
             hint: const Text('Bütçe seçin'),
             onChanged: (double? newValue) {
               if (newValue != null) {
-                ref.read(travelinformationProvider.notifier).updateBudget(newValue);
+                ref.read(travelInformationProvider.notifier).updateBudget(newValue);
               }
             },
             items: <double>[

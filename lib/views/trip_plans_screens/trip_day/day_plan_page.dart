@@ -1,40 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'package:travelguide/viewmodels/budget_plan_model.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
+import 'package:travelguide/viewmodels/day_plan_model.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/day_result_page.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_day/travel_day_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class BudgetPlanPage extends ConsumerWidget {
-  // Bu değerler normalde önceki sayfalardan alınacak
-  
+class DayPlanPage extends ConsumerWidget {
+
 
   final model = GenerativeModel(
     model: "gemini-pro",
     apiKey: "AIzaSyAtPwLEa-Hlw7Mb1NChsjLySrZx32s_bsI",
   );
 
-  BudgetPlanPage({super.key});
+  DayPlanPage({super.key});
 
   Future<String> _calculateBudget(TravelInformation tatilVerileri) async {
     final content = [
       Content.text(
-          '''Sen gelişmiş bir yapay zekasın ve tatil bütçesi planlamada uzmanlaşmışsın. Bir kullanıcı tatil planlamak istiyor ve tahmini bir bütçeye ihtiyaç duyuyor. Lütfen kullanıcının sağladığı aşağıdaki bilgileri dikkate al:
-
-          - **Gidilecek Ülke**: ${tatilVerileri.country}
-          - **Kalınacak Gün Sayısı**: ${tatilVerileri.numberOfDays}
-          - **Kişi Sayısı**: ${tatilVerileri.numberOfPeople}
-          - **Çocuk Var mı?**: ${tatilVerileri.kid}
-          - **Detaylı Tatil Planı**:
-            - Kahvaltı planları: ${tatilVerileri.kahvaltiPlani}
-            - Yemek tercihleri: ${tatilVerileri.yemekTercihleri}
-            - Gezilecek yerler: ${tatilVerileri.gezilecekYerler}
-            - Eğlence tercihleri: ${tatilVerileri.eglenceTercihleri}
-            - Alışveriş planları: ${tatilVerileri.alisverisPlanlari}
-            - Özel istekler: ${tatilVerileri.ozelIstekler}
-
-          Bu bilgileri dikkate alarak, bu tatil için en uygun bütçeyi hesapla. Konaklama, yemek, ulaşım, aktiviteler ve diğer ilgili masrafları içerecek şekilde tüm gerekli harcamaların detaylı bir dökümünü sağla.''')
+          'Ben Türkiyeden ${tatilVerileri.country} ülkesine tatile gitmek istiyorum. Bütçem : ${tatilVerileri.budget} TL. ${tatilVerileri.numberOfPeople} kişiyle seyahat etmeyi planlıyorum. Tatilde şunları yapmayı planlıyorum: ${tatilVerileri.travelPlanDetails}. Eğer kullanıcı özel olarak bir müze ismi belirtirse o müzenin giriş fiyatını da yaz. Bunlara göre tatilde kaç gün geçirebilirim?')
     ];
     final response = await model.generateContent(content);
     return response.text ?? 'Bir hata oluştu.';
@@ -51,7 +36,7 @@ class BudgetPlanPage extends ConsumerWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Mükemmel bir tatil planı oluşturalım!',
+                  'Tatilde geçireceğiniz gün sayısını hesaplayalım!',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
                 ),
                 const SizedBox(height: 20),
@@ -75,11 +60,11 @@ class BudgetPlanPage extends ConsumerWidget {
                         children: [
                       const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Text('Kalacak gün'),
+                        child: Text('Bütçe'),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(travelInformation.numberOfDays.toString()),
+                        child: Text(travelInformation.budget.toString()),
                       ),
                     ]),
                     TableRow(
@@ -112,8 +97,8 @@ class BudgetPlanPage extends ConsumerWidget {
                 CustomButton(
                   text: 'Sonraki',
                   onPressed: () async {
-                    final budget = await _calculateBudget(travelInformation);
-                    ref.read(budgetProvider.notifier).state = budget;
+                    final day = await _calculateBudget(travelInformation);
+                    ref.read(dayProvider.notifier).state = day;
                     ref.read(bottomNavigationBarProvider.notifier).changePage(5);
                   }, color: Colors.blue,
                 ),

@@ -6,7 +6,9 @@ import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_bud
 import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_country.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_day.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_people.dart';
-import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_places.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_choosing_plans.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_plan_page.dart';
+import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_result_page.dart';
 
 class TravelPlanMain extends ConsumerStatefulWidget {
   const TravelPlanMain({super.key});
@@ -22,14 +24,16 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
     const PlanChoosingBudgetPage(),
     PlanChoosingDayPage(),
     const PlanChoosingPeoplePage(),
-    PlanChoosingPlacesPage()
+    PlanChoosingPlansPage(),
+    PlanPlanPage(),
+    PlanResultPage()
   ];
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       onPopInvoked: (bool) {
-        ref.read(travelinformationProvider.notifier).reset();
+        ref.read(travelInformationProvider.notifier).reset();
       },
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -70,7 +74,8 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
             BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
             BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Kişi Sayısı'),
             BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Yerler'),
-            BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Plan'),
+            BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Son'),
           ],
         );
           }
