@@ -135,10 +135,10 @@
         <li>Profil sayfasının olması ve oluşturduğu tatil planlarını görebilmesi sağlanmıştır.</li>
         <li>Zaman kalırsa kullanıcıların tatil planlarını ve tatillerini paylaşabileceği bir ortam oluşturulması hedeflenmiştir.</li>
     </ul>
-        <li><strong>Puanlama Sistemi:</strong></li>
+    <li><strong>Puanlama Sistemi:</strong></li>
     <ul>
         <li>Sprint içinde tamamlanması tahmin edilen puan: 100 Puan</li>
-        <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 400 puanlık backlog bulunmaktadır. 4 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
+        <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 300 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
         <li>Backlog düzeni ve Story seçimleri: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.</li>
         <li>Story'ler yapılacak işlere (task'lere) bölünmüştür: Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.</li>
         <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır. https://github.com/cankirkgz/Travel-Guide/assets/73443107/c140da6f-23ed-479b-bfba-ab558312ad93 https://github.com/cankirkgz/Travel-Guide/assets/73443107/9a743f8e-99ae-46f3-9d2a-4d3817d30114</li>
@@ -146,7 +146,7 @@
     </ul>
     <h2>Puanlama Mantığı</h2>
     <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
-    <p>Toplamda 400 puanlık backlog 4 sprint'e bölünerek, her sprint'in 100 puan olması hedeflenmiştir.</p>
+    <p>Toplamda 300 puanlık backlog 3 sprint'e bölünerek, her sprint'in 100 puan olması hedeflenmiştir.</p>
     <h2>Puan Tablosu</h2>
     <table>
         <tr>
@@ -155,7 +155,7 @@
         </tr>
         <tr>
             <td>Onboarding sayfalarının kodlanması</td>
-            <td>10</td>
+            <td>20</td>
         </tr>
         <tr>
             <td>Giriş Yap sayfasının kodlanması</td>
@@ -185,38 +185,6 @@
             <td>Şifre sıfırlama e-postasının gönderilmesi</td>
             <td>10</td>
         </tr>
-        <tr>
-            <td>Profil sayfasının kodlanması</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>Fiyat arama sayfalarının kodlanması</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>Ürün ve hizmet fiyatları için gerekli API'lerin oluşturulması</td>
-            <td>20</td>
-        </tr>
-        <tr>
-            <td>Yapay zeka bağlantısının yapılması</td>
-            <td>20</td>
-        </tr>
-        <tr>
-            <td>Kullanıcı verilerinin Firebase Firestore'a kaydedilmesi</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>Geçmiş seyahatlerin görüntülenebileceği sayfanın kodlanması</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>Yeni seyahat oluşturma sayfasının kodlanması</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td><strong>Toplam</strong></td>
-            <td><strong>200</strong></td>
-        </tr>
     </table>
     <li><strong>Görev Dağılımı:</strong></li>
     <ul>
@@ -245,5 +213,144 @@
     <ul>
         <li>Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı.</li>
         <li>Unit test'ler için ayrılan efor/saat arttırılmalı.</li>
+    </ul>
+</details>
+
+<h2>Sprint 2</h2>
+
+<details>
+    <summary>Sprint 2 - App Screenshots</summary>
+    <h2>Fiyat Arama Sayfaları</h2>
+    <table>
+        <tr>
+            <td><img src="https://github.com/user-attachments/assets/27a73c3d-b227-419f-88b1-314504e9eb8d" alt="Fiyat Arama Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/7010fe7d-d9a7-4d30-b3bb-b4a6ee35f2a1" alt="Fiyat Arama Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/201f4ffd-82e6-4450-a4ee-be3dd6865bc5" alt="Fiyat Arama Screenshot 3"></td>
+        </tr>
+    </table>
+    <h2>Yeni Tatil Planı Oluşturma Sayfaları</h2>
+    <table>
+        <tr>
+            <td><img src="https://github.com/user-attachments/assets/b221cc39-e54c-469e-bf4a-29083efe3f82" alt="Yeni Tatil Planı Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/63e4c95c-de3c-49f5-bc2f-d4784642f3bf" alt="Yeni Tatil Planı Screenshot 2"></td>
+            <td><img src="https://github.com/user-attachments/assets/9ab0e682-30f8-4a33-ad65-7248a51726a6" alt="Yeni Tatil Planı Screenshot 3"></td>
+            <td><img src="https://github.com/user-attachments/assets/3c0c9dfc-7488-40f5-956a-5bc74835b24a" alt="Yeni Tatil Planı Screenshot 4"></td>
+            <td><img src="https://github.com/user-attachments/assets/e0868cf7-a44e-4fbd-bcda-034d7fd9c60e" alt="Yeni Tatil Planı Screenshot 5"></td>
+            <td><img src="https://github.com/user-attachments/assets/5073148f-5d14-466d-923b-0522827c00ea" alt="Yeni Tatil Planı Screenshot 6"></td>
+        </tr>
+    </table>
+    <h2>Önceki Tatil Planlarım Sayfası</h2>
+    <table>
+        <tr>
+            <td><img src="https://github.com/user-attachments/assets/b26e634c-1714-4cfd-947c-f9d9e8376c55" alt="Önceki Tatil Planlarım Screenshot 1"></td>
+        </tr>
+    </table>
+    <h2>Profil Sayfası</h2>
+    <table>
+        <tr>
+            <td><img src="https://github.com/user-attachments/assets/18a62287-2494-4c90-811f-2ec90e71ad17" alt="Profil Sayfası Screenshot 1"></td>
+            <td><img src="https://github.com/user-attachments/assets/50018460-d00b-454e-aa54-40bb3d025c59" alt="Profil Sayfası Screenshot 2"></td>
+        </tr>
+    </table>
+</details>
+
+<h2>Sprint Notes:</h2>
+<ul>
+    <li><strong>İlk Hafta Hedefleri:</strong></li>
+    <ul>
+        <li>Uygulamanın fiyat arama sayfalarının, yeni tatil planı oluşturma sayfalarının, önceki tatil planlarım sayfasının ve profil sayfasının tasarımlarının yapılması ve kodlanması.</li>
+        <li>Kodlamanın sayfanın zorluğuna göre kişilere dağıtılması.</li>
+        <li>Ürünler ve fiyatlar için uygun API yapısının Firebase ile oluşturulması.</li>
+    </ul>
+    <li><strong>İkinci Hafta Hedefleri:</strong></li>
+    <ul>
+        <li>Kodlanan sayfaların backend bağlantılarının yapılması.</li>
+        <li>Fiyat arama sayfasının verileri oluşturduğumuz sayfadan çekmesi.</li>
+        <li>Yeni tatil planı oluşturma sayfalarının Gemini bağlantısının yapılması ve sonuçları Gemini ile almak.</li>
+        <li>Önceki tatiller sayfasının önceki tatilleri Firestore'den çekmesi.</li>
+        <li>Profil sayfasında kullanıcının profil fotoğrafı, ismi ve şifresini değiştirebilmesi.</li>
+    </ul>
+    <li><strong>Görüşmeler:</strong></li>
+    <ul>
+        <li>WhatsApp ve Discord görüşmeleri ile bu sayfalar adım adım oluşturulmuştur.</li>
+        <li>Hangi özelliklere sahip olması gerektiği, hangi özelliklerin önceliklendirilmesi gerektiği belirlenmiştir.</li>
+    </ul>
+    <li><strong>Puanlama Sistemi:</strong></li>
+    <ul>
+        <li>Sprint içinde tamamlanması tahmin edilen puan: 100 Puan</li>
+        <li>Puan tamamlama mantığı: Toplamda proje boyunca tamamlanması gereken 300 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde her sprint'in en azından 100 ile başlaması gerektiğine karar verildi.</li>
+        <li>Backlog düzeni ve Story seçimleri: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur.</li>
+        <li>Story'ler yapılacak işlere (task'lere) bölünmüştür: Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.</li>
+        <li>Daily Scrum: Daily Scrum toplantılarının zamansal sebeplerden ötürü Whatsapp üzerinden yapılmasına karar verilmiştir. https://github.com/user-attachments/assets/c5464c15-51e8-4ea1-a79f-66f3f0c338a9 https://github.com/user-attachments/assets/b99ee8db-5796-400b-8197-b5a956da7c64</li>
+        <li>Sprint board update: Sprint board screenshotları: https://github.com/user-attachments/assets/39a7f372-e986-4937-9c55-6e1801e0fd61 https://github.com/user-attachments/assets/bf68791a-ccc0-48a4-925a-dd4cd621222a https://github.com/user-attachments/assets/eedfa7a8-fdb8-4e87-ada3-d9897467e4c1 </li>
+    </ul>
+    <h2>Puanlama Mantığı</h2>
+    <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
+    <p>Toplamda 300 puanlık backlog 3 sprint'e bölünerek, her sprint'in 100 puan olması hedeflenmiştir.</p>
+    <h2>Puan Tablosu</h2>
+    <table>
+        <tr>
+            <th>Story/Task</th>
+            <th>Puan</th>
+        </tr>
+        <tr>
+            <td>Fiyat Arama Sayfalarının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Yeni Tatil Planı Oluşturma Sayfalarının kodlanması</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Önceki Tatil Planlarım Sayfasının kodlanması</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Profil Sayfasının kodlanması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Firebase entegrasyonu ve test edilmesi</td>
+            <td>20</td>
+        </tr>
+        <tr>
+            <td>Yeni Tatil Planı Oluşturma Sayfalarının Gemini bağlantısının yapılması</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>Önceki Tatil Planlarım Sayfasının backend'e bağlanması</td>
+            <td>10</td>
+        </tr>
+    </table>
+    <li><strong>Görev Dağılımı:</strong></li>
+    <ul>
+        <li>Grupta herkese backend bilgisine göre görevler dağıtılmıştır. Herkes birbirine yardımcı olmuştur.</li>
+        <li><strong>Can Kırkgöz:</strong> Fiyat arama sayfalarını kodladı. Diğer sayfaların backend'inde arkadaşlarına yardım etti. Yeni tatil oluşturma sayfalarının yapay zeka bağlantısında İrem'le beraber çalıştı.</li>
+        <li><strong>İremnur Ömgen:</strong> Yeni tatil oluşturma sayfalarını kodladı, bu sayfaların Gemini bağlantısını yaptı.</li>
+        <li><strong>Mücahit Gökçe:</strong> Profil sayfasını kodladı ve backend bağlantısını yaptı.</li>
+        <li><strong>Mustafa Yavuz Okumuş:</strong> Yeni tatil oluşturma sayfalarının kodlanmasında İrem'le beraber çalıştı. Önceki tatiller sayfasının backend bağlantısını yaptı.</li>
+        <li><strong>Kinda Muhyeddin:</strong> Tüm sayfaların tasarımlarını yaptı. Önceki tatiller sayfasını kodladı ve fiyat arama sayfasını backend'e bağladı.</li>
+    </ul>
+    <li><strong>Sprint Sonuçları:</strong></li>
+    <ul>
+        <li>Fiyat arama sayfası tamamlandı, sadece gelen fiyatın dolar, euro ve kullanıcının para birimine dönüştürülmesi kaldı.</li>
+        <li>Önceki tatiller sayfası kodlandı ama backend bağlantısı henüz yapılmadı.</li>
+        <li>Yeni tatil planı oluştur sayfaları kodlandı, yapay zeka bağlantısı yapıldı. Yapay zekadan gelen sonuçları işleme kaldı.</li>
+        <li>Profil sayfası kodlandı ve backend bağlantısı yapıldı.</li>
+    </ul>
+    <li><strong>Sprint Review:</strong></li>
+    <ul>
+        <li>Uygulamada ücretli API kullanamadığımızdan kendi basit API'mizi oluşturduk. Bu API şimdilik 5 ülkeyi ve bir kaç kategoriyi içeriyor. Buradaki amaç bir API'den verileri sağlıklı bir şekilde çekebilmek.</li>
+        <li>Yapısının güçlendirilmesi planlanıyor. Fiyat arama sayfasında gelen fiyat verisini gerçek zamanlı başka para birimlerine dönüştürebileceğiz.</li>
+        <li>Yapay zeka bağlantısına oluşturduğumuz API yapısını vereceğiz ve sonuç verirken o verileri de göz önünde bulunduracak.</li>
+        <li>İlk sprint'in ilk birkaç gününde 2. sprintte yetişmeyen her şeyi bitireceğiz.</li>
+        <li>Profil sayfasında email değiştirme özelliği olacaktı ama şimdilik kaldırdık. Email doğrulama işlemini yapamadık, sonraki sprintte bununla ilgileneceğiz.</li>
+        <li>Gelecek sprintte zamanımızın büyük kısmını uygulamaya sosyal medya özelliğini getirmekte kullanacağız. Böylelikle insanlar tatil anılarını paylaşabilecek ve uygulama yaşayan bir mecra haline gelecek.</li>
+        <li>Sprint Review katılımcıları: Tüm takım üyeleri</li>
+    </ul>
+    <li><strong>Sprint Retrospective:</strong></li>
+    <ul>
+        <li>Tahmin puanları gözden geçirilmeli ve sprint planlama toplantılarında gerekli geri bildirimlerin developer'lar tarafından verildiğine emin olunmalı.</li>
+        <li>Her gün ayrılan zaman arttırılmalı.</li>
     </ul>
 </details>
