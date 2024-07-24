@@ -64,7 +64,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Kullanıcı bilgilerini güncellerken hata oluştu: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -75,7 +75,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("E-posta güncelleme hatası: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -85,7 +85,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("E-posta doğrulama hatası: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -99,7 +99,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Kullanıcı bilgilerini yeniden yüklerken hata oluştu: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -109,7 +109,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Şifre değiştirme hatası: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -121,7 +121,7 @@ class AuthViewModel extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       print("Şifre değiştirme hatası: $e");
-      throw e;
+      rethrow;
     }
   }
 }

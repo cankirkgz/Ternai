@@ -22,11 +22,11 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
   final List<Widget> _pages = [
     const PlanChoosingCountryPage(),
     const PlanChoosingBudgetPage(),
-    PlanChoosingDayPage(),
+    const PlanChoosingDayPage(),
     const PlanChoosingPeoplePage(),
     PlanChoosingPlansPage(),
-    PlanPlanPage(),
-    PlanResultPage()
+    const PlanPlanPage(),
+    const PlanResultPage()
   ];
 
   @override
@@ -44,7 +44,7 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
         ),
         body: Consumer(
           builder: (context, ref, _) {
-            final _currentIndex = ref.watch(bottomNavigationBarProvider);
+            final currentIndex = ref.watch(bottomNavigationBarProvider);
             return Container(
                   decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -53,16 +53,16 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
               fit: BoxFit.cover,
               ),
               ),
-              child: _pages[_currentIndex]);
+              child: _pages[currentIndex]);
           },
         ),
         bottomNavigationBar: Consumer(
           builder: (context, ref, _) {
-        final _currentIndex = ref.watch(bottomNavigationBarProvider);
+        final currentIndex = ref.watch(bottomNavigationBarProvider);
         return BottomNavigationBar(
           backgroundColor: Colors.blue,
           useLegacyColorScheme: false,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           onTap: (index) {
             setState(() {
               ref.read(bottomNavigationBarProvider.notifier).changePage(index);

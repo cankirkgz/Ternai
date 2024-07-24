@@ -18,7 +18,7 @@ class WelcomeScreen extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/welcome_page.jpeg"),
+                image: const AssetImage("assets/images/welcome_page.jpeg"),
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.65), BlendMode.dstATop),
@@ -29,7 +29,7 @@ class WelcomeScreen extends StatelessWidget {
             alignment: Alignment.topCenter,
             child: Padding(
               padding: EdgeInsets.only(top: screenHeight * 0.2),
-              child: Text(
+              child: const Text(
                 "Gezi Rehberi",
                 style: TextStyle(
                   fontSize: 35.0,

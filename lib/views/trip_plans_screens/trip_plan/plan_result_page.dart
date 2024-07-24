@@ -7,6 +7,8 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class PlanResultPage extends ConsumerWidget {
+  const PlanResultPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final travelPlan = ref.watch(travelPlanProvider);

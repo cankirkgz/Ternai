@@ -17,7 +17,7 @@ class ApiService {
           .toList();
     } catch (e) {
       print("Error getting countries: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -31,7 +31,7 @@ class ApiService {
           .toList();
     } catch (e) {
       print("Error getting categories: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -46,7 +46,7 @@ class ApiService {
           .toList();
     } catch (e) {
       print("Error getting product services: $e");
-      throw e;
+      rethrow;
     }
   }
 
@@ -68,7 +68,7 @@ class ApiService {
               Price.fromMap(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 }

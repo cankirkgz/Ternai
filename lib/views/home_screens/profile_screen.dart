@@ -31,16 +31,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadProfileImage();
   }
 
- Future<void> _loadProfileImage() async {
+  Future<void> _loadProfileImage() async {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final userId = authViewModel.user?.userId;
 
     if (userId != null) {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(userId)
-          .get();
-    if (userId != null) {
+      // Veritabanından profil resmi yüklemesi
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -52,7 +48,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
- }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);
@@ -71,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_image == null || userId == null) return;
 
     try {
-      String fileName = 'profile_pics/${userId}.png';
+      String fileName = 'profile_pics/$userId.png';
       await _storage.ref(fileName).putFile(_image!);
 
       String downloadURL = await _storage.ref(fileName).getDownloadURL();
@@ -180,7 +175,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const PopupMenuItem<String>(
                   value: 'settings',
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(Icons.settings),
                       SizedBox(width: 8),
                       Text('Ayarlar'),
@@ -190,7 +185,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const PopupMenuItem<String>(
                   value: 'logout',
                   child: Row(
-                    children: const [
+                    children: [
                       Icon(Icons.logout),
                       SizedBox(width: 8),
                       Text('Çıkış Yap'),
@@ -211,6 +206,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 image: AssetImage("assets/images/profile_background.png"),
                 fit: BoxFit.cover,
               ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              top: 200,
+              left: 10,
+              right: 10,
+            ),
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3, // Her satırda 3 kutucuk
+              ),
+              itemCount: 25,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Container(
+                    color: Colors.primaries[index %
+                        Colors.primaries.length], // Her kutucuğa renk atayın
+                    child: Center(
+                      child: Text('Memento $index'),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
           Positioned.fill(
@@ -239,7 +259,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );

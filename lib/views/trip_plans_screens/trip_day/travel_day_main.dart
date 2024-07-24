@@ -22,8 +22,8 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
     const DayChoosingPeoplePage(),
     const DayChoosingBudgetPage(),
     DayChoosingPlansPage(),
-    DayPlanPage(),
-    DayResultPage()
+    const DayPlanPage(),
+    const DayResultPage()
   ];
 
   @override
@@ -41,7 +41,7 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
         ),
         body: Consumer(
           builder: (context, ref, _) {
-            final _currentIndex = ref.watch(bottomNavigationBarProvider);
+            final currentIndex = ref.watch(bottomNavigationBarProvider);
             return Container(
                   decoration: const BoxDecoration(
                   image: DecorationImage(
@@ -50,16 +50,16 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
               fit: BoxFit.cover,
               ),
               ),
-              child: _pages[_currentIndex]);
+              child: _pages[currentIndex]);
           },
         ),
         bottomNavigationBar: Consumer(
           builder: (context, ref, _) {
-        final _currentIndex = ref.watch(bottomNavigationBarProvider);
+        final currentIndex = ref.watch(bottomNavigationBarProvider);
         return BottomNavigationBar(
           backgroundColor: Colors.blue,
           useLegacyColorScheme: false,
-          currentIndex: _currentIndex,
+          currentIndex: currentIndex,
           onTap: (index) {
             setState(() {
               ref.read(bottomNavigationBarProvider.notifier).changePage(index);

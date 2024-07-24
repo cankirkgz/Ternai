@@ -6,6 +6,8 @@ import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_m
 import 'package:travelguide/views/widgets/custom_button.dart';
 
 class BudgetChoosingDayPage extends ConsumerWidget {
+  const BudgetChoosingDayPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tatilVerileri = ref.watch(travelInformationProvider);

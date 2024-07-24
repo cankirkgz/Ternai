@@ -6,7 +6,6 @@ import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/birth_date_select_page.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
-import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_or_divider.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';

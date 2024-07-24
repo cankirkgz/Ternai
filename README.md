@@ -1,7 +1,6 @@
 <<<<<<< HEAD
-This is Master Peaces.
-
-# Travel-Guide
+This is **Master Places**.
+# **Travel-Guide**
 =======
 <h1>1. Takım İsmi</h1>
 <p>Flutter Grup 22</p>

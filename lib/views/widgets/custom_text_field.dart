@@ -23,8 +23,8 @@ class CustomTextField extends StatelessWidget {
     this.decoration,
     this.enabled = true,
     this.keyboardType = TextInputType.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

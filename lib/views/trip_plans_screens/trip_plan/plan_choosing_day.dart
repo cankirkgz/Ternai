@@ -6,6 +6,8 @@ import 'package:travelguide/views/trip_plans_screens/trip_plan/travel_plan_main.
 import 'package:travelguide/views/widgets/custom_button.dart';
 
 class PlanChoosingDayPage extends ConsumerWidget {
+  const PlanChoosingDayPage({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final travelInformation = ref.watch(travelInformationProvider);

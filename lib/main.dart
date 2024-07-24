@@ -14,13 +14,15 @@ void main() async {
         providers: [
           provider.ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ],
-        child: MyApp(),
+        child: const MyApp(),
       ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LaunchScreen(),
+      home: const LaunchScreen(),
     );
   }
 }

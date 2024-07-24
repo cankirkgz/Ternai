@@ -22,18 +22,18 @@ class OnboardingView extends StatelessWidget {
           children: [
             OnboardingScreen1(controller: _controller),
             OnboardingScreen2(controller: _controller),
-            OnboardingScreen3(),
-            OnboardingScreen4(),
-            OnboardingScreen5(),
-            WelcomeScreen()
+            const OnboardingScreen3(),
+            const OnboardingScreen4(),
+            const OnboardingScreen5(),
+            const WelcomeScreen()
           ],
         ),
         Container(
-          alignment: Alignment(0, -0.85),
+          alignment: const Alignment(0, -0.85),
           child: SmoothPageIndicator(
             controller: _controller,
             count: 6,
-            effect: WormEffect(
+            effect: const WormEffect(
               activeDotColor: AppColors.primaryColor,
             ),
           ),

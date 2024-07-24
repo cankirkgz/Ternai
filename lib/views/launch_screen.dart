@@ -7,6 +7,8 @@ import 'package:travelguide/views/onboarding_screens/onboarding_view.dart';
 import 'package:travelguide/views/welcome_screen.dart';
 
 class LaunchScreen extends StatefulWidget {
+  const LaunchScreen({super.key});
+
   @override
   _LaunchScreenState createState() => _LaunchScreenState();
 }
@@ -20,7 +22,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
 
   Future<void> _navigate() async {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    await Future.delayed(Duration(
+    await Future.delayed(const Duration(
         seconds:
             2)); // Firebase kullanıcı durumunu yüklemesi için bekleme süresi
 
@@ -31,7 +33,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
     if (isUserLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomePage()),
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else {
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -46,7 +48,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => WelcomeScreen()),
+          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
         );
       }
     }
@@ -54,7 +56,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),
       ),

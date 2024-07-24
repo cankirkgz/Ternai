@@ -40,13 +40,13 @@ class OnboardingScreen1 extends StatelessWidget {
             ),
           ),
           Container(
-            alignment: Alignment(0, 0.6),
+            alignment: const Alignment(0, 0.6),
             child: CustomButton(
               text: "Yolculuğa Başla",
               color: AppColors.primaryColor,
               onPressed: () {
                 controller.nextPage(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
               },

@@ -20,10 +20,10 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
   final List<Widget> _pages = [
     const BudgetChoosingCountryPage(),
     const BudgetChoosingPeoplePage(),
-    BudgetChoosingDayPage(),
+    const BudgetChoosingDayPage(),
     BudgetChoosingPlansPage(),
-    BudgetPlanPage(),
-    BudgetResultPage(),
+    const BudgetPlanPage(),
+    const BudgetResultPage(),
   ];
 
   @override
@@ -41,7 +41,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
           ),
           body: Consumer(
             builder: (context, ref, _) {
-              final _currentIndex = ref.watch(bottomNavigationBarProvider);
+              final currentIndex = ref.watch(bottomNavigationBarProvider);
               return Container(
                   decoration: const BoxDecoration(
                     image: DecorationImage(
@@ -50,15 +50,15 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                       fit: BoxFit.cover,
                     ),
                   ),
-                  child: _pages[_currentIndex]);
+                  child: _pages[currentIndex]);
             },
           ),
           bottomNavigationBar: Consumer(builder: (context, ref, _) {
-            final _currentIndex = ref.watch(bottomNavigationBarProvider);
+            final currentIndex = ref.watch(bottomNavigationBarProvider);
             return BottomNavigationBar(
               backgroundColor: Colors.blue,
               useLegacyColorScheme: false,
-              currentIndex: _currentIndex,
+              currentIndex: currentIndex,
               onTap: (index) {
                 setState(() {
                   ref

@@ -14,12 +14,12 @@ class ResultScreen extends StatefulWidget {
   final Country? userCountry; // Kullanıcının ülkesi
 
   const ResultScreen({
-    Key? key,
+    super.key,
     required this.country,
     required this.category,
     this.subCategory,
     required this.userCountry, // Kullanıcının ülkesi
-  }) : super(key: key);
+  });
 
   @override
   _ResultScreenState createState() => _ResultScreenState();
@@ -76,7 +76,7 @@ class _ResultScreenState extends State<ResultScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Fiyat Sonuçları',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
@@ -85,11 +85,11 @@ class _ResultScreenState extends State<ResultScreen> {
         future: futurePrices,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Bir hata oluştu: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('Sonuç bulunamadı'));
+            return const Center(child: Text('Sonuç bulunamadı'));
           } else {
             List<Price> prices = snapshot.data!;
             return ListView.builder(
@@ -101,20 +101,20 @@ class _ResultScreenState extends State<ResultScreen> {
                   builder: (context, conversionSnapshot) {
                     if (conversionSnapshot.connectionState ==
                         ConnectionState.waiting) {
-                      return Padding(
-                        padding: const EdgeInsets.all(16.0),
+                      return const Padding(
+                        padding: EdgeInsets.all(16.0),
                         child: Center(child: CircularProgressIndicator()),
                       );
                     } else if (conversionSnapshot.hasError) {
                       return ListTile(
                         title: Text(
                           '${price.productServiceName} - ${price.price} ${price.currency}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        subtitle: Text('Döviz çevirme hatası'),
+                        subtitle: const Text('Döviz çevirme hatası'),
                       );
                     } else {
                       var conversionRates = conversionSnapshot.data!;
@@ -136,16 +136,16 @@ class _ResultScreenState extends State<ResultScreen> {
                               children: [
                                 Text(
                                   '${widget.country.name} - ${price.productServiceName}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 Text(
                                   'Ülke Fiyatı: ${price.price.toStringAsFixed(2)} ${price.currency}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.blue,
                                   ),
@@ -153,7 +153,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                 ),
                                 Text(
                                   'Dolar Fiyatı: ${usdPrice?.toStringAsFixed(2)} USD',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.green,
                                   ),
@@ -161,23 +161,23 @@ class _ResultScreenState extends State<ResultScreen> {
                                 ),
                                 Text(
                                   '${widget.userCountry!.name} Fiyatı: ${userCurrencyPrice?.toStringAsFixed(2)} ${widget.userCountry!.currency}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: Colors.orange,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 8),
+                                const SizedBox(height: 8),
                                 Text(
                                   'Son güncelleme: ${price.lastUpdated.day}/${price.lastUpdated.month}/${price.lastUpdated.year}',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     fontStyle: FontStyle.italic,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 8),
-                                Text(
+                                const SizedBox(height: 8),
+                                const Text(
                                   'Not: Bu fiyatlar ortalama olup, yukarı veya aşağı yönlü değişiklik gösterebilir.',
                                   style: TextStyle(
                                     fontSize: 12,

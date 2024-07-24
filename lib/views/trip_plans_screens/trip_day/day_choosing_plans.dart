@@ -56,7 +56,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: kahvaltiController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
@@ -75,7 +75,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: yemekTercihleriController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Nasıl bir yerde yemek yemek istiyorsunuz?',
                     ),
@@ -93,7 +93,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: gezilecekYerlerController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Hangi yerleri gezmek istiyorsunuz?',
                     ),
@@ -111,7 +111,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: eglenceTercihleriController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Eğlence için neleri tercih ediyorsunuz?',
                     ),
@@ -129,7 +129,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: alisverisPlanlariController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
@@ -148,7 +148,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: ozelIsteklerController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',

@@ -21,14 +21,17 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Ana Sayfa'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Merhaba $userName',
-              style: const TextStyle(fontSize: 24),
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(13.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Merhaba $userName',
+                style: const TextStyle(fontSize: 24),
+              ),
+            ],
+          ),
         ),
       ),
     );

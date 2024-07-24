@@ -151,14 +151,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _startVerificationPolling() {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       await authViewModel.reloadUser();
       if (authViewModel.user?.emailVerified ?? false) {
         await authViewModel.updateUserField(authViewModel.user!.userId, {
           'email_verified': true,
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('E-posta adresiniz doğrulandı.'),
           ),
         );
@@ -199,7 +199,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  SizedBox(height: 230),
+                  const SizedBox(height: 230),
                   CustomTextField(
                     controller: _usernameController,
                     labelText: 'Kullanıcı Adı',
@@ -220,7 +220,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     validator: null,
                     enabled: false,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   CustomButton(
                     text: "Profili Güncelle",
                     color: AppColors.primaryColor,
@@ -236,7 +236,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 await authViewModel.updateUserField(
                                     userId, data);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
+                                  const SnackBar(
                                     content: Text('Kullanıcı adı güncellendi.'),
                                   ),
                                 );
@@ -249,7 +249,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         : null,
                     width: screenWidth * 0.7,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   CustomButton(
                     text: "Şifreyi Değiştir",
                     color: AppColors.primaryColor,
@@ -258,7 +258,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     },
                     width: screenWidth * 0.7,
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   if (!emailVerified)
                     CustomButton(
                       text: "Doğrulama E-postası Gönder",
@@ -267,14 +267,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         try {
                           await authViewModel.sendEmailVerification();
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text('Doğrulama e-postası gönderildi.'),
                             ),
                           );
                           _startVerificationPolling();
                         } catch (e) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text(
                                   'E-posta gönderilirken bir hata oluştu.'),
                             ),

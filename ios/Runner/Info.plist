@@ -45,6 +45,11 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Bu uygulama fotoğraflarınıza erişmek istiyor.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Bu uygulama kamerayı kullanmak istiyor.</string>
+
 		<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
 		<!-- Google Sign-in Section -->
 		<key>CFBundleURLTypes</key>

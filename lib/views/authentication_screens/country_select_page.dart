@@ -48,7 +48,7 @@ class _CountrySelectPageState extends State<CountrySelectPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Kullanıcı Bilgileri"),
+        title: const Text("Kullanıcı Bilgileri"),
       ),
       body: Center(
         child: Padding(
@@ -59,13 +59,13 @@ class _CountrySelectPageState extends State<CountrySelectPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   "Hangi ülkede yaşıyorsun?",
                   style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomDropDownButton(
                   listName: "Ülke",
                   items: {
@@ -80,7 +80,7 @@ class _CountrySelectPageState extends State<CountrySelectPage> {
                     });
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomButton(
                   text: "Kaydet",
                   color: AppColors.primaryColor,
@@ -95,7 +95,7 @@ class _CountrySelectPageState extends State<CountrySelectPage> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomePage(),
+                          builder: (context) => const HomePage(),
                         ),
                       );
                     }
