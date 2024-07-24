@@ -61,6 +61,72 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
           useLegacyColorScheme: false,
           currentIndex: _currentIndex,
           onTap: (index) {
+            bool selectedValue = true;
+
+            if(index == 1)
+            {
+              final travelInformation = ref.read(travelInformationProvider);
+              if(travelInformation.country.isEmpty)
+              {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bir ülke seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if(index == 2)
+            {
+              final travelInformation = ref.read(travelInformationProvider);
+              if(travelInformation.numberOfPeople == 0)
+              {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen kişi sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if(index == 3)
+            {
+              final travelInformation = ref.read(travelInformationProvider);
+              if(travelInformation.budget == 0)
+              {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bütçe seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if(index == 4)
+            {
+              final travelInformation = ref.read(travelInformationProvider);
+              if(travelInformation.travelPlanDetails.isEmpty)
+              {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bir ülke seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
             setState(() {
               ref.read(bottomNavigationBarProvider.notifier).changePage(index);
             });

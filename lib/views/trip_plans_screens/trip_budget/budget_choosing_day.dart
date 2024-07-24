@@ -8,7 +8,7 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 class BudgetChoosingDayPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tatilVerileri = ref.watch(travelInformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
@@ -34,21 +34,21 @@ class BudgetChoosingDayPage extends ConsumerWidget {
               IconButton(
                 icon: const Icon(Icons.remove),
                 onPressed: () {
-                  if (tatilVerileri.numberOfDays > 1) {
+                  if (travelInformation.numberOfDays > 1) {
                     ref
                         .read(travelInformationProvider.notifier)
-                        .updateNumberOfDays(tatilVerileri.numberOfDays - 1);
+                        .updateNumberOfDays(travelInformation.numberOfDays - 1);
                   }
                 },
               ),
-              Text('${tatilVerileri.numberOfDays}',
+              Text('${travelInformation.numberOfDays}',
                   style: const TextStyle(fontSize: 24)),
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
                   ref
                       .read(travelInformationProvider.notifier)
-                      .updateNumberOfDays(tatilVerileri.numberOfDays + 1);
+                      .updateNumberOfDays(travelInformation.numberOfDays + 1);
                 },
               ),
             ],
@@ -57,8 +57,17 @@ class BudgetChoosingDayPage extends ConsumerWidget {
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              ref.read(bottomNavigationBarProvider.notifier).changePage(3);
-              print("${tatilVerileri.numberOfDays}");
+              if (travelInformation.numberOfDays == 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen gün sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }else{
+                ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+              }
             },
             color: AppColors.primaryColor,
           ),

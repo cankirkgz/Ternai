@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
-
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_plan_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_choosing_plans.dart';
@@ -60,11 +59,83 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
               useLegacyColorScheme: false,
               currentIndex: _currentIndex,
               onTap: (index) {
-                setState(() {
-                  ref
-                      .read(bottomNavigationBarProvider.notifier)
-                      .changePage(index);
-                });
+                bool selectedValue = true;
+
+                if(index == 1)
+                {
+                  final travelInformation = ref.read(travelInformationProvider);
+                  if(travelInformation.country.isEmpty)
+                  {
+                    selectedValue = false;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lütfen bir ülke seçin!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+                }
+
+                if(index == 2)
+                {
+                  final travelInformation = ref.read(travelInformationProvider);
+                  if(travelInformation.numberOfPeople == 0)
+                  {
+                    selectedValue = false;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lütfen kişi sayısı seçin!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+                }
+
+                if(index == 3)
+                {
+                  final travelInformation = ref.read(travelInformationProvider);
+                  if(travelInformation.numberOfDays == 0)
+                  {
+                    selectedValue = false;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lütfen gün sayısı seçin!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+                }
+
+                if(index == 4)
+                {
+                  final travelInformation = ref.read(travelInformationProvider);
+                  if(travelInformation.breakfastPlan.isEmpty ||
+                    travelInformation.foodPreferences.isEmpty ||
+                    travelInformation.placesToVisit.isEmpty ||
+                    travelInformation.entertainmentPreferences.isEmpty ||
+                    travelInformation.shoppingPlans.isEmpty ||
+                    travelInformation.specialRequests.isEmpty)
+                  {
+                    selectedValue = false;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }
+                }
+
+                if(selectedValue)
+                {
+                  setState(() {
+                    ref.read(bottomNavigationBarProvider.notifier).changePage(index);
+                  });
+                }
               },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),

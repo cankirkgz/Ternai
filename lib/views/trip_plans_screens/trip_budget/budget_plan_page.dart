@@ -26,12 +26,12 @@ class BudgetPlanPage extends ConsumerWidget {
           - **Kişi Sayısı**: ${tatilVerileri.numberOfPeople}
           - **Çocuk Var mı?**: ${tatilVerileri.kid}
           - **Detaylı Tatil Planı**:
-            - Kahvaltı planları: ${tatilVerileri.kahvaltiPlani}
-            - Yemek tercihleri: ${tatilVerileri.yemekTercihleri}
-            - Gezilecek yerler: ${tatilVerileri.gezilecekYerler}
-            - Eğlence tercihleri: ${tatilVerileri.eglenceTercihleri}
-            - Alışveriş planları: ${tatilVerileri.alisverisPlanlari}
-            - Özel istekler: ${tatilVerileri.ozelIstekler}
+            - Kahvaltı planları: ${tatilVerileri.breakfastPlan}
+            - Yemek tercihleri: ${tatilVerileri.foodPreferences}
+            - Gezilecek yerler: ${tatilVerileri.placesToVisit}
+            - Eğlence tercihleri: ${tatilVerileri.entertainmentPreferences}
+            - Alışveriş planları: ${tatilVerileri.shoppingPlans}
+            - Özel istekler: ${tatilVerileri.specialRequests}
 
           Bu bilgileri dikkate alarak, bu tatil için en uygun bütçeyi hesapla. Konaklama, yemek, ulaşım, aktiviteler ve diğer ilgili masrafları içerecek şekilde tüm gerekli harcamaların detaylı bir dökümünü sağla.''')
     ];

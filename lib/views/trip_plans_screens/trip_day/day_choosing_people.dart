@@ -47,7 +47,17 @@ class DayChoosingPeoplePage extends ConsumerWidget {
               CustomButton(
                 text: 'Devam',
                 onPressed: () {
-                  ref.read(bottomNavigationBarProvider.notifier).changePage(2);
+                  if (travelInformation.numberOfPeople == 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Lütfen kişi sayısı seçin!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
+                      ),
+                    );
+                  }else{
+                    ref.read(bottomNavigationBarProvider.notifier).changePage(2);
+                  }
                 }, color: Colors.blue,
                 
               ),

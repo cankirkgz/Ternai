@@ -52,7 +52,17 @@ class DayChoosingBudgetPage extends ConsumerWidget {
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+              if (travelInformation.budget == 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bütçe seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }else{
+                ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+              }
             },
             color: Colors.blue,
           ),

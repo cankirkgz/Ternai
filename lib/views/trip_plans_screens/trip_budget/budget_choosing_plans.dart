@@ -8,16 +8,18 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 class BudgetChoosingPlansPage extends ConsumerWidget {
   BudgetChoosingPlansPage({super.key});
 
-  final TextEditingController kahvaltiController = TextEditingController();
-  final TextEditingController yemekTercihleriController =
-      TextEditingController();
-  final TextEditingController gezilecekYerlerController =
-      TextEditingController();
-  final TextEditingController eglenceTercihleriController =
-      TextEditingController();
-  final TextEditingController alisverisPlanlariController =
-      TextEditingController();
-  final TextEditingController ozelIsteklerController = TextEditingController();
+  final TextEditingController breakfastPlanController = 
+    TextEditingController();
+  final TextEditingController foodPreferencesController =
+    TextEditingController();
+  final TextEditingController placesToVisitController =
+    TextEditingController();
+  final TextEditingController entertainmentPreferencesController =
+    TextEditingController();
+  final TextEditingController shoppingPlansController =
+    TextEditingController();
+  final TextEditingController specialRequestsController = 
+    TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -54,9 +56,9 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: kahvaltiController,
+                    controller: breakfastPlanController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
@@ -64,7 +66,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateKahvaltiPlani(value);
+                          .updateBreakfastPlan(value);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -73,16 +75,16 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: yemekTercihleriController,
+                    controller: foodPreferencesController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Nasıl bir yerde yemek yemek istiyorsunuz?',
                     ),
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateYemekTercihleri(value);
+                          .updateFoodPreferences(value);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -91,16 +93,16 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: gezilecekYerlerController,
+                    controller: placesToVisitController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Hangi yerleri gezmek istiyorsunuz?',
                     ),
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateGezilecekYerler(value);
+                          .updatePlacesToVisit(value);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -109,16 +111,16 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: eglenceTercihleriController,
+                    controller: entertainmentPreferencesController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Eğlence için neleri tercih ediyorsunuz?',
                     ),
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateEglenceTercihleri(value);
+                          .updateEntertainmentPreferences(value);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -127,9 +129,9 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: alisverisPlanlariController,
+                    controller: shoppingPlansController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
@@ -137,7 +139,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateAlisverisPlanlari(value);
+                          .updateShoppingPlans(value);
                     },
                   ),
                   const SizedBox(height: 10),
@@ -146,9 +148,9 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextField(
-                    controller: ozelIsteklerController,
+                    controller: specialRequestsController,
                     maxLines: 3,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',
@@ -156,7 +158,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                     onChanged: (value) {
                       ref
                           .read(travelInformationProvider.notifier)
-                          .updateOzelIstekler(value);
+                          .updateSpecialRequests(value);
                     },
                   ),
                 ],
@@ -166,17 +168,18 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
             CustomButton(
               text: 'Devam',
               onPressed: () {
-                if (kahvaltiController.text.isEmpty ||
-                    yemekTercihleriController.text.isEmpty ||
-                    gezilecekYerlerController.text.isEmpty ||
-                    eglenceTercihleriController.text.isEmpty ||
-                    alisverisPlanlariController.text.isEmpty ||
-                    ozelIsteklerController.text.isEmpty) {
+                if (breakfastPlanController.text.isEmpty ||
+                    foodPreferencesController.text.isEmpty ||
+                    placesToVisitController.text.isEmpty ||
+                    entertainmentPreferencesController.text.isEmpty ||
+                    shoppingPlansController.text.isEmpty ||
+                    specialRequestsController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content:
-                          Text('Lütfen tüm tatil planı alanlarını doldurun!'),
-                      backgroundColor: Colors.red,
+                        Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                        backgroundColor: Colors.red,
+                        duration: Duration(seconds: 1),
                     ),
                   );
                 } else {

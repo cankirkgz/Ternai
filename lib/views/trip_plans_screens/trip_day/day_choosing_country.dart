@@ -89,10 +89,10 @@ class _DayChoosingCountryPageState
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),
                     backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
                   ),
                 );
               } else {
-                print(travelInformation.country);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(1);
               }
             },

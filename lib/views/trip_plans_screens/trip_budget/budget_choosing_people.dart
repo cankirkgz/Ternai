@@ -10,7 +10,7 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tatilVerileri = ref.watch(travelInformationProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
@@ -36,21 +36,21 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
               IconButton(
                 icon: const Icon(Icons.remove),
                 onPressed: () {
-                  if (tatilVerileri.numberOfPeople > 1) {
+                  if (travelInformation.numberOfPeople > 1) {
                     ref
                         .read(travelInformationProvider.notifier)
-                        .updateNumberOfPeople(tatilVerileri.numberOfPeople - 1);
+                        .updateNumberOfPeople(travelInformation.numberOfPeople - 1);
                   }
                 },
               ),
-              Text('${tatilVerileri.numberOfPeople}',
+              Text('${travelInformation.numberOfPeople}',
                   style: const TextStyle(fontSize: 24)),
               IconButton(
                 icon: const Icon(Icons.add),
                 onPressed: () {
                   ref
                       .read(travelInformationProvider.notifier)
-                      .updateNumberOfPeople(tatilVerileri.numberOfPeople + 1);
+                      .updateNumberOfPeople(travelInformation.numberOfPeople + 1);
                 },
               ),
             ],
@@ -59,8 +59,17 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              ref.read(bottomNavigationBarProvider.notifier).changePage(2);
-              print(tatilVerileri.numberOfPeople);
+              if (travelInformation.numberOfPeople == 0) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen kişi sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }else{
+                ref.read(bottomNavigationBarProvider.notifier).changePage(2);
+              }
             },
             color: AppColors.primaryColor,
           ),
