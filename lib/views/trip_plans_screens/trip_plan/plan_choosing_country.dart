@@ -74,7 +74,9 @@ class _PlanChoosingCountryPageState
               onChanged: (value) {
                 setState(() {
                   selectedCountry = countries.firstWhere((c) => c.id == value);
-                  ref.read(travelInformationProvider.notifier).updateCountry(selectedCountry!.name);
+                  ref
+                      .read(travelInformationProvider.notifier)
+                      .updateToCountry(selectedCountry!.name);
                 });
               },
             ),
@@ -83,7 +85,7 @@ class _PlanChoosingCountryPageState
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              if (travelInformation.country.isEmpty) {
+              if (travelInformation.toCountry.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),
@@ -91,7 +93,7 @@ class _PlanChoosingCountryPageState
                   ),
                 );
               } else {
-                print(travelInformation.country);
+                print(travelInformation.toCountry);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(1);
               }
             },

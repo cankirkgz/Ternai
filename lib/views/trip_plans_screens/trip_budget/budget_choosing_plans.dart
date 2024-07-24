@@ -166,20 +166,40 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
             CustomButton(
               text: 'Devam',
               onPressed: () {
-                if (kahvaltiController.text.isEmpty ||
-                    yemekTercihleriController.text.isEmpty ||
-                    gezilecekYerlerController.text.isEmpty ||
-                    eglenceTercihleriController.text.isEmpty ||
-                    alisverisPlanlariController.text.isEmpty ||
+                final travelInfo = ref.read(travelInformationProvider.notifier);
+
+                if (kahvaltiController.text.isEmpty &&
+                    yemekTercihleriController.text.isEmpty &&
+                    gezilecekYerlerController.text.isEmpty &&
+                    eglenceTercihleriController.text.isEmpty &&
+                    alisverisPlanlariController.text.isEmpty &&
                     ozelIsteklerController.text.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content:
-                          Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                      content: Text(
+                          'Lütfen tatil planı alanlarından en az birini doldurun!'),
                       backgroundColor: Colors.red,
                     ),
                   );
                 } else {
+                  travelInfo.updateKahvaltiPlani(kahvaltiController.text);
+                  travelInfo
+                      .updateYemekTercihleri(yemekTercihleriController.text);
+                  travelInfo
+                      .updateGezilecekYerler(gezilecekYerlerController.text);
+                  travelInfo.updateEglenceTercihleri(
+                      eglenceTercihleriController.text);
+                  travelInfo.updateAlisverisPlanlari(
+                      alisverisPlanlariController.text);
+                  travelInfo.updateOzelIstekler(ozelIsteklerController.text);
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                          'Ne kadar çok detay verirseniz, o kadar sağlam bir bütçe tahmini alabilirsiniz!'),
+                      backgroundColor: Colors.green,
+                    ),
+                  );
                   ref.read(bottomNavigationBarProvider.notifier).changePage(4);
                 }
               },
