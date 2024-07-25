@@ -6,6 +6,7 @@ import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/launch_screen.dart';
 
 void main() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(

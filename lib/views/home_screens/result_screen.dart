@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:currency_converter/currency.dart';
-import 'package:currency_converter/currency_converter.dart';
 import 'package:travelguide/models/price_model.dart';
 import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/models/category_model.dart';
 import 'package:travelguide/models/product_service_model.dart';
-import 'package:travelguide/services/api_service.dart'; // ApiService'i import ediyoruz
+import 'package:travelguide/services/api_service.dart';
+import 'package:travelguide/services/exchange_rate_service.dart'; // Import the exchange rate service
 
 class ResultScreen extends StatefulWidget {
   final Country country;
   final Category category;
   final ProductService? subCategory;
-  final Country? userCountry; // Kullanıcının ülkesi
+  final Country userCountry; // Kullanıcının ülkesi
 
   const ResultScreen({
     Key? key,
@@ -28,6 +27,7 @@ class ResultScreen extends StatefulWidget {
 class _ResultScreenState extends State<ResultScreen> {
   late ApiService apiService;
   late Future<List<Price>> futurePrices;
+  final ExchangeRateService exchangeRateService = ExchangeRateService();
 
   @override
   void initState() {
@@ -40,31 +40,15 @@ class _ResultScreenState extends State<ResultScreen> {
   Future<Map<String, double>> convertCurrencies(
       String fromCurrency, double amount) async {
     try {
-      print(
-          "Converting from $fromCurrency to USD and ${widget.userCountry!.currency}");
+      double usdRate = await exchangeRateService.getExchangeRate(fromCurrency, 'USD');
+      double userCurrencyRate = await exchangeRateService.getExchangeRate(fromCurrency, widget.userCountry.currency);
 
-      var usdRate = await CurrencyConverter.convert(
-        from: Currency.values.firstWhere((e) => e.name == fromCurrency,
-            orElse: () => Currency.usd),
-        to: Currency.usd,
-        amount: amount,
-      );
-
-      var userCurrencyRate = await CurrencyConverter.convert(
-        from: Currency.values.firstWhere((e) => e.name == fromCurrency,
-            orElse: () => Currency.usd),
-        to: Currency.values.firstWhere(
-            (e) => e.name == widget.userCountry!.currency,
-            orElse: () => Currency.usd),
-        amount: amount,
-      );
-
-      print(
-          "Converted rates: USD = $usdRate, User Currency = $userCurrencyRate");
+      double usdPrice = amount * usdRate;
+      double userCurrencyPrice = amount * userCurrencyRate;
 
       return {
-        'usd': usdRate ?? 0.0,
-        'userCurrency': userCurrencyRate ?? 0.0,
+        'usd': usdPrice,
+        'userCurrency': userCurrencyPrice,
       };
     } catch (e) {
       print("Currency conversion error: $e");
@@ -119,8 +103,7 @@ class _ResultScreenState extends State<ResultScreen> {
                     } else {
                       var conversionRates = conversionSnapshot.data!;
                       double? usdPrice = conversionRates['usd'];
-                      double? userCurrencyPrice =
-                          conversionRates['userCurrency'];
+                      double? userCurrencyPrice = conversionRates['userCurrency'];
                       return Padding(
                         padding: const EdgeInsets.symmetric(
                             vertical: 8.0, horizontal: 16.0),
@@ -160,7 +143,7 @@ class _ResultScreenState extends State<ResultScreen> {
                                   textAlign: TextAlign.center,
                                 ),
                                 Text(
-                                  '${widget.userCountry!.name} Fiyatı: ${userCurrencyPrice?.toStringAsFixed(2)} ${widget.userCountry!.currency}',
+                                  '${widget.userCountry.name} Fiyatı: ${userCurrencyPrice?.toStringAsFixed(2)} ${widget.userCountry.currency}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     color: Colors.orange,

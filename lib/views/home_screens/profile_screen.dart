@@ -31,7 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _loadProfileImage();
   }
 
- Future<void> _loadProfileImage() async {
+  Future<void> _loadProfileImage() async {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final userId = authViewModel.user?.userId;
 
@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       }
     }
   }
- }
+  }
 
   Future<void> _pickImage(ImageSource source) async {
     final pickedFile = await _picker.pickImage(source: source);

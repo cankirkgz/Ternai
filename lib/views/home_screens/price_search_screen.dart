@@ -187,7 +187,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
                                         category: selectedCategory!,
                                         subCategory: selectedSubCategory,
                                         userCountry:
-                                            authViewModel.user!.country,
+                                            authViewModel.user!.country!,
                                       ),
                                     ),
                                   );
