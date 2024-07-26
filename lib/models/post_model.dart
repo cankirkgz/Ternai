@@ -1,5 +1,6 @@
 import 'package:travelguide/models/user_model.dart';
 import 'package:travelguide/models/country_model.dart';
+import 'package:travelguide/models/comment_model.dart';
 
 class PostModel {
   String id; // Post ID
@@ -10,7 +11,7 @@ class PostModel {
   String memories; // Tatil anıları
   DateTime postDate; // Yayınlanma tarihi
   int likes; // Beğeni sayısı
-  List<String> comments; // Yorumlar
+  List<CommentModel> comments; // Yorumlar
   List<String>? tags; // Tatil ile ilgili etiketler (Zorunlu değil)
   bool isPublic; // Postun herkese açık olup olmadığı (Varsayılan true)
   DateTime lastUpdated; // Postun en son güncellenme tarihi
@@ -41,7 +42,9 @@ class PostModel {
       memories: json['memories'],
       postDate: DateTime.parse(json['postDate']),
       likes: json['likes'],
-      comments: List<String>.from(json['comments']),
+      comments: (json['comments'] as List)
+          .map((comment) => CommentModel.fromJson(comment))
+          .toList(),
       tags: json['tags'] != null ? List<String>.from(json['tags']) : null,
       isPublic: json['isPublic'] ?? true,
       lastUpdated: DateTime.parse(json['lastUpdated']),
@@ -58,7 +61,7 @@ class PostModel {
       'memories': memories,
       'postDate': postDate.toIso8601String(),
       'likes': likes,
-      'comments': comments,
+      'comments': comments.map((comment) => comment.toJson()).toList(),
       'tags': tags,
       'isPublic': isPublic,
       'lastUpdated': lastUpdated.toIso8601String(),
