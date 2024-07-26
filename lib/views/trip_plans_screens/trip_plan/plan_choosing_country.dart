@@ -53,7 +53,7 @@ class _PlanChoosingCountryPageState
           const Padding(
             padding: EdgeInsets.only(bottom: 10.0),
             child: Text(
-              "Tatilde geçireceğiniz gün sayısını hesaplayalım!",
+              "Mükemmel bir tatil planı oluşturalım!",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20,
@@ -74,7 +74,9 @@ class _PlanChoosingCountryPageState
               onChanged: (value) {
                 setState(() {
                   selectedCountry = countries.firstWhere((c) => c.id == value);
-                  ref.read(travelInformationProvider.notifier).updateCountry(selectedCountry!.name);
+                  ref
+                      .read(travelInformationProvider.notifier)
+                      .updateToCountry(selectedCountry!.name);
                 });
               },
             ),
@@ -83,15 +85,15 @@ class _PlanChoosingCountryPageState
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              if (travelInformation.country.isEmpty) {
+              if (travelInformation.toCountry.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),
                     backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
                   ),
                 );
               } else {
-                print(travelInformation.country);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(1);
               }
             },

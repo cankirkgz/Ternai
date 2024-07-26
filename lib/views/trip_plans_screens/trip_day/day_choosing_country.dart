@@ -12,8 +12,7 @@ class DayChoosingCountryPage extends ConsumerStatefulWidget {
   const DayChoosingCountryPage({super.key});
 
   @override
-  _DayChoosingCountryPageState createState() =>
-      _DayChoosingCountryPageState();
+  _DayChoosingCountryPageState createState() => _DayChoosingCountryPageState();
 }
 
 class _DayChoosingCountryPageState
@@ -44,7 +43,6 @@ class _DayChoosingCountryPageState
   @override
   Widget build(BuildContext context) {
     final travelInformation = ref.watch(travelInformationProvider);
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Center(
@@ -75,7 +73,9 @@ class _DayChoosingCountryPageState
               onChanged: (value) {
                 setState(() {
                   selectedCountry = countries.firstWhere((c) => c.id == value);
-                  ref.read(travelInformationProvider.notifier).updateCountry(selectedCountry!.name);
+                  ref
+                      .read(travelInformationProvider.notifier)
+                      .updateToCountry(selectedCountry!.name);
                 });
               },
             ),
@@ -84,7 +84,7 @@ class _DayChoosingCountryPageState
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              if (travelInformation.country.isEmpty) {
+              if (travelInformation.toCountry.isEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),

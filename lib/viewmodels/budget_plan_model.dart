@@ -1,10 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+class ChildInformation {
+  final int kidAge;
+  final String kidGender;
+
+  ChildInformation({required this.kidAge, required this.kidGender});
+}
+
 class TravelInformation {
   final String country;
   final int numberOfPeople;
   final int numberOfDays;
   final bool kid;
+  final List<ChildInformation> children;
   final String breakfastPlan;
   final String foodPreferences;
   final String placesToVisit;
@@ -17,6 +25,7 @@ class TravelInformation {
     required this.numberOfPeople,
     required this.numberOfDays,
     required this.kid,
+    required this.children,
     required this.breakfastPlan,
     required this.foodPreferences,
     required this.placesToVisit,
@@ -31,6 +40,7 @@ class TravelInformation {
       numberOfPeople: 0,
       numberOfDays: 0,
       kid: false,
+      children: [],
       breakfastPlan: '',
       foodPreferences: '',
       placesToVisit: '',
@@ -45,6 +55,7 @@ class TravelInformation {
     int? numberOfPeople,
     int? numberOfDays,
     bool? kid,
+    List<ChildInformation>? children,
     String? breakfastPlan,
     String? foodPreferences,
     String? placesToVisit,
@@ -57,6 +68,7 @@ class TravelInformation {
       numberOfPeople: numberOfPeople ?? this.numberOfPeople,
       numberOfDays: numberOfDays ?? this.numberOfDays,
       kid: kid ?? this.kid,
+      children: children ?? this.children,
       breakfastPlan: breakfastPlan ?? this.breakfastPlan,
       foodPreferences: foodPreferences ?? this.foodPreferences,
       placesToVisit: placesToVisit ?? this.placesToVisit,
@@ -67,7 +79,6 @@ class TravelInformation {
   }
 }
 
-// TatilVerileri iÃ§in StateNotifier
 class TravelInformationNotifier extends StateNotifier<TravelInformation> {
   TravelInformationNotifier() : super(TravelInformation.initial());
 
@@ -89,6 +100,18 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
 
   void updateKid(bool kid) {
     state = state.copyWith(kid: kid);
+  }
+
+  void addChild(ChildInformation child) {
+    state = state.copyWith(children: [...state.children, child]);
+  }
+
+  void removeChild(int index) {
+    final updatedChildren = List<ChildInformation>.from(state.children);
+    if (index >= 0 && index < updatedChildren.length) {
+      updatedChildren.removeAt(index);
+      state = state.copyWith(children: updatedChildren);
+    }
   }
 
   void updateBreakfastPlan(String breakfastPlan) {
@@ -117,7 +140,6 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
 }
 
 // Global provider
-final travelInformationProvider =
-    StateNotifierProvider<TravelInformationNotifier, TravelInformation>((ref) {
+final travelInformationProvider = StateNotifierProvider<TravelInformationNotifier, TravelInformation>((ref) {
   return TravelInformationNotifier();
 });

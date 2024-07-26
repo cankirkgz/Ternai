@@ -16,8 +16,7 @@ class BudgetChoosingCountryPage extends ConsumerStatefulWidget {
       _BudgetChoosingCountryPageState();
 }
 
-class _BudgetChoosingCountryPageState
-    extends ConsumerState<BudgetChoosingCountryPage> {
+class _BudgetChoosingCountryPageState extends ConsumerState<BudgetChoosingCountryPage> {
   Country? selectedCountry;
   bool isLoading = false;
   final ApiService _apiService = ApiService();
@@ -44,7 +43,6 @@ class _BudgetChoosingCountryPageState
   @override
   Widget build(BuildContext context) {
     final travelInformation = ref.watch(travelInformationProvider);
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Center(
@@ -57,7 +55,7 @@ class _BudgetChoosingCountryPageState
               "Mükemmel bir tatil için bütçe oluşturalım!",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: AppColors.primaryColor,
                   fontWeight: FontWeight.bold),
             ),

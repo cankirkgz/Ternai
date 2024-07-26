@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/day_plan_model.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_day/travel_day_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
+import 'package:travelguide/views/widgets/custom_dropdown_button.dart';
+import 'package:travelguide/views/widgets/custom_text_field.dart';
 
-class DayChoosingBudgetPage extends ConsumerWidget {
+class DayChoosingBudgetPage extends ConsumerStatefulWidget {
   const DayChoosingBudgetPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final travelInformation = ref.watch(travelInformationProvider);
+  _DayChoosingBudgetPageState createState() => _DayChoosingBudgetPageState();
+}
+
+class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
+  final TextEditingController _budgetController = TextEditingController();
+  String _selectedCurrency = 'TRY';
+
+  @override
+  Widget build(BuildContext context) {
 
     return Center(
       child: Column(
@@ -17,54 +27,67 @@ class DayChoosingBudgetPage extends ConsumerWidget {
         children: [
           const Text(
             'Tatilde geçireceğiniz gün sayısını hesaplayalım!',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
           ),
           const SizedBox(height: 20),
-          const Text('Bütçeniz:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-          DropdownButton<double>(
-            value: travelInformation.budget == 0.0 ? null : travelInformation.budget,
-            hint: const Text('Bütçe seçin'),
-            onChanged: (double? newValue) {
-              if (newValue != null) {
-                ref.read(travelInformationProvider.notifier).updateBudget(newValue);
-              }
-            },
-            items: <double>[
-              0.0,
-              1000.0,
-              2000.0,
-              3000.0,
-              4000.0,
-              5000.0,
-              6000.0,
-              7000.0,
-              8000.0,
-              9000.0,
-              10000.0,
-            ].map<DropdownMenuItem<double>>((double value) {
-              return DropdownMenuItem<double>(
-                value: value,
-                child: Text(value == 0.0 ? 'Belirtmek istemiyorum' : '${value.toInt()} - ${value.toInt() + 1000}'),
-              );
-            }).toList(),
+          const Text('Bütçeniz:',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: CustomTextField(
+                  controller: _budgetController,
+                  labelText: 'Bütçe',
+                  hintText: 'Bütçe giriniz',
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Lütfen bir bütçe giriniz';
+                    }
+                    if (double.tryParse(value) == null) {
+                      return 'Lütfen geçerli bir sayı giriniz';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: CustomDropDownButton(
+                  listName: 'Para Birimi',
+                  items: const {'TRY': 'Türk Lirası', 'EUR': 'Euro'},
+                  onChanged: (value) {
+                    if (value != null) {
+                      setState(() {
+                        _selectedCurrency = value;
+                      });
+                    }
+                  },
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 20),
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              if (travelInformation.budget == 0) {
+              if (_budgetController.text.isEmpty ||
+                  double.tryParse(_budgetController.text) == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Lütfen bütçe seçin!'),
+                    content: Text('Lütfen geçerli bir bütçe giriniz'),
                     backgroundColor: Colors.red,
-                    duration: Duration(seconds: 1),
                   ),
                 );
-              }else{
+              } else {
+                ref.read(travelInformationProvider.notifier).updateBudget(double.parse(_budgetController.text));
+                ref.read(travelInformationProvider.notifier).updateCurrency(_selectedCurrency);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(3);
               }
             },
-            color: Colors.blue,
+            color: AppColors.primaryColor,
           ),
         ],
       ),

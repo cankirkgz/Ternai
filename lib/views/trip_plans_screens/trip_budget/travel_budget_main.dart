@@ -21,7 +21,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
     const BudgetChoosingPeoplePage(),
     BudgetChoosingDayPage(),
     BudgetChoosingPlansPage(),
-    BudgetPlanPage(),
+    const BudgetPlanPage(),
     BudgetResultPage(),
   ];
 
@@ -35,8 +35,15 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
           extendBodyBehindAppBar: true,
           backgroundColor: Colors.white.withOpacity(0.65),
           appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            title: const Text('Tatil Bütçesi Hesaplama'),
+            backgroundColor: Colors.white, // Arka planı beyaz yap
+            elevation: 0, // Gölgeyi kaldırmak için 0 yapabilirsiniz
+            title: const Text(
+              'Tatil Bütçesi Hesaplama',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18,
+              ), // Metin rengini siyah yap
+            ),
           ),
           body: Consumer(
             builder: (context, ref, _) {
@@ -61,11 +68,9 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
               onTap: (index) {
                 bool selectedValue = true;
 
-                if(index == 1)
-                {
+                if (index == 1) {
                   final travelInformation = ref.read(travelInformationProvider);
-                  if(travelInformation.country.isEmpty)
-                  {
+                  if (travelInformation.country.isEmpty) {
                     selectedValue = false;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -77,11 +82,9 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                   }
                 }
 
-                if(index == 2)
-                {
+                if (index == 2) {
                   final travelInformation = ref.read(travelInformationProvider);
-                  if(travelInformation.numberOfPeople == 0)
-                  {
+                  if (travelInformation.numberOfPeople == 0) {
                     selectedValue = false;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -93,11 +96,9 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                   }
                 }
 
-                if(index == 3)
-                {
+                if (index == 3) {
                   final travelInformation = ref.read(travelInformationProvider);
-                  if(travelInformation.numberOfDays == 0)
-                  {
+                  if (travelInformation.numberOfDays == 0) {
                     selectedValue = false;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -109,16 +110,14 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                   }
                 }
 
-                if(index == 4)
-                {
+                if (index == 4) {
                   final travelInformation = ref.read(travelInformationProvider);
-                  if(travelInformation.breakfastPlan.isEmpty ||
-                    travelInformation.foodPreferences.isEmpty ||
-                    travelInformation.placesToVisit.isEmpty ||
-                    travelInformation.entertainmentPreferences.isEmpty ||
-                    travelInformation.shoppingPlans.isEmpty ||
-                    travelInformation.specialRequests.isEmpty)
-                  {
+                  if (travelInformation.breakfastPlan.isEmpty ||
+                      travelInformation.foodPreferences.isEmpty ||
+                      travelInformation.placesToVisit.isEmpty ||
+                      travelInformation.entertainmentPreferences.isEmpty ||
+                      travelInformation.shoppingPlans.isEmpty ||
+                      travelInformation.specialRequests.isEmpty) {
                     selectedValue = false;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -130,8 +129,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                   }
                 }
 
-                if(selectedValue)
-                {
+                if (selectedValue) {
                   setState(() {
                     ref.read(bottomNavigationBarProvider.notifier).changePage(index);
                   });
@@ -139,16 +137,11 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
               },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.people), label: 'Kişi Sayısı'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.place), label: 'Yerler'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.schedule), label: 'Plan'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.attach_money), label: 'Bütçe'),
+                BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Kişi Sayısı'),
+                BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
+                BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Yerler'),
+                BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
+                BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Bütçe'),
               ],
             );
           })),

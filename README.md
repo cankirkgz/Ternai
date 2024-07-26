@@ -1,6 +1,5 @@
 <<<<<<< HEAD
 # Travel-Guide
-This is Mücahit GÖKÇE peaces.
 =======
 <h1>1. Takım İsmi</h1>
 <p>Flutter Grup 22</p>

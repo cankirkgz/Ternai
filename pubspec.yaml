@@ -50,6 +50,7 @@ dependencies:
   google_generative_ai: ^0.4.3
   image_picker: ^1.1.2
   firebase_storage: ^12.1.1
+  flutter_markdown: ^0.7.3
 
 dev_dependencies:
   flutter_test:

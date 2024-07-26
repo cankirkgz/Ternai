@@ -20,7 +20,7 @@ class BudgetChoosingDayPage extends ConsumerWidget {
               "Mükemmel bir tatil için bütçe oluşturalım!",
               textAlign: TextAlign.center,
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   color: AppColors.primaryColor,
                   fontWeight: FontWeight.bold),
             ),
