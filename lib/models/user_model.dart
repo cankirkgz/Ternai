@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travelguide/models/country_model.dart';
+import 'package:travelguide/models/post_model.dart';
 
 class UserModel {
   final String userId;
@@ -11,7 +12,8 @@ class UserModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool emailVerified;
-  final String? profileImageUrl; // Yeni eklenen alan
+  final String? profileImageUrl;
+  final List<PostModel> posts;
 
   UserModel({
     required this.userId,
@@ -23,7 +25,8 @@ class UserModel {
     this.age,
     this.birthDate,
     this.country,
-    this.profileImageUrl, // Yeni eklenen alan
+    this.profileImageUrl,
+    this.posts = const [],
   });
 
   factory UserModel.fromFirebaseUser(User user) {
@@ -34,7 +37,7 @@ class UserModel {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       emailVerified: user.emailVerified,
-      profileImageUrl: user.photoURL, // Yeni eklenen alan
+      profileImageUrl: user.photoURL,
     );
   }
 
@@ -49,7 +52,8 @@ class UserModel {
       'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
       'email_verified': emailVerified,
-      'profile_image_url': profileImageUrl, // Yeni eklenen alan
+      'profile_image_url': profileImageUrl,
+      'posts': posts.map((post) => post.toJson()).toList(),
     };
   }
 
@@ -74,7 +78,11 @@ class UserModel {
       country:
           map['country'] != null ? Country.fromMap(map['country'], '') : null,
       emailVerified: map['email_verified'] ?? false,
-      profileImageUrl: map['profile_image_url'], // Yeni eklenen alan
+      profileImageUrl: map['profile_image_url'],
+      posts: map['posts'] != null
+          ? List<PostModel>.from(
+              map['posts'].map((post) => PostModel.fromJson(post)))
+          : [],
     );
   }
 }
