@@ -1,5 +1,12 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+class ChildInformation {
+  final int kidAge;
+  final String kidGender;
+
+  ChildInformation({required this.kidAge, required this.kidGender});
+}
+
 class TravelInformation {
   final String fromCountry;
   final String toCountry;
@@ -8,12 +15,13 @@ class TravelInformation {
   final int numberOfDays;
   final int numberOfPeople;
   final bool kid;
-  final String kahvaltiPlani;
-  final String yemekTercihleri;
-  final String gezilecekYerler;
-  final String eglenceTercihleri;
-  final String alisverisPlanlari;
-  final String ozelIstekler;
+  final List<ChildInformation> children;
+  final String breakfastPlan;
+  final String foodPreferences;
+  final String placesToVisit;
+  final String entertainmentPreferences;
+  final String shoppingPlans;
+  final String specialRequests;
 
   TravelInformation({
     required this.fromCountry,
@@ -23,12 +31,13 @@ class TravelInformation {
     required this.numberOfDays,
     required this.numberOfPeople,
     required this.kid,
-    required this.kahvaltiPlani,
-    required this.yemekTercihleri,
-    required this.gezilecekYerler,
-    required this.eglenceTercihleri,
-    required this.alisverisPlanlari,
-    required this.ozelIstekler,
+    required this.children,
+    required this.breakfastPlan,
+    required this.foodPreferences,
+    required this.placesToVisit,
+    required this.entertainmentPreferences,
+    required this.shoppingPlans,
+    required this.specialRequests,
   });
 
   factory TravelInformation.initial() {
@@ -40,12 +49,13 @@ class TravelInformation {
       numberOfDays: 0,
       numberOfPeople: 0,
       kid: false,
-      kahvaltiPlani: '',
-      yemekTercihleri: '',
-      gezilecekYerler: '',
-      eglenceTercihleri: '',
-      alisverisPlanlari: '',
-      ozelIstekler: '',
+      children: [],
+      breakfastPlan: '',
+      foodPreferences: '',
+      placesToVisit: '',
+      entertainmentPreferences: '',
+      shoppingPlans: '',
+      specialRequests: '',
     );
   }
 
@@ -57,12 +67,13 @@ class TravelInformation {
     int? numberOfDays,
     int? numberOfPeople,
     bool? kid,
-    String? kahvaltiPlani,
-    String? yemekTercihleri,
-    String? gezilecekYerler,
-    String? eglenceTercihleri,
-    String? alisverisPlanlari,
-    String? ozelIstekler,
+    List<ChildInformation>? children,
+    String? breakfastPlan,
+    String? foodPreferences,
+    String? placesToVisit,
+    String? entertainmentPreferences,
+    String? shoppingPlans,
+    String? specialRequests,
   }) {
     return TravelInformation(
       fromCountry: fromCountry ?? this.fromCountry,
@@ -72,12 +83,13 @@ class TravelInformation {
       numberOfDays: numberOfDays ?? this.numberOfDays,
       numberOfPeople: numberOfPeople ?? this.numberOfPeople,
       kid: kid ?? this.kid,
-      kahvaltiPlani: kahvaltiPlani ?? this.kahvaltiPlani,
-      yemekTercihleri: yemekTercihleri ?? this.yemekTercihleri,
-      gezilecekYerler: gezilecekYerler ?? this.gezilecekYerler,
-      eglenceTercihleri: eglenceTercihleri ?? this.eglenceTercihleri,
-      alisverisPlanlari: alisverisPlanlari ?? this.alisverisPlanlari,
-      ozelIstekler: ozelIstekler ?? this.ozelIstekler,
+      children: children ?? this.children,
+      breakfastPlan: breakfastPlan ?? this.breakfastPlan,
+      foodPreferences: foodPreferences ?? this.foodPreferences,
+      placesToVisit: placesToVisit ?? this.placesToVisit,
+      entertainmentPreferences: entertainmentPreferences ?? this.entertainmentPreferences,
+      shoppingPlans: shoppingPlans ?? this.shoppingPlans,
+      specialRequests: specialRequests ?? this.specialRequests,
     );
   }
 }
@@ -118,28 +130,40 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
     state = state.copyWith(kid: kid);
   }
 
-  void updateKahvaltiPlani(String kahvaltiPlani) {
-    state = state.copyWith(kahvaltiPlani: kahvaltiPlani);
+  void addChild(ChildInformation child) {
+    state = state.copyWith(children: [...state.children, child]);
   }
 
-  void updateYemekTercihleri(String yemekTercihleri) {
-    state = state.copyWith(yemekTercihleri: yemekTercihleri);
+  void removeChild(int index) {
+    final updatedChildren = List<ChildInformation>.from(state.children);
+    if (index >= 0 && index < updatedChildren.length) {
+      updatedChildren.removeAt(index);
+      state = state.copyWith(children: updatedChildren);
+    }
   }
 
-  void updateGezilecekYerler(String gezilecekYerler) {
-    state = state.copyWith(gezilecekYerler: gezilecekYerler);
+  void updateBreakfastPlan(String kahvaltiPlani) {
+    state = state.copyWith(breakfastPlan: kahvaltiPlani);
   }
 
-  void updateEglenceTercihleri(String eglenceTercihleri) {
-    state = state.copyWith(eglenceTercihleri: eglenceTercihleri);
+  void updateFoodPreferences(String foodPreferences) {
+    state = state.copyWith(foodPreferences: foodPreferences);
   }
 
-  void updateAlisverisPlanlari(String alisverisPlanlari) {
-    state = state.copyWith(alisverisPlanlari: alisverisPlanlari);
+  void updatePlacesToVisit(String placesToVisit) {
+    state = state.copyWith(placesToVisit: placesToVisit);
   }
 
-  void updateOzelIstekler(String ozelIstekler) {
-    state = state.copyWith(ozelIstekler: ozelIstekler);
+  void updateEntertainmentPreferences(String entertainmentPreferences) {
+    state = state.copyWith(entertainmentPreferences: entertainmentPreferences);
+  }
+
+  void updateShoppingPlans(String shoppingPlans) {
+    state = state.copyWith(shoppingPlans: shoppingPlans);
+  }
+
+  void updateSpecialRequests(String specialRequests) {
+    state = state.copyWith(specialRequests: specialRequests);
   }
 }
 

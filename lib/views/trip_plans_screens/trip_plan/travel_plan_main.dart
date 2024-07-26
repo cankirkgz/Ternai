@@ -25,7 +25,7 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
     PlanChoosingDayPage(),
     const PlanChoosingPeoplePage(),
     PlanChoosingPlansPage(),
-    PlanPlanPage(),
+    const PlanPlanPage(),
     PlanResultPage()
   ];
 
@@ -39,8 +39,15 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
         extendBodyBehindAppBar: true,
         backgroundColor: Colors.white.withOpacity(0.65),
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: const Text('Tatil Planı Oluşturma'),
+          backgroundColor: Colors.white,
+          elevation: 0,
+          title: const Text(
+            'Tatil Planı Oluşturma',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 18,
+            ),
+          ),
         ),
         body: Consumer(
           builder: (context, ref, _) {
@@ -64,6 +71,83 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
           useLegacyColorScheme: false,
           currentIndex: _currentIndex,
           onTap: (index) {
+            bool selectedValue = true;
+
+            if (index == 1) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.toCountry.isEmpty) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bir ülke seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if (index == 2) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.budget == 0) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen geçerli bir bütçe girin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if (index == 3) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.numberOfDays == 0) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen gün sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if (index == 4) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.numberOfPeople == 0) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen kişi sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
+            if (index == 5) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.breakfastPlan.isEmpty ||
+                  travelInformation.foodPreferences.isEmpty ||
+                  travelInformation.placesToVisit.isEmpty ||
+                  travelInformation.entertainmentPreferences.isEmpty ||
+                  travelInformation.shoppingPlans.isEmpty ||
+                  travelInformation.specialRequests.isEmpty) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
+
             setState(() {
               ref.read(bottomNavigationBarProvider.notifier).changePage(index);
             });

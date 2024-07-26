@@ -43,7 +43,6 @@ class _DayChoosingCountryPageState
   @override
   Widget build(BuildContext context) {
     final travelInformation = ref.watch(travelInformationProvider);
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Center(
@@ -90,10 +89,10 @@ class _DayChoosingCountryPageState
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),
                     backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
                   ),
                 );
               } else {
-                print(travelInformation.toCountry);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(1);
               }
             },

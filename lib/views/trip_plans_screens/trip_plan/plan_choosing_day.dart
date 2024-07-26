@@ -51,7 +51,18 @@ class PlanChoosingDayPage extends ConsumerWidget {
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+              if(travelInformation.numberOfDays == 0)
+              {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("Lütfen gün sayısı seçin!"),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  )
+                );
+              }else{
+                ref.read(bottomNavigationBarProvider.notifier).changePage(3);
+              }
             },
             color: AppColors.primaryColor,
           ),
