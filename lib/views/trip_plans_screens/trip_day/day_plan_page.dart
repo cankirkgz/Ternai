@@ -33,12 +33,12 @@ class _DayPlanPageState extends ConsumerState<DayPlanPage> {
 - **Kişi Sayısı**: ${tatilVerileri.numberOfPeople}
 - **Çocuk Var mı?**: ${tatilVerileri.kid ? 'Evet' : 'Hayır'}
 - **Detaylı Tatil Planı**:
-  - Kahvaltı planları: ${tatilVerileri.kahvaltiPlani}
-  - Yemek tercihleri: ${tatilVerileri.yemekTercihleri}
-  - Gezilecek yerler: ${tatilVerileri.gezilecekYerler}
-  - Eğlence tercihleri: ${tatilVerileri.eglenceTercihleri}
-  - Alışveriş planları: ${tatilVerileri.alisverisPlanlari}
-  - Özel istekler: ${tatilVerileri.ozelIstekler}
+  - Kahvaltı planları: ${tatilVerileri.breakfastPlan}
+  - Yemek tercihleri: ${tatilVerileri.foodPreferences}
+  - Gezilecek yerler: ${tatilVerileri.placesToVisit}
+  - Eğlence tercihleri: ${tatilVerileri.entertainmentPreferences}
+  - Alışveriş planları: ${tatilVerileri.shoppingPlans}
+  - Özel istekler: ${tatilVerileri.specialRequests}
 
 Bu bilgileri dikkate alarak, kullanıcının belirttiği bütçeyle kaç gün tatil yapabileceğini hesapla. Gerekli tüm harcamaları (konaklama, yemek, ulaşım, aktiviteler, vb.) dikkate alarak bir hesaplama yap ve kullanıcıya kaç gün kalabileceğini bildir. Eğer bütçe aşılırsa, kullanıcının bütçesini aşan bir plan oluşturulamayacağı konusunda uyar ve bütçeyi aşmayan alternatif önerilerde bulun.
 
@@ -123,19 +123,41 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                               Text(travelInformation.numberOfPeople.toString()),
                         ),
                       ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Çocuk var mı'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
-                        ),
-                      ]),
+                  if (travelInformation.kid) ...[
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk var mı'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                                Text(travelInformation.kid ? 'Evet' : 'Hayır'),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk Bilgileri'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: travelInformation.children.map((child) {
+                                return Text(
+                                    'Yaş: ${child.age}, Cinsiyet: ${child.gender}');
+                              }).toList(),
+                            ),
+                          ),
+                        ]),
+                  ],
                   TableRow(
                       decoration: BoxDecoration(
                           color: AppColors.primaryColor.withOpacity(0.65)),
@@ -146,7 +168,7 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.kahvaltiPlani),
+                          child: Text(travelInformation.breakfastPlan),
                         ),
                       ]),
                   TableRow(
@@ -159,7 +181,7 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.yemekTercihleri),
+                          child: Text(travelInformation.foodPreferences),
                         ),
                       ]),
                   TableRow(
@@ -172,7 +194,7 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.gezilecekYerler),
+                          child: Text(travelInformation.placesToVisit),
                         ),
                       ]),
                   TableRow(
@@ -185,7 +207,8 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.eglenceTercihleri),
+                          child:
+                              Text(travelInformation.entertainmentPreferences),
                         ),
                       ]),
                   TableRow(
@@ -198,7 +221,7 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.alisverisPlanlari),
+                          child: Text(travelInformation.shoppingPlans),
                         ),
                       ]),
                   TableRow(
@@ -211,7 +234,7 @@ Bu örneği kullanarak, kullanıcıya belirttiği bütçeyle kaç gün tatil yap
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.ozelIstekler),
+                          child: Text(travelInformation.specialRequests),
                         ),
                       ]),
                 ],

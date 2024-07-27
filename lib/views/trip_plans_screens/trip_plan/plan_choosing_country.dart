@@ -53,7 +53,7 @@ class _PlanChoosingCountryPageState
           const Padding(
             padding: EdgeInsets.only(bottom: 10.0),
             child: Text(
-              "Tatilde geçireceğiniz gün sayısını hesaplayalım!",
+              "Mükemmel bir tatil planı oluşturalım!",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 20,
@@ -90,10 +90,10 @@ class _PlanChoosingCountryPageState
                   const SnackBar(
                     content: Text('Lütfen bir ülke seçin!'),
                     backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
                   ),
                 );
               } else {
-                print(travelInformation.toCountry);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(1);
               }
             },
