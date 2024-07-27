@@ -34,9 +34,10 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Merhaba $userName',
-              style: const TextStyle(fontSize: 24),
+          const SizedBox(),
+          Text(
+        'Merhaba $userName',
+        style: const TextStyle(fontSize: 24),
             ),
           ],
         ),

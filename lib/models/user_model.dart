@@ -38,6 +38,8 @@ class UserModel {
     );
   }
 
+  get user_id => null;
+
   Map<String, dynamic> toMap() {
     return {
       'user_id': userId,

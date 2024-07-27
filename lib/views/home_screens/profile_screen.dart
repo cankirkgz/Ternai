@@ -36,10 +36,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userId = authViewModel.user?.userId;
 
     if (userId != null) {
+      // ignore: unused_local_variable
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
           .get();
+    // ignore: unnecessary_null_comparison
     if (userId != null) {
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
@@ -225,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   InkWell(
                     onTap: _showImageSourceDialog,
                     child: CircleAvatar(
-                      radius: 80,
+                      radius: 70,
                       backgroundImage: _profileImageUrl != null
                           ? NetworkImage(_profileImageUrl!)
                           : const AssetImage(
