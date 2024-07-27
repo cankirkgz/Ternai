@@ -25,7 +25,7 @@ class _BudgetPlanPageState extends ConsumerState<BudgetPlanPage> {
   Future<String> _calculateBudget(TravelInformation travelInformation) async {
     final content = [
       Content.text(
-        '''Sen gelişmiş bir yapay zekasın ve tatil bütçesi planlamada uzmanlaşmışsın. Bir kullanıcı tatil planlamak istiyor ve tahmini bir bütçeye ihtiyaç duyuyor. Lütfen kullanıcının sağladığı aşağıdaki bilgileri dikkate al:
+          '''Sen gelişmiş bir yapay zekasın ve tatil bütçesi planlamada uzmanlaşmışsın. Bir kullanıcı tatil planlamak istiyor ve tahmini bir bütçeye ihtiyaç duyuyor. Lütfen kullanıcının sağladığı aşağıdaki bilgileri dikkate al:
         - **Hangi ülkeden gidilecek**: Türkiye
         - **Gidilecek Ülke**: ${travelInformation.country}
         - **Kalınacak Gün Sayısı**: ${travelInformation.numberOfDays}
@@ -138,25 +138,26 @@ class _BudgetPlanPageState extends ConsumerState<BudgetPlanPage> {
                           child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
                         ),
                       ]),
-                    if (travelInformation.kid) ...[
-                      TableRow(
-                          decoration:
-                              BoxDecoration(color: Colors.orange.withOpacity(0.65)),
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Çocuk Bilgileri'),
+                  if (travelInformation.kid) ...[
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk Bilgileri'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: travelInformation.children.map((child) {
+                                return Text(
+                                    'Yaş: ${child.age}, Cinsiyet: ${child.gender}');
+                              }).toList(),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: travelInformation.children.map((child) {
-                                  return Text('Yaş: ${child.kidAge}, Cinsiyet: ${child.kidGender}');
-                                }).toList(),
-                              ),
-                            ),
-                          ]),
+                          ),
+                        ]),
                   ],
                   TableRow(
                       decoration:
@@ -207,7 +208,8 @@ class _BudgetPlanPageState extends ConsumerState<BudgetPlanPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.entertainmentPreferences),
+                          child:
+                              Text(travelInformation.entertainmentPreferences),
                         ),
                       ]),
                   TableRow(

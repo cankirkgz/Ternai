@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/models/kid_model.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/travel_budget_main.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
+import 'package:uuid/uuid.dart';
 
 class BudgetChoosingPeoplePage extends ConsumerWidget {
   const BudgetChoosingPeoplePage({super.key});
@@ -13,6 +15,7 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
     final travelInformation = ref.watch(travelInformationProvider);
     final travelNotifier = ref.read(travelInformationProvider.notifier);
     final ScrollController scrollController = ScrollController();
+    final uuid = Uuid();
 
     return Center(
       child: SingleChildScrollView(
@@ -41,7 +44,8 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                   icon: const Icon(Icons.remove),
                   onPressed: () {
                     if (travelInformation.numberOfPeople > 1) {
-                      travelNotifier.updateNumberOfPeople(travelInformation.numberOfPeople - 1);
+                      travelNotifier.updateNumberOfPeople(
+                          travelInformation.numberOfPeople - 1);
                     }
                   },
                 ),
@@ -50,7 +54,8 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
-                    travelNotifier.updateNumberOfPeople(travelInformation.numberOfPeople + 1);
+                    travelNotifier.updateNumberOfPeople(
+                        travelInformation.numberOfPeople + 1);
                   },
                 ),
               ],
@@ -73,7 +78,8 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
             ),
             if (travelInformation.kid) ...[
               const SizedBox(height: 20),
-              const Text('Çocuk Bilgileri', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+              const Text('Çocuk Bilgileri',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
               for (var i = 0; i < travelInformation.children.length; i++)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -83,8 +89,9 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Yaş: ${travelInformation.children[i].kidAge}"),
-                          Text("Cinsiyet: ${travelInformation.children[i].kidGender}"),
+                          Text("Yaş: ${travelInformation.children[i].age}"),
+                          Text(
+                              "Cinsiyet: ${travelInformation.children[i].gender}"),
                         ],
                       ),
                       IconButton(
@@ -98,7 +105,7 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                 ),
               ElevatedButton(
                 onPressed: () async {
-                  final result = await showDialog<ChildInformation>(
+                  final result = await showDialog<KidModel>(
                     context: context,
                     builder: (context) {
                       int age = 0;
@@ -124,8 +131,10 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                                 DropdownButton<String>(
                                   value: gender,
                                   items: const [
-                                    DropdownMenuItem(child: Text('Kız'), value: 'Kız'),
-                                    DropdownMenuItem(child: Text('Erkek'), value: 'Erkek'),
+                                    DropdownMenuItem(
+                                        child: Text('Kız'), value: 'Kız'),
+                                    DropdownMenuItem(
+                                        child: Text('Erkek'), value: 'Erkek'),
                                   ],
                                   onChanged: (value) {
                                     setState(() {
@@ -146,10 +155,15 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                                 onPressed: () {
                                   if (age >= 18) {
                                     setState(() {
-                                      ageError = 'Yaş 18 veya daha büyük olamaz!';
+                                      ageError =
+                                          'Yaş 18 veya daha büyük olamaz!';
                                     });
                                   } else {
-                                    Navigator.of(context).pop(ChildInformation(kidAge: age, kidGender: gender));
+                                    Navigator.of(context).pop(KidModel(
+                                      id: uuid.v4(), // UUID ile id oluşturma
+                                      age: age,
+                                      gender: gender,
+                                    ));
                                   }
                                 },
                                 child: const Text('Ekle'),
@@ -163,7 +177,10 @@ class BudgetChoosingPeoplePage extends ConsumerWidget {
                   if (result != null) {
                     travelNotifier.addChild(result);
                     Future.delayed(const Duration(milliseconds: 100), () {
-                      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+                      if (scrollController.hasClients) {
+                        scrollController
+                            .jumpTo(scrollController.position.maxScrollExtent);
+                      }
                     });
                   }
                 },

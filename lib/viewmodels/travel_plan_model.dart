@@ -1,11 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-class ChildInformation {
-  final int kidAge;
-  final String kidGender;
-
-  ChildInformation({required this.kidAge, required this.kidGender});
-}
+import 'package:travelguide/models/kid_model.dart';
 
 class TravelInformation {
   final String fromCountry;
@@ -15,7 +9,7 @@ class TravelInformation {
   final int numberOfDays;
   final int numberOfPeople;
   final bool kid;
-  final List<ChildInformation> children;
+  final List<KidModel> children;
   final String breakfastPlan;
   final String foodPreferences;
   final String placesToVisit;
@@ -67,7 +61,7 @@ class TravelInformation {
     int? numberOfDays,
     int? numberOfPeople,
     bool? kid,
-    List<ChildInformation>? children,
+    List<KidModel>? children,
     String? breakfastPlan,
     String? foodPreferences,
     String? placesToVisit,
@@ -87,7 +81,8 @@ class TravelInformation {
       breakfastPlan: breakfastPlan ?? this.breakfastPlan,
       foodPreferences: foodPreferences ?? this.foodPreferences,
       placesToVisit: placesToVisit ?? this.placesToVisit,
-      entertainmentPreferences: entertainmentPreferences ?? this.entertainmentPreferences,
+      entertainmentPreferences:
+          entertainmentPreferences ?? this.entertainmentPreferences,
       shoppingPlans: shoppingPlans ?? this.shoppingPlans,
       specialRequests: specialRequests ?? this.specialRequests,
     );
@@ -130,12 +125,12 @@ class TravelInformationNotifier extends StateNotifier<TravelInformation> {
     state = state.copyWith(kid: kid);
   }
 
-  void addChild(ChildInformation child) {
+  void addChild(KidModel child) {
     state = state.copyWith(children: [...state.children, child]);
   }
 
   void removeChild(int index) {
-    final updatedChildren = List<ChildInformation>.from(state.children);
+    final updatedChildren = List<KidModel>.from(state.children);
     if (index >= 0 && index < updatedChildren.length) {
       updatedChildren.removeAt(index);
       state = state.copyWith(children: updatedChildren);

@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travelguide/models/country_model.dart';
+import 'package:travelguide/models/budget_plan_model.dart';
+import 'package:travelguide/models/day_plan_model.dart';
+import 'package:travelguide/models/plan_plan_model.dart';
 
 class UserModel {
   final String userId;
@@ -11,7 +14,10 @@ class UserModel {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool emailVerified;
-  final String? profileImageUrl; // Yeni eklenen alan
+  final String? profileImageUrl;
+  final List<BudgetPlanModel> budgetPlans;
+  final List<DayPlanModel> dayPlans;
+  final List<PlanPlanModel> planPlans;
 
   UserModel({
     required this.userId,
@@ -23,7 +29,10 @@ class UserModel {
     this.age,
     this.birthDate,
     this.country,
-    this.profileImageUrl, // Yeni eklenen alan
+    this.profileImageUrl,
+    this.budgetPlans = const [],
+    this.dayPlans = const [],
+    this.planPlans = const [],
   });
 
   factory UserModel.fromFirebaseUser(User user) {
@@ -34,7 +43,7 @@ class UserModel {
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       emailVerified: user.emailVerified,
-      profileImageUrl: user.photoURL, // Yeni eklenen alan
+      profileImageUrl: user.photoURL,
     );
   }
 
@@ -49,7 +58,10 @@ class UserModel {
       'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
       'email_verified': emailVerified,
-      'profile_image_url': profileImageUrl, // Yeni eklenen alan
+      'profile_image_url': profileImageUrl,
+      'budget_plans': budgetPlans.map((plan) => plan.toJson()).toList(),
+      'day_plans': dayPlans.map((plan) => plan.toJson()).toList(),
+      'plan_plans': planPlans.map((plan) => plan.toJson()).toList(),
     };
   }
 
@@ -74,7 +86,22 @@ class UserModel {
       country:
           map['country'] != null ? Country.fromMap(map['country'], '') : null,
       emailVerified: map['email_verified'] ?? false,
-      profileImageUrl: map['profile_image_url'], // Yeni eklenen alan
+      profileImageUrl: map['profile_image_url'],
+      budgetPlans: map['budget_plans'] != null
+          ? (map['budget_plans'] as List<dynamic>)
+              .map((plan) => BudgetPlanModel.fromJson(plan))
+              .toList()
+          : [],
+      dayPlans: map['day_plans'] != null
+          ? (map['day_plans'] as List<dynamic>)
+              .map((plan) => DayPlanModel.fromJson(plan))
+              .toList()
+          : [],
+      planPlans: map['plan_plans'] != null
+          ? (map['plan_plans'] as List<dynamic>)
+              .map((plan) => PlanPlanModel.fromJson(plan))
+              .toList()
+          : [],
     );
   }
 }
