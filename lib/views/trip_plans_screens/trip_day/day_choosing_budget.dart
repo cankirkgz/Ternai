@@ -20,7 +20,6 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
 
   @override
   Widget build(BuildContext context) {
-    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
@@ -58,7 +57,7 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
               Expanded(
                 child: CustomDropDownButton(
                   listName: 'Para Birimi',
-                  items: {'TRY': 'Türk Lirası', 'EUR': 'Euro'},
+                  items: const {'TRY': 'Türk Lirası', 'EUR': 'Euro'},
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {
@@ -83,12 +82,8 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
                   ),
                 );
               } else {
-                ref
-                    .read(travelInformationProvider.notifier)
-                    .updateBudget(double.parse(_budgetController.text));
-                ref
-                    .read(travelInformationProvider.notifier)
-                    .updateCurrency(_selectedCurrency);
+                ref.read(travelInformationProvider.notifier).updateBudget(double.parse(_budgetController.text));
+                ref.read(travelInformationProvider.notifier).updateCurrency(_selectedCurrency);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(3);
               }
             },
