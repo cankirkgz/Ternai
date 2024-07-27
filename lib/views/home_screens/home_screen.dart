@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/home_screens/new_post_screen.dart';
@@ -85,162 +86,214 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-        child: ListView(
-          children: [
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(15.0), // Kartın köşe radius'u
-              ),
-              child: ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(15.0), // Görselin köşe radius'u
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Image.network(
-                      "https://images.pexels.com/photos/38238/maldives-ile-beach-sun-38238.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-                      width: screenWidth,
-                      height: 200,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: NetworkImage(
-                              authViewModel.user?.profileImageUrl ?? '',
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            opacity: 0.65,
+            image: AssetImage("assets/images/welcome_page.jpeg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+          child: ListView(
+            children: [
+              Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(15.0), // Kartın köşe radius'u
+                ),
+                child: ClipRRect(
+                  borderRadius:
+                      BorderRadius.circular(15.0), // Görselin köşe radius'u
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(
+                        "https://images.pexels.com/photos/38238/maldives-ile-beach-sun-38238.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                        scale: 1.0,
+                        width: screenWidth,
+                        height: 250,
+                        fit: BoxFit.cover,
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundImage: NetworkImage(
+                                authViewModel.user?.profileImageUrl ?? '',
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Can Kırkgöz",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                            const SizedBox(width: 10),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Can Kırkgöz",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                "İspanya",
-                                style: TextStyle(
-                                  color: Colors.grey[600],
+                                Text(
+                                  "İspanya",
+                                  style: TextStyle(
+                                    color: Colors.grey[600],
+                                  ),
                                 ),
+                              ],
+                            ),
+                            Spacer(),
+                            IconButton(
+                              icon: Icon(
+                                isLiked
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isLiked ? Colors.red : null,
                               ),
-                            ],
-                          ),
-                          Spacer(),
-                          IconButton(
-                            icon: Icon(
-                              isLiked ? Icons.favorite : Icons.favorite_border,
-                              color: isLiked ? Colors.red : null,
+                              onPressed: () {
+                                setState(() {
+                                  isLiked = !isLiked;
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                isLiked = !isLiked;
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.comment),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Muhteşem bir gün geçirdik. Harika bir manzara!',
-                            style: TextStyle(fontSize: 16),
-                          ),
-                          const SizedBox(height: 5),
-                          Text(
-                            'Paylaşıldı: 12 Temmuz 2023',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 12,
+                            IconButton(
+                              icon: Icon(Icons.comment),
+                              onPressed: () {
+                                _showCommentsBottomSheet(context);
+                              },
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Yorumlar',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          CommentWidget(
-                            post: post,
-                            onLikePressed: () {
-                              setState(() {
-                                // Like butonuna basıldığında yapılacak işlemler
-                              });
-                            },
-                          ),
-                          TextField(
-                            controller: _commentController,
-                            decoration: InputDecoration(
-                              labelText: 'Yorum Yaz',
-                              suffixIcon: IconButton(
-                                icon: Icon(Icons.send),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_commentController.text.isNotEmpty) {
-                                      post.comments.add(CommentModel(
-                                        id: DateTime.now().toString(),
-                                        content: _commentController.text,
-                                        user: UserModel(
-                                          userId: '3',
-                                          email:
-                                              authViewModel.user?.email ?? '',
-                                          name: userName,
-                                          profileImageUrl: authViewModel
-                                                  .user?.profileImageUrl ??
-                                              '',
-                                          emailVerified: false,
-                                          birthDate: DateTime.now(),
-                                          createdAt: DateTime.now(),
-                                          updatedAt: DateTime.now(),
-                                        ),
-                                        post:
-                                            post, // Post'u referans olarak veriyoruz
-                                        date: DateTime.now(),
-                                        likeCount: 0,
-                                      ));
-                                      _commentController.clear();
-                                    }
-                                  });
-                                },
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Muhteşem bir gün geçirdik. Harika bir manzara!',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              'Paylaşıldı: 12 Temmuz 2023',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 12,
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextButton(
+                              onPressed: () {
+                                _showCommentsBottomSheet(context);
+                              },
+                              child: const Text(
+                                'Yorumları Gör',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
+      resizeToAvoidBottomInset: true, // Bu satırı ekle
+    );
+  }
+
+  void _showCommentsBottomSheet(BuildContext context) {
+    final AuthViewModel authViewModel =
+        Provider.of<AuthViewModel>(context, listen: false);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return DraggableScrollableSheet(
+          expand: false,
+          builder: (BuildContext context, ScrollController scrollController) {
+            return Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0, vertical: 12.0),
+                    child: const Text(
+                      'Yorumlar',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Expanded(
+                    child: CommentWidget(
+                      post: post,
+                      onLikePressed: () {
+                        setState(() {
+                          // Like butonuna basıldığında yapılacak işlemler
+                        });
+                      },
+                      scrollController: scrollController,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: TextField(
+                      controller: _commentController,
+                      decoration: InputDecoration(
+                        labelText: 'Yorum Yaz',
+                        suffixIcon: IconButton(
+                          icon: Icon(Icons.send),
+                          onPressed: () {
+                            if (_commentController.text.isNotEmpty) {
+                              final CommentModel newComment = CommentModel(
+                                id: '',
+                                content: _commentController.text,
+                                user: authViewModel.user!,
+                                post: post,
+                                date: DateTime.now(),
+                                likeCount: 0,
+                              );
+                              setState(() {
+                                post.comments.add(newComment);
+                              });
+                              _commentController.clear();
+                              Navigator.pop(context);
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }
