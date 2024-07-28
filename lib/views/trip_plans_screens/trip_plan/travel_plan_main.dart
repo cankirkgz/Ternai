@@ -140,7 +140,7 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
                 selectedValue = false;
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                    content: Text('Lütfen tatil planı alanlarından en az birini doldurun!'),
                     backgroundColor: Colors.red,
                     duration: Duration(seconds: 1),
                   ),
@@ -148,9 +148,13 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
               }
             }
 
-            setState(() {
-              ref.read(bottomNavigationBarProvider.notifier).changePage(index);
-            });
+            if(selectedValue)
+            {
+              setState(() {
+                ref.read(bottomNavigationBarProvider.notifier).changePage(index);
+              });
+            }
+    
           },
           items: const [
             BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),

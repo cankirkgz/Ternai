@@ -138,7 +138,7 @@ class _BudgetPlanPageState extends ConsumerState<BudgetPlanPage> {
                           child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
                         ),
                       ]),
-                    if (travelInformation.kid) ...[
+                  if (travelInformation.kid) ...[
                       TableRow(
                           decoration:
                               BoxDecoration(color: Colors.orange.withOpacity(0.65)),

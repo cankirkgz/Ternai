@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
@@ -9,44 +10,26 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/welcome_page.jpeg"),
-                fit: BoxFit.cover,
-                colorFilter: ColorFilter.mode(
-                    Colors.black.withOpacity(0.65), BlendMode.dstATop),
+      body: Container(
+        color: Colors.white,
+        child: Column(
+          children: [
+            const Spacer(flex: 2),
+            const Text(
+              "Ternai",
+              style: TextStyle(
+                fontSize: 35.0,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          Align(
-            alignment: Alignment.topCenter,
-            child: Padding(
-              padding: EdgeInsets.only(top: screenHeight * 0.2),
-              child: Text(
-                "Gezi Rehberi",
-                style: TextStyle(
-                  fontSize: 35.0,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: screenHeight * 0.25,
-                  horizontal: screenWidth * 0.05),
+            const Spacer(flex: 2),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.1),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
                 children: [
                   CustomButton(
                     text: "Giriş Yap",
@@ -73,21 +56,23 @@ class WelcomeScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 20.0),
-                  GestureDetector(
-                    onTap: () {
-                      // Google sign in logic here
-                    },
-                    child: Image.asset(
-                      'assets/images/google_logo.webp',
-                      height: screenHeight * 0.09,
-                    ),
-                  ),
                 ],
               ),
             ),
-          ),
-        ],
+            const Spacer(flex: 1),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                "Kayıt olarak, bu uygulamanın gizlilik politikasını ve kullanım şartlarını okuduğunuzu ve kabul ettiğinizi onaylamış olursunuz.",
+                style: GoogleFonts.poppins(
+                  fontSize: 9.0,
+                  color: Colors.grey[600],
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

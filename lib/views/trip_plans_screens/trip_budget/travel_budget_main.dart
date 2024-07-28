@@ -121,7 +121,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                     selectedValue = false;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
-                        content: Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                        content: Text('Lütfen tatil planı alanlarından en az birini doldurun!'),
                         backgroundColor: Colors.red,
                         duration: Duration(seconds: 1),
                       ),
