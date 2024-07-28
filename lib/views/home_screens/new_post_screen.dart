@@ -58,55 +58,56 @@ class _NewPostScreenState extends State<NewPostScreen> {
       body:  Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 2.0, horizontal: 20.0),
+            horizontal: 20.0),
               child: SizedBox(
-                height: 700,
+                height: 650,
                 child: Card(
                 elevation: 4.0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.0),
                   ),
                 child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
                 const Padding(
-                  padding: EdgeInsets.only(left:70 ,right:60 ),
+                  padding: EdgeInsets.only(left:30 ,right:100 ),
                   child: Text(
                     style: TextStyle(
                       color: Colors.blue,
                       fontSize: 20,),
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                         'Anılarınızı paylaşmak ister misiniz?'),
                 ),
-                const SizedBox(height: 15),
-                  ElevatedButton(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.blue),),
-                    onPressed: (){_shareImage();}, 
-                    child:const Text(
-                      style: TextStyle(color: Colors.white,),
-                      'Fotoğraf ekleyin ')),
-                const SizedBox(height: 8),
+                  Padding(
+                    padding: const EdgeInsets.only(left:40,right:90 ),
+                    child: ElevatedButton(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.blue),),
+                      onPressed: (){_shareImage();}, 
+                      child:const Text(
+                        style: TextStyle(color: Colors.white,),
+                        'Fotoğraf ekleyin ')),
+                  ),
                 Padding(
-                  padding: EdgeInsets.all(8.0),
+                  padding: EdgeInsets.only(left:10,right:90),
                   child: SizedBox(height:100
                   ,width: 250,
                     child: TextField(
-                          minLines: 3,
-                          maxLines: 6,
-                          keyboardType: TextInputType.multiline,
-                          controller: _numberController,
-                          decoration:  InputDecoration(
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20),),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius:BorderRadius.circular(20),),
-                            hintText:'Yorum ekleyin',
-                            hintStyle: TextStyle(fontSize: 13)),
-                        ),
+                      minLines: 3,
+                      maxLines: 6,
+                      keyboardType: TextInputType.multiline,
+                      controller: _numberController,
+                      decoration:  InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20),),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(20),),
+                        hintText:'Yorum yazın',
+                        hintStyle: TextStyle(fontSize: 13)),
+                      ),
                   ),
                 ),
-                const SizedBox(height: 8),
+                
                 Padding(
-                  padding: const EdgeInsets.only(left: 70,right: 70),
+                  padding: const EdgeInsets.only(left: 10,right: 90),
                   child: CustomDropDownButton(
                           listName: "Ülke",
                           items: {
@@ -123,10 +124,10 @@ class _NewPostScreenState extends State<NewPostScreen> {
                         ),
                 ),
                   Padding(
-                  padding: EdgeInsets.only(top: 70),
+                  padding: EdgeInsets.only(top:2,bottom: 50,left: 40,right: 100),
                   child: ElevatedButton(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.blue),),
                     onPressed: (){}, 
-                    child:Text(
+                    child:const Text(
                       style: TextStyle(color: Colors.white,),
                       'Paylaş ')),
                 ),
