@@ -18,9 +18,9 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             const Spacer(flex: 2),
-            const Text(
+            Text(
               "Ternai",
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 35.0,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
