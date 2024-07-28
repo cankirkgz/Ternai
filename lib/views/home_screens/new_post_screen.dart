@@ -17,12 +17,9 @@ class NewPostScreen extends StatefulWidget {
 }
 
 class _NewPostScreenState extends State<NewPostScreen> {
-  // ignore: unused_field
-  File? _selectedImage;
   File? _image;
-  // ignore: unused_field
-  String? _profileImageUrl;
   Country? selectedCountry;
+  
   
   final ApiService _apiService = ApiService();
   final ImagePicker _picker = ImagePicker();
@@ -126,7 +123,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
                   Padding(
                   padding: EdgeInsets.only(top:2,bottom: 50,left: 40,right: 100),
                   child: ElevatedButton(style: ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.blue),),
-                    onPressed: (){}, 
+                    onPressed: (){Navigator.of(context).pop();
+                                  _uploadImage(context);}, 
                     child:const Text(
                       style: TextStyle(color: Colors.white,),
                       'Paylaş ')),
@@ -175,8 +173,8 @@ class _NewPostScreenState extends State<NewPostScreen> {
       _showConfirmationDialog();
     }
   }
-Future<void> _uploadImage(BuildContext context) async {
-if (_image != null) {
+  Future<void> _uploadImage(BuildContext context) async {
+  if (_image != null) {
       try {
         // Get the user ID
         final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
@@ -214,6 +212,8 @@ if (_image != null) {
       }
     }
   }
+
+
 void _showConfirmationDialog() {
     showDialog(
       context: context,
@@ -234,9 +234,11 @@ void _showConfirmationDialog() {
               child: const Text('Vazgeç'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () {setState(() {
+                ;
+              });
                 Navigator.of(context).pop();
-                _uploadImage(context);
+                
               },
               child: const Text('Kaydet'),
             ),
