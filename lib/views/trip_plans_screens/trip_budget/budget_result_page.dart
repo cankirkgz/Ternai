@@ -40,7 +40,7 @@ class BudgetResultPage extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
+                          const Center(
                             child: Text(
                               'Önerilen Bütçe',
                               style: TextStyle(
@@ -54,21 +54,21 @@ class BudgetResultPage extends ConsumerWidget {
                           MarkdownBody(
                             data: budget,
                             styleSheet: MarkdownStyleSheet(
-                              h1: TextStyle(
+                              h1: const TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primaryColor,
                               ),
-                              h2: TextStyle(
+                              h2: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue,
                               ),
-                              p: TextStyle(
+                              p: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
                               ),
-                              listBullet: TextStyle(
+                              listBullet: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
                               ),
@@ -102,14 +102,14 @@ class BudgetResultPage extends ConsumerWidget {
 
                       // Başarı mesajı göster
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Plan başarıyla kaydedildi!'),
                         ),
                       );
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NewTripScreen()));
+                              builder: (context) => const NewTripScreen()));
                     },
                     color: AppColors.primaryColor,
                   ),

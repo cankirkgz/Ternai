@@ -36,13 +36,13 @@ class ApiService {
   }
 
   // Ürün veya hizmetleri getiren fonksiyon
-  Future<List<ProductService>> getProductServices() async {
+  Future<List<ProductModel>> getProductServices() async {
     try {
       QuerySnapshot snapshot =
           await _firestore.collection('products_services').get();
       return snapshot.docs
-          .map((doc) => ProductService.fromMap(
-              doc.data() as Map<String, dynamic>, doc.id))
+          .map((doc) =>
+              ProductModel.fromMap(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
     } catch (e) {
       print("Error getting product services: $e");
