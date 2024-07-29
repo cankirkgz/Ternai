@@ -13,6 +13,11 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 
 class DayResultPage extends ConsumerWidget {
+
+  final DayPlanModel? plan;
+
+  const DayResultPage({super.key, this.plan});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final planViewModel = ref.watch(planViewModelProvider);
@@ -20,7 +25,8 @@ class DayResultPage extends ConsumerWidget {
     final authViewModel = ref.watch(authViewModelProvider);
     final uuid = Uuid();
 
-    final day = ref.watch(dayProvider);
+    final day = plan?.result ?? ref.watch(dayProvider)!;
+
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -81,7 +87,7 @@ class DayResultPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(
+                  if (plan == null) CustomButton(
                     text: 'Kaydet',
                     onPressed: () async {
                       final DayPlanModel dayPlanModel = DayPlanModel(

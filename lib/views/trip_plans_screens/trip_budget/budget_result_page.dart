@@ -11,6 +11,11 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 
 class BudgetResultPage extends ConsumerWidget {
+
+  final BudgetPlanModel? plan;
+
+  const BudgetResultPage({super.key, this.plan});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final planViewModel = ref.watch(planViewModelProvider);
@@ -18,7 +23,7 @@ class BudgetResultPage extends ConsumerWidget {
     final authViewModel = ref.watch(authViewModelProvider);
     final uuid = Uuid();
 
-    final budget = ref.watch(budgetProvider);
+    final budget = plan?.result ?? ref.watch(budgetProvider)!;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -79,7 +84,7 @@ class BudgetResultPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(
+                  if (plan == null) CustomButton(
                     text: 'Kaydet',
                     onPressed: () async {
                       final BudgetPlanModel plan = BudgetPlanModel(

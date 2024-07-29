@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/models/plan_plan_model.dart';
 import 'package:travelguide/theme/theme.dart';
@@ -9,10 +10,14 @@ import 'package:travelguide/viewmodels/plan_viewmodel.dart';
 import 'package:travelguide/viewmodels/travel_plan_model.dart';
 import 'package:travelguide/views/home_screens/new_trip_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 
 class PlanResultPage extends ConsumerWidget {
+
+  final PlanPlanModel? plan;
+
+  const PlanResultPage({super.key, this.plan});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final planViewModel = ref.watch(planViewModelProvider);
@@ -20,7 +25,7 @@ class PlanResultPage extends ConsumerWidget {
     final authViewModel = ref.watch(authViewModelProvider);
     final uuid = Uuid();
 
-    final travelPlan = ref.watch(travelPlanProvider);
+    final travelPlan = plan?.result ?? ref.watch(travelPlanProvider)!;
     return Scaffold(
       backgroundColor: Colors.grey[200],
       body: SafeArea(
@@ -81,7 +86,7 @@ class PlanResultPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  CustomButton(
+                  if (plan == null) CustomButton(
                     text: 'Kaydet',
                     onPressed: () async {
                       final PlanPlanModel plan = PlanPlanModel(

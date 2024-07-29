@@ -2,21 +2,30 @@ part of 'previous_trips_screen.dart';
 
 mixin _PreviousTripsScreenMixin on State<PreviousTripsScreen> {
 
-  Future<List<PrevTravel>> fetchUserVacations() async {
+  Future<List<BudgetPlanModel>> fetchBudgetPlans(String userId) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final budgetPlansData = userDoc.data()?['budget_plans'] as List<dynamic>? ?? [];
 
-    AuthService authService = AuthService();
-    final user = (await authService.getCurrentUser());
-    if (user == null) {
-      throw Exception('User is not logged in');
-    }
-    final userId = user.userId;
-
-    final recentTravels = FirebaseFirestore.instance.collection('recent_travels');
-    final querySnapshot = await recentTravels.where('userId', isEqualTo: userId).get();
-
-    return querySnapshot.docs.map((doc) {
-      return PrevTravel.fromFirestore(doc.data(), doc.id);
+    return budgetPlansData.map((data) {
+      return BudgetPlanModel.fromJson(data as Map<String, dynamic>);
     }).toList();
   }
 
+  Future<List<DayPlanModel>> fetchDayPlans(String userId) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final dayPlansData = userDoc.data()?['day_plans'] as List<dynamic>? ?? [];
+
+    return dayPlansData.map((data) {
+      return DayPlanModel.fromJson(data as Map<String, dynamic>);
+    }).toList();
+  }
+
+  Future<List<PlanPlanModel>> fetchPlanPlans(String userId) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final planPlansData = userDoc.data()?['plan_plans'] as List<dynamic>? ?? [];
+
+    return planPlansData.map((data) {
+      return PlanPlanModel.fromJson(data as Map<String, dynamic>);
+    }).toList();
+  }
 }
