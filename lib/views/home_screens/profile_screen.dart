@@ -211,11 +211,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Padding(
             padding: const EdgeInsets.only(
               top: 200,
-              left: 10,
-              right: 10,
             ),
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3, // Her satırda 3 kutucuk
               ),
               itemCount: 25,
