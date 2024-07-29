@@ -98,6 +98,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
           child: ListView(
             children: [
+              ElevatedButton(
+                onPressed: _addCategories,
+                child: Text('Kategorileri Ekle'),
+              ),
               Card(
                 shape: RoundedRectangleBorder(
                   borderRadius:
@@ -295,5 +299,41 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
     );
+  }
+
+  Future<void> _addCategories() async {
+    final List<Map<String, String>> categories = [
+      {'id': 'accommodation', 'name': 'Konaklama'},
+      {'id': 'fuel', 'name': 'Yakıt'},
+      {'id': 'market', 'name': 'Market'},
+      {'id': 'museum', 'name': 'Müze'},
+      {'id': 'public_transport', 'name': 'Toplu Taşıma'},
+      {'id': 'restaurant', 'name': 'Restoran'},
+      {'id': 'shopping', 'name': 'Alışveriş'},
+      {'id': 'tourist_attraction', 'name': 'Turistik Yerler'},
+      {'id': 'health', 'name': 'Sağlık'},
+      {'id': 'entertainment', 'name': 'Eğlence'},
+      {'id': 'emergency', 'name': 'Acil Durum'},
+      {'id': 'bank', 'name': 'Banka'},
+    ];
+
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      for (var category in categories) {
+        await firestore
+            .collection('categories')
+            .doc(category['id'])
+            .set({'name': category['name']});
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kategoriler başarıyla eklendi')),
+      );
+    } catch (e) {
+      print('Error adding categories: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kategoriler eklenirken bir hata oluştu')),
+      );
+    }
   }
 }

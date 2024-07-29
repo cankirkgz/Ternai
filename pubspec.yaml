@@ -52,6 +52,7 @@ dependencies:
   firebase_storage: ^12.1.1
   flutter_markdown: ^0.7.3
   uuid: ^3.0.6
+  flutter_svg_provider: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -79,6 +80,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/1.0X/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
