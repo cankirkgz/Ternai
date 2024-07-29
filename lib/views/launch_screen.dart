@@ -48,7 +48,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
       } else {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const WelcomeScreen()),
+          MaterialPageRoute(builder: (context) => WelcomeScreen()),
         );
       }
     }

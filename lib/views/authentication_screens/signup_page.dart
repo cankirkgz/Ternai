@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
@@ -190,7 +189,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
                         const CustomOrDivider(),
                         const SizedBox(height: 10),
-                        Logo(Logos.google),
+                        GestureDetector(
+                    onTap: () {
+                      // Google sign in logic here
+                    },
+                    child: Image.asset(
+                      'assets/images/google_logo.webp',
+                      height: screenHeight * 0.09,
+                    ),
+                  ),
                         const SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
