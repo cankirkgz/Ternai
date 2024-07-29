@@ -74,6 +74,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
           title: const Text('Şifre Değiştir'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
@@ -151,14 +154,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void _startVerificationPolling() {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    Timer.periodic(Duration(seconds: 5), (timer) async {
+    Timer.periodic(const Duration(seconds: 5), (timer) async {
       await authViewModel.reloadUser();
       if (authViewModel.user?.emailVerified ?? false) {
         await authViewModel.updateUserField(authViewModel.user!.userId, {
           'email_verified': true,
         });
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('E-posta adresiniz doğrulandı.'),
           ),
         );
@@ -171,120 +174,123 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    final userName = authViewModel.user?.name ?? 'Kullanıcı';
-    final userMail = authViewModel.user?.email ?? 'Kullanıcı';
     final userId = authViewModel.user?.userId ?? 'Kullanıcı';
     final emailVerified = authViewModel.user?.emailVerified ?? false;
 
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Ayarlar')),
+      appBar: AppBar(
+        title: const Text(
+          'Ayarlar',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: AppColors.primaryColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
-          color: Colors.transparent,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(60),
-            topRight: Radius.circular(60),
+          gradient: LinearGradient(
+            colors: [AppColors.primaryColor, AppColors.backgroundColor],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
-        height: screenHeight * 0.97,
-        width: double.infinity,
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  SizedBox(height: 230),
-                  CustomTextField(
-                    controller: _usernameController,
-                    labelText: 'Kullanıcı Adı',
-                    suffixIcon: CupertinoIcons.person,
-                    validator: _usernameValidator,
-                  ),
-                  CustomTextField(
-                    controller: _birthDateController,
-                    labelText: 'Doğum Tarihi',
-                    suffixIcon: CupertinoIcons.calendar_today,
-                    validator: null,
-                    enabled: false,
-                  ),
-                  CustomTextField(
-                    controller: _emailController,
-                    labelText: "E-mail",
-                    suffixIcon: CupertinoIcons.envelope,
-                    validator: null,
-                    enabled: false,
-                  ),
-                  SizedBox(height: 20),
-                  CustomButton(
-                    text: "Profili Güncelle",
-                    color: AppColors.primaryColor,
-                    onPressed: _isChanged
-                        ? () async {
-                            if (_formKey.currentState!.validate()) {
-                              final currentUserName =
-                                  authViewModel.user?.name ?? '';
-                              if (_usernameController.text != currentUserName) {
-                                Map<String, dynamic> data = {
-                                  'name': _usernameController.text,
-                                };
-                                await authViewModel.updateUserField(
-                                    userId, data);
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Kullanıcı adı güncellendi.'),
-                                  ),
-                                );
-                                setState(() {
-                                  _isChanged = false;
-                                });
-                              }
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                const SizedBox(height: 230),
+                CustomTextField(
+                  controller: _usernameController,
+                  labelText: 'Kullanıcı Adı',
+                  suffixIcon: CupertinoIcons.person,
+                  validator: _usernameValidator,
+                ),
+                CustomTextField(
+                  controller: _birthDateController,
+                  labelText: 'Doğum Tarihi',
+                  suffixIcon: CupertinoIcons.calendar_today,
+                  validator: null,
+                  enabled: false,
+                ),
+                CustomTextField(
+                  controller: _emailController,
+                  labelText: "E-mail",
+                  suffixIcon: CupertinoIcons.envelope,
+                  validator: null,
+                  enabled: false,
+                ),
+                const SizedBox(height: 20),
+                CustomButton(
+                  text: "Profili Güncelle",
+                  color: AppColors.primaryColor,
+                  onPressed: _isChanged
+                      ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            final currentUserName =
+                                authViewModel.user?.name ?? '';
+                            if (_usernameController.text != currentUserName) {
+                              Map<String, dynamic> data = {
+                                'name': _usernameController.text,
+                              };
+                              await authViewModel.updateUserField(userId, data);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Kullanıcı adı güncellendi.'),
+                                ),
+                              );
+                              setState(() {
+                                _isChanged = false;
+                              });
                             }
                           }
-                        : null,
-                    width: screenWidth * 0.7,
-                  ),
-                  SizedBox(height: 20),
-                  CustomButton(
-                    text: "Şifreyi Değiştir",
-                    color: AppColors.primaryColor,
-                    onPressed: () {
-                      _changePassword(context);
-                    },
-                    width: screenWidth * 0.7,
-                  ),
-                  SizedBox(height: 20),
-                  if (!emailVerified)
-                    CustomButton(
-                      text: "Doğrulama E-postası Gönder",
-                      color: Colors.orange,
-                      onPressed: () async {
-                        try {
-                          await authViewModel.sendEmailVerification();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Doğrulama e-postası gönderildi.'),
-                            ),
-                          );
-                          _startVerificationPolling();
-                        } catch (e) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                  'E-posta gönderilirken bir hata oluştu.'),
-                            ),
-                          );
                         }
-                      },
-                      width: screenWidth * 0.7,
-                    ),
-                ],
-              ),
+                      : null,
+                  width: screenWidth * 0.8,
+                ),
+                const SizedBox(height: 20),
+                CustomButton(
+                  text: "Şifreyi Değiştir",
+                  color: AppColors.primaryColor,
+                  onPressed: () {
+                    _changePassword(context);
+                  },
+                  width: screenWidth * 0.8,
+                ),
+                const SizedBox(height: 20),
+                if (!emailVerified)
+                  CustomButton(
+                    text: "Doğrulama E-postası Gönder",
+                    color: Colors.orange,
+                    onPressed: () async {
+                      try {
+                        await authViewModel.sendEmailVerification();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Doğrulama e-postası gönderildi.'),
+                          ),
+                        );
+                        _startVerificationPolling();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content:
+                                Text('E-posta gönderilirken bir hata oluştu.'),
+                          ),
+                        );
+                      }
+                    },
+                    width: screenWidth * 0.8,
+                  ),
+              ],
             ),
           ),
         ),
