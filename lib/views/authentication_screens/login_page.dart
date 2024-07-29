@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
-                color: AppColors.secondaryColor,
+                color: Colors.black,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,7 +197,7 @@ class _LoginPageState extends State<LoginPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const HomeScreen()),
+                                      builder: (context) => const HomePage()),
                                 );
                               }
                             } catch (e) {

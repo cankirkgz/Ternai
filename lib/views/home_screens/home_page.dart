@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           color: Colors.transparent,
           child: AnimatedBottomNavigationBar.builder(
-            height: 70,
+            height: 55,
             itemCount: _icons.length,
             tabBuilder: (int index, bool isActive) {
               final color = isActive ? Colors.white : Colors.white;
@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             },
-            backgroundColor: AppColors.primaryColor,
+            backgroundColor: Colors.black,
             activeIndex: _selectedIndex,
             splashColor: AppColors.primaryColor,
             notchSmoothness: NotchSmoothness.smoothEdge,
