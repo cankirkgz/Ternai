@@ -111,14 +111,27 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen> with _Previou
                           ),
                           Padding(
                             padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
-                            child: Text(
-                              textAlign: TextAlign.center,
-                              '${plan.toCountry} - ${plan.numberOfPeople} kişi için ${plan.numberOfDays} günlük tatil. Bütçe: ${plan.budget}\$',
-                              style: TextStyle(
-                                color: Colors.grey[900],
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  textAlign: TextAlign.center,
+                                  '${plan.toCountry} - ${plan.numberOfPeople} kişi için ${plan.numberOfDays} günlük tatil.',
+                                  style: TextStyle(
+                                    color: Colors.grey[900],
+                                    fontSize: 15.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                if (plan is! BudgetPlanModel)
+                                  Text(
+                                    'Bütçe: ${plan.budget}\$',
+                                    style: TextStyle(
+                                      color: Colors.grey[900],
+                                      fontSize: 15.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                              ],
                             ),
                           ),
                         ],
