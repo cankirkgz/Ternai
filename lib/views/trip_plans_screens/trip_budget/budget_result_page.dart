@@ -1,9 +1,6 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:travelguide/models/budget_plan_model.dart';
-import 'package:travelguide/models/kid_model.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
@@ -86,52 +83,33 @@ class BudgetResultPage extends ConsumerWidget {
                     text: 'Kaydet',
                     onPressed: () async {
                       final BudgetPlanModel plan = BudgetPlanModel(
-                        id: uuid.v4(), // Örnek veri
-                        fromCountry: 'Turkey', // Örnek veri
-                        toCountry: travelInformation.country, // Örnek veri
-                        numberOfDays:
-                            travelInformation.numberOfDays, // Örnek veri
-                        numberOfPeople:
-                            travelInformation.numberOfPeople, // Örnek veri
-                        kids: travelInformation.children, // Örnek veri
-                        breakfastPlan:
-                            travelInformation.breakfastPlan, // Örnek veri
-                        mealPlan:
-                            travelInformation.foodPreferences, // Örnek veri
+                        id: uuid.v4(),
+                        fromCountry: authViewModel.user!.country!.name,
+                        toCountry: travelInformation.country,
+                        numberOfDays: travelInformation.numberOfDays,
+                        numberOfPeople: travelInformation.numberOfPeople,
+                        kids: travelInformation.children,
+                        breakfastPlan: travelInformation.breakfastPlan,
+                        mealPlan: travelInformation.foodPreferences,
                         entertainmentPreferences:
-                            travelInformation.placesToVisit, // Örnek veri
-                        shoppingPlans:
-                            travelInformation.shoppingPlans, // Örnek veri
-                        specialRequests:
-                            travelInformation.specialRequests, // Örnek veri
-                        result: budget, // Markdown verisi
+                            travelInformation.placesToVisit,
+                        shoppingPlans: travelInformation.shoppingPlans,
+                        specialRequests: travelInformation.specialRequests,
+                        result: budget,
                       );
                       await planViewModel.createPlan(
                           authViewModel.user!.userId, plan.toJson());
 
                       // Başarı mesajı göster
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Başarılı'),
-                            content: Text('Plan başarıyla kaydedildi!'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              NewTripScreen()));
-                                },
-                                child: Text('Tamam'),
-                              ),
-                            ],
-                          );
-                        },
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Plan başarıyla kaydedildi!'),
+                        ),
                       );
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewTripScreen()));
                     },
                     color: AppColors.primaryColor,
                   ),
@@ -146,7 +124,6 @@ class BudgetResultPage extends ConsumerWidget {
   }
 }
 
-// PlanViewModel için Riverpod provider'ı oluşturuyoruz
 final planViewModelProvider = ChangeNotifierProvider((ref) => PlanViewModel());
 final authViewModelProvider = ChangeNotifierProvider((ref) => AuthViewModel());
 

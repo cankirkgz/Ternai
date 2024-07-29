@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/models/user_model.dart';
 
 class AuthService {

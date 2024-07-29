@@ -103,10 +103,19 @@ class DayResultPage extends ConsumerWidget {
                       );
                       await planViewModel.createPlan(
                           authViewModel.user!.userId, dayPlanModel.toJson());
+
+                      // Kullanıcıya başarı mesajı göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Plan başarıyla kaydedildi!'),
+                        ),
+                      );
+
                       Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NewTripScreen()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewTripScreen()),
+                      );
                     },
                     color: AppColors.primaryColor,
                   ),

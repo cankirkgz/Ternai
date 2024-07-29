@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
+
 import '../services/firestore_service.dart';
 
 class AuthViewModel extends ChangeNotifier {
@@ -17,7 +18,7 @@ class AuthViewModel extends ChangeNotifier {
   Future<void> _initializeUser() async {
     _user = await _authService.getCurrentUser();
     if (_user != null) {
-      _user = await _firestoreService.getUser(_user!.userId);
+      _user = _firestoreService.getUser(_user!.userId)    as UserModel?;
     }
     notifyListeners();
   }
@@ -36,7 +37,7 @@ class AuthViewModel extends ChangeNotifier {
     await _authService.signUpWithEmail(email, password, name);
     _user = await _authService.getCurrentUser();
     if (_user != null) {
-      _user = await _firestoreService.getUser(_user!.userId);
+      await _firestoreService.createUser(_user!);
     }
     notifyListeners();
   }
