@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/models/category_model.dart';
 import 'package:travelguide/models/country_model.dart';
@@ -83,6 +84,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -90,13 +92,6 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
         title: const Text("Fiyat arama sayfası"),
       ),
       body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.65,
-            image: AssetImage("assets/images/welcome_page.jpeg"),
-            fit: BoxFit.cover,
-          ),
-        ),
         child: Padding(
           padding: EdgeInsets.symmetric(
               horizontal: screenWidth * 0.1, vertical: screenHeight * 0.1),
@@ -105,12 +100,12 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(bottom: 10.0),
                   child: Text(
                     "Bilgi almak istediğiniz hizmet ile ilgili:",
                     style:
-                        TextStyle(fontSize: 24, color: AppColors.primaryColor),
+                        GoogleFonts.poppins(fontSize: 18, color: AppColors.textColor),
                   ),
                 ),
                 CustomDropDownButton(

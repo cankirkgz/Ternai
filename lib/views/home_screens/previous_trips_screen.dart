@@ -1,6 +1,7 @@
 // ignore: unused_import
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:travelguide/theme/theme.dart';
 
 class PreviousTripsScreen extends StatelessWidget {
   const PreviousTripsScreen({super.key});
@@ -8,6 +9,7 @@ class PreviousTripsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -18,15 +20,6 @@ class PreviousTripsScreen extends StatelessWidget {
       body: SizedBox(
         child: Stack(
           children: <Widget>[
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  opacity: 0.65,
-                  image: AssetImage("assets/images/welcome_page.jpeg"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             ListView(
               children: <Widget>[
                 Container(

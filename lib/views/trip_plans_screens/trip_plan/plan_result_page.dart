@@ -2,13 +2,24 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/models/plan_plan_model.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/viewmodels/plan_viewmodel.dart';
+import 'package:travelguide/viewmodels/travel_plan_model.dart';
+import 'package:travelguide/views/home_screens/new_trip_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:uuid/uuid.dart';
 
 class PlanResultPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final planViewModel = ref.watch(planViewModelProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
+    final authViewModel = ref.watch(authViewModelProvider);
+    final uuid = Uuid();
+
     final travelPlan = ref.watch(travelPlanProvider);
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -71,9 +82,40 @@ class PlanResultPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 20),
                   CustomButton(
-                    text: 'Geri Dön',
-                    onPressed: () {
-                      Navigator.pop(context);
+                    text: 'Kaydet',
+                    onPressed: () async {
+                      final PlanPlanModel plan = PlanPlanModel(
+                        id: uuid.v4(),
+                        fromCountry: authViewModel.user!.country!.name,
+                        toCountry: travelInformation.toCountry,
+                        numberOfDays: travelInformation.numberOfDays,
+                        numberOfPeople: travelInformation.numberOfPeople,
+                        kids: travelInformation.children,
+                        budget: travelInformation.budget,
+                        currency: travelInformation.currency,
+                        breakfastPlan: travelInformation.breakfastPlan,
+                        mealPlan: travelInformation.foodPreferences,
+                        entertainmentPreferences:
+                            travelInformation.entertainmentPreferences,
+                        shoppingPlans: travelInformation.shoppingPlans,
+                        specialRequests: travelInformation.specialRequests,
+                        result: travelPlan,
+                      );
+                      await planViewModel.createPlan(
+                          authViewModel.user!.userId, plan.toJson());
+
+                      // Kullanıcıya başarı mesajı göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Plan başarıyla kaydedildi!'),
+                        ),
+                      );
+
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewTripScreen()),
+                      );
                     },
                     color: AppColors.primaryColor,
                   ),
@@ -87,5 +129,8 @@ class PlanResultPage extends ConsumerWidget {
     );
   }
 }
+
+final planViewModelProvider = ChangeNotifierProvider((ref) => PlanViewModel());
+final authViewModelProvider = ChangeNotifierProvider((ref) => AuthViewModel());
 
 final travelPlanProvider = StateProvider<String>((ref) => '');

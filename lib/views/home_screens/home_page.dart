@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               );
             },
-            backgroundColor: Colors.black,
+            backgroundColor: AppColors.primaryColor,
             activeIndex: _selectedIndex,
             splashColor: AppColors.primaryColor,
             notchSmoothness: NotchSmoothness.smoothEdge,

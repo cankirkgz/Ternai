@@ -149,38 +149,40 @@ class _PlanPlanPageState extends ConsumerState<PlanPlanPage> {
                               Text(travelInformation.numberOfPeople.toString()),
                         ),
                       ]),
-                      TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Çocuk var mı'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
-                        ),
-                      ]),
                   if (travelInformation.kid) ...[
-                      TableRow(
-                          decoration:
-                              BoxDecoration(color: Colors.orange.withOpacity(0.65)),
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: Text('Çocuk Bilgileri'),
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk var mı'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                                Text(travelInformation.kid ? 'Evet' : 'Hayır'),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.orange.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk Bilgileri'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: travelInformation.children.map((child) {
+                                return Text(
+                                    'Yaş: ${child.age}, Cinsiyet: ${child.gender}');
+                              }).toList(),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: travelInformation.children.map((child) {
-                                  return Text('Yaş: ${child.kidAge}, Cinsiyet: ${child.kidGender}');
-                                }).toList(),
-                              ),
-                            ),
-                          ]),
+                          ),
+                        ]),
                   ],
                   TableRow(
                       decoration:
@@ -231,7 +233,8 @@ class _PlanPlanPageState extends ConsumerState<PlanPlanPage> {
                         ),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.entertainmentPreferences),
+                          child:
+                              Text(travelInformation.entertainmentPreferences),
                         ),
                       ]),
                   TableRow(

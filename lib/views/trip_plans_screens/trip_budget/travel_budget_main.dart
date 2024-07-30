@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/budget_plan_model.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_plan_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
@@ -32,30 +33,19 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
         ref.read(travelInformationProvider.notifier).reset();
       },
       child: Scaffold(
+          backgroundColor: AppColors.backgroundColor,
           extendBodyBehindAppBar: true,
-          backgroundColor: Colors.white.withOpacity(0.65),
           appBar: AppBar(
-            backgroundColor: Colors.white, // Arka planı beyaz yap
+            backgroundColor: Colors.transparent, // Arka planı beyaz yap
             elevation: 0, // Gölgeyi kaldırmak için 0 yapabilirsiniz
             title: const Text(
               'Tatil Bütçesi Hesaplama',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 18,
-              ), // Metin rengini siyah yap
             ),
           ),
           body: Consumer(
             builder: (context, ref, _) {
               final _currentIndex = ref.watch(bottomNavigationBarProvider);
               return Container(
-                  decoration: const BoxDecoration(
-                    image: DecorationImage(
-                      opacity: 0.65,
-                      image: AssetImage("assets/images/welcome_page.jpeg"),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
                   child: _pages[_currentIndex]);
             },
           ),
@@ -131,17 +121,24 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
 
                 if (selectedValue) {
                   setState(() {
-                    ref.read(bottomNavigationBarProvider.notifier).changePage(index);
+                    ref
+                        .read(bottomNavigationBarProvider.notifier)
+                        .changePage(index);
                   });
                 }
               },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),
-                BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Kişi Sayısı'),
-                BottomNavigationBarItem(icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
-                BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Yerler'),
-                BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
-                BottomNavigationBarItem(icon: Icon(Icons.attach_money), label: 'Bütçe'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.people), label: 'Kişi Sayısı'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_today), label: 'Gün Sayısı'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.place), label: 'Yerler'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.schedule), label: 'Plan'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.attach_money), label: 'Bütçe'),
               ],
             );
           })),
