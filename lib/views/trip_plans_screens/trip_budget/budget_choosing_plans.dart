@@ -19,189 +19,187 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: Text(
-                "Mükemmel bir tatil için bütçe oluşturalım!",
+        child: Padding(
+          padding: const EdgeInsets.only(top: 90.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 10.0),
+                child: Text(
+                  "Mükemmel bir tatil için bütçe oluşturalım!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: AppColors.primaryColor,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const Text(
+                'Tatilinizde yapmak istediğiniz her şeyi anlatın:',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 24,
-                    color: AppColors.primaryColor,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Tatilinizde yapmak istediğiniz her şeyi anlatın:',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Kahvaltı planları:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: kahvaltiController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Kahvaltı planları:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateKahvaltiPlani(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Yemek tercihleri:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: yemekTercihleriController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Nasıl bir yerde yemek yemek istiyorsunuz?',
+                    TextField(
+                      controller: breakfastPlanController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText:
+                            'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updateBreakfastPlan(value);
+                      },
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateYemekTercihleri(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Gezilecek yerler:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: gezilecekYerlerController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Hangi yerleri gezmek istiyorsunuz?',
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Yemek tercihleri:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateGezilecekYerler(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Eğlence tercihleri:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: eglenceTercihleriController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Eğlence için neleri tercih ediyorsunuz?',
+                    TextField(
+                      controller: foodPreferencesController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Nasıl bir yerde yemek yemek istiyorsunuz?',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updateFoodPreferences(value);
+                      },
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateEglenceTercihleri(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Alışveriş planları:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: alisverisPlanlariController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Gezilecek yerler:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateAlisverisPlanlari(value);
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Özel istekler:',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  TextField(
-                    controller: ozelIsteklerController,
-                    maxLines: 3,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText:
-                          'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',
+                    TextField(
+                      controller: placesToVisitController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Hangi yerleri gezmek istiyorsunuz?',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updatePlacesToVisit(value);
+                      },
                     ),
-                    onChanged: (value) {
-                      ref
-                          .read(travelInformationProvider.notifier)
-                          .updateOzelIstekler(value);
-                    },
-                  ),
-                ],
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Eğlence tercihleri:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextField(
+                      controller: entertainmentPreferencesController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText: 'Eğlence için neleri tercih ediyorsunuz?',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updateEntertainmentPreferences(value);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Alışveriş planları:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextField(
+                      controller: shoppingPlansController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText:
+                            'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updateShoppingPlans(value);
+                      },
+                    ),
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Özel istekler:',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    TextField(
+                      controller: specialRequestsController,
+                      maxLines: 3,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        hintText:
+                            'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',
+                      ),
+                      onChanged: (value) {
+                        ref
+                            .read(travelInformationProvider.notifier)
+                            .updateSpecialRequests(value);
+                      },
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            CustomButton(
-              text: 'Devam',
-              onPressed: () {
-                final travelInfo = ref.read(travelInformationProvider.notifier);
-
-                if (kahvaltiController.text.isEmpty &&
-                    yemekTercihleriController.text.isEmpty &&
-                    gezilecekYerlerController.text.isEmpty &&
-                    eglenceTercihleriController.text.isEmpty &&
-                    alisverisPlanlariController.text.isEmpty &&
-                    ozelIsteklerController.text.isEmpty) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'Lütfen tatil planı alanlarından en az birini doldurun!'),
-                      backgroundColor: Colors.red,
-                    ),
-                  );
-                } else {
-                  travelInfo.updateKahvaltiPlani(kahvaltiController.text);
-                  travelInfo
-                      .updateYemekTercihleri(yemekTercihleriController.text);
-                  travelInfo
-                      .updateGezilecekYerler(gezilecekYerlerController.text);
-                  travelInfo.updateEglenceTercihleri(
-                      eglenceTercihleriController.text);
-                  travelInfo.updateAlisverisPlanlari(
-                      alisverisPlanlariController.text);
-                  travelInfo.updateOzelIstekler(ozelIsteklerController.text);
-
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                          'Ne kadar çok detay verirseniz, o kadar sağlam bir bütçe tahmini alabilirsiniz!'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                  ref.read(bottomNavigationBarProvider.notifier).changePage(4);
-                }
-              },
-              color: AppColors.primaryColor,
-            ),
-          ],
+              const SizedBox(height: 20),
+              CustomButton(
+                text: 'Devam',
+                onPressed: () {
+                  final travelInfo = ref.read(travelInformationProvider.notifier);
+          
+                  if (breakfastPlanController.text.isEmpty &&
+                      foodPreferencesController.text.isEmpty &&
+                      placesToVisitController.text.isEmpty &&
+                      entertainmentPreferencesController.text.isEmpty &&
+                      shoppingPlansController.text.isEmpty &&
+                      specialRequestsController.text.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Lütfen tatil planı alanlarından en az birini doldurun!'),
+                        backgroundColor: Colors.red,
+                      ),
+                    );
+                  } else {
+                    travelInfo.updateBreakfastPlan(breakfastPlanController.text);
+                    travelInfo.updateFoodPreferences(foodPreferencesController.text);
+                    travelInfo.updatePlacesToVisit(placesToVisitController.text);
+                    travelInfo.updateEntertainmentPreferences(entertainmentPreferencesController.text);
+                    travelInfo.updateShoppingPlans(shoppingPlansController.text);
+                    travelInfo.updateSpecialRequests(specialRequestsController.text);
+          
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                            'Ne kadar çok detay verirseniz, o kadar sağlam bir bütçe tahmini alabilirsiniz!'),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+                    ref.read(bottomNavigationBarProvider.notifier).changePage(4);
+                  }
+                },
+                color: AppColors.primaryColor,
+              ),
+            ],
+          ),
         ),
       ),
     );

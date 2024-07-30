@@ -14,7 +14,7 @@ class ResultScreen extends StatefulWidget {
   final Country userCountry;
 
   const ResultScreen({
-    super.key,
+    Key? key,
     required this.country,
     required this.category,
     this.subCategory,
