@@ -124,4 +124,9 @@ class AuthViewModel extends ChangeNotifier {
       throw e;
     }
   }
+
+  Future<UserModel> getUserWithId(String userId) async {
+    final user = await _firestoreService.getUser(userId);
+    return user!;
+  }
 }

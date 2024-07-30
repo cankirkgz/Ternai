@@ -141,22 +141,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          title: const Text('Update Profile Picture'),
-          content: const Text('Choose a source'),
+          title: const Text('Profil Fotoğrafını Güncelle'),
+          content: const Text('Bir kaynak seçin'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _pickImage(ImageSource.camera);
               },
-              child: const Text('Camera'),
+              child: const Text('Kamera'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _pickImage(ImageSource.gallery);
               },
-              child: const Text('Gallery'),
+              child: const Text('Galeri'),
             ),
           ],
         );
@@ -172,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
-          title: const Text('Confirm Photo'),
+          title: const Text('Fotoğrafı Onayla'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -184,14 +184,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('İptal'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
                 _uploadImage(context);
               },
-              child: const Text('Save'),
+              child: const Text('Kaydet'),
             ),
           ],
         );
@@ -202,7 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
-    final userName = authViewModel.user?.name ?? 'User Name';
+    final userName = authViewModel.user?.name ?? 'Kullanıcı Adı';
     double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
@@ -236,7 +236,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       Icon(Icons.settings),
                       SizedBox(width: 8),
-                      Text('Settings'),
+                      Text('Ayarlar'),
                     ],
                   ),
                 ),
@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: <Widget>[
                       Icon(Icons.logout),
                       SizedBox(width: 8),
-                      Text('Logout'),
+                      Text('Çıkış Yap'),
                     ],
                   ),
                 ),
@@ -279,14 +279,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 80,
                       backgroundColor: Colors.grey[200],
-                      backgroundImage: _profileImageUrl != null
-                          ? NetworkImage(_profileImageUrl!)
-                          : const AssetImage(
-                                  "assets/images/default_profile.png")
-                              as ImageProvider,
+                      backgroundImage: _image != null
+                          ? FileImage(_image!)
+                          : _profileImageUrl != null
+                              ? NetworkImage(_profileImageUrl!)
+                              : const AssetImage(
+                                      "assets/images/default_profile.png")
+                                  as ImageProvider,
                       child: _image == null && _profileImageUrl == null
                           ? const Icon(Icons.camera_alt,
-                              size: 80, color: Colors.white)
+                              size: 80, color: Colors.black)
                           : null,
                     ),
                   ),
@@ -309,7 +311,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 20),
                   const Text(
-                    'Göneriler',
+                    'Gönderiler',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -334,7 +336,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               return ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: Image.network(
-                                  _posts[index].photoUrl,
+                                  _posts[index].photoUrls.first,
                                   fit: BoxFit.cover,
                                 ),
                               );
