@@ -8,16 +8,12 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 class BudgetChoosingPlansPage extends ConsumerWidget {
   BudgetChoosingPlansPage({super.key});
 
-  final TextEditingController kahvaltiController = TextEditingController();
-  final TextEditingController yemekTercihleriController =
-      TextEditingController();
-  final TextEditingController gezilecekYerlerController =
-      TextEditingController();
-  final TextEditingController eglenceTercihleriController =
-      TextEditingController();
-  final TextEditingController alisverisPlanlariController =
-      TextEditingController();
-  final TextEditingController ozelIsteklerController = TextEditingController();
+  final TextEditingController breakfastPlanController = TextEditingController();
+  final TextEditingController foodPreferencesController = TextEditingController();
+  final TextEditingController placesToVisitController = TextEditingController();
+  final TextEditingController entertainmentPreferencesController = TextEditingController();
+  final TextEditingController shoppingPlansController = TextEditingController();
+  final TextEditingController specialRequestsController = TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -56,7 +52,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: kahvaltiController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Örneğin, kahvaltınızı kaçta yapmayı planlıyorsunuz?',
@@ -75,7 +71,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: yemekTercihleriController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Nasıl bir yerde yemek yemek istiyorsunuz?',
                     ),
@@ -93,7 +89,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: gezilecekYerlerController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Hangi yerleri gezmek istiyorsunuz?',
                     ),
@@ -111,7 +107,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: eglenceTercihleriController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Eğlence için neleri tercih ediyorsunuz?',
                     ),
@@ -129,7 +125,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: alisverisPlanlariController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Alışveriş yapmayı planlıyor musunuz? Neler almak istiyorsunuz?',
@@ -148,7 +144,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                   TextField(
                     controller: ozelIsteklerController,
                     maxLines: 3,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       border: OutlineInputBorder(),
                       hintText:
                           'Özel istekleriniz nelerdir? (Örneğin, romantik akşam yemekleri)',

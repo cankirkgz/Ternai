@@ -1,6 +1,5 @@
 <<<<<<< HEAD
-This is **Master Places**.
-# **Travel-Guide**
+# Travel-Guide
 =======
 <h1>1. Takım İsmi</h1>
 <p>Flutter Grup 22</p>

@@ -50,8 +50,10 @@ dependencies:
   http: ^1.2.2
   google_generative_ai: ^0.4.3
   image_picker: ^1.1.2
+  photo_manager: ^3.2.2
   firebase_storage: ^12.1.1
   flutter_markdown: ^0.7.3
+  uuid: ^3.0.6
   intl: any
   get: ^4.6.6
 
@@ -81,6 +83,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/1.0X/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

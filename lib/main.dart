@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/viewmodels/plan_viewmodel.dart';
+import 'package:travelguide/viewmodels/post_viewmodel.dart';
 import 'package:travelguide/views/launch_screen.dart';
 
 void main() async {
@@ -13,6 +15,8 @@ void main() async {
       child: provider.MultiProvider(
         providers: [
           provider.ChangeNotifierProvider(create: (_) => AuthViewModel()),
+          provider.ChangeNotifierProvider(create: (_) => PlanViewModel()),
+          provider.ChangeNotifierProvider(create: (_) => PostViewModel()),
         ],
         child: const MyApp(),
       ),
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LaunchScreen(),
+      home:  LaunchScreen(),
     );
   }
 }

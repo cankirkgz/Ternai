@@ -36,7 +36,7 @@ class AuthViewModel extends ChangeNotifier {
     await _authService.signUpWithEmail(email, password, name);
     _user = await _authService.getCurrentUser();
     if (_user != null) {
-      _user = await _firestoreService.getUser(_user!.userId);
+      await _firestoreService.createUser(_user!);
     }
     notifyListeners();
   }
@@ -123,5 +123,10 @@ class AuthViewModel extends ChangeNotifier {
       print("Şifre değiştirme hatası: $e");
       rethrow;
     }
+  }
+
+  Future<UserModel> getUserWithId(String userId) async {
+    final user = await _firestoreService.getUser(userId);
+    return user!;
   }
 }

@@ -20,7 +20,6 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
 
   @override
   Widget build(BuildContext context) {
-    final travelInformation = ref.watch(travelInformationProvider);
 
     return Center(
       child: Column(
@@ -83,12 +82,8 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
                   ),
                 );
               } else {
-                ref
-                    .read(travelInformationProvider.notifier)
-                    .updateBudget(double.parse(_budgetController.text));
-                ref
-                    .read(travelInformationProvider.notifier)
-                    .updateCurrency(_selectedCurrency);
+                ref.read(travelInformationProvider.notifier).updateBudget(double.parse(_budgetController.text));
+                ref.read(travelInformationProvider.notifier).updateCurrency(_selectedCurrency);
                 ref.read(bottomNavigationBarProvider.notifier).changePage(3);
               }
             },

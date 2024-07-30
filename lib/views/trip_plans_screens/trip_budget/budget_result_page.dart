@@ -1,16 +1,25 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/models/budget_plan_model.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/viewmodels/budget_plan_model.dart';
+import 'package:travelguide/viewmodels/plan_viewmodel.dart';
+import 'package:travelguide/views/home_screens/new_trip_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:uuid/uuid.dart';
 
 class BudgetResultPage extends ConsumerWidget {
   const BudgetResultPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final planViewModel = ref.watch(planViewModelProvider);
+    final travelInformation = ref.watch(travelInformationProvider);
+    final authViewModel = ref.watch(authViewModelProvider);
+    final uuid = Uuid();
+
     final budget = ref.watch(budgetProvider);
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -33,7 +42,7 @@ class BudgetResultPage extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Center(
+                          const Center(
                             child: Text(
                               'Önerilen Bütçe',
                               style: TextStyle(
@@ -47,21 +56,21 @@ class BudgetResultPage extends ConsumerWidget {
                           MarkdownBody(
                             data: budget,
                             styleSheet: MarkdownStyleSheet(
-                              h1: TextStyle(
+                              h1: const TextStyle(
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primaryColor,
                               ),
-                              h2: TextStyle(
+                              h2: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue,
                               ),
-                              p: TextStyle(
+                              p: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
                               ),
-                              listBullet: TextStyle(
+                              listBullet: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
                               ),
@@ -73,9 +82,36 @@ class BudgetResultPage extends ConsumerWidget {
                   ),
                   const SizedBox(height: 20),
                   CustomButton(
-                    text: 'Geri Dön',
-                    onPressed: () {
-                      Navigator.pop(context);
+                    text: 'Kaydet',
+                    onPressed: () async {
+                      final BudgetPlanModel plan = BudgetPlanModel(
+                        id: uuid.v4(),
+                        fromCountry: authViewModel.user!.country!.name,
+                        toCountry: travelInformation.country,
+                        numberOfDays: travelInformation.numberOfDays,
+                        numberOfPeople: travelInformation.numberOfPeople,
+                        kids: travelInformation.children,
+                        breakfastPlan: travelInformation.breakfastPlan,
+                        mealPlan: travelInformation.foodPreferences,
+                        entertainmentPreferences:
+                            travelInformation.placesToVisit,
+                        shoppingPlans: travelInformation.shoppingPlans,
+                        specialRequests: travelInformation.specialRequests,
+                        result: budget,
+                      );
+                      await planViewModel.createPlan(
+                          authViewModel.user!.userId, plan.toJson());
+
+                      // Başarı mesajı göster
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text('Plan başarıyla kaydedildi!'),
+                        ),
+                      );
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const NewTripScreen()));
                     },
                     color: AppColors.primaryColor,
                   ),
@@ -89,5 +125,8 @@ class BudgetResultPage extends ConsumerWidget {
     );
   }
 }
+
+final planViewModelProvider = ChangeNotifierProvider((ref) => PlanViewModel());
+final authViewModelProvider = ChangeNotifierProvider((ref) => AuthViewModel());
 
 final budgetProvider = StateProvider<String>((ref) => '');
