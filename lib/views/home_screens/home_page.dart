@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/home_screens/new_trip_screen.dart';
-import 'package:travelguide/views/home_screens/previous_trips_screen.dart';
+import 'package:travelguide/views/home_screens/prev_screen/previous_trips_screen.dart';
 import 'package:travelguide/views/home_screens/price_search_screen.dart';
 import 'package:travelguide/views/home_screens/profile_screen.dart';
 import 'package:travelguide/views/home_screens/home_screen.dart';

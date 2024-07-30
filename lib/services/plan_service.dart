@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:travelguide/models/budget_plan_model.dart';
 import 'package:travelguide/models/day_plan_model.dart';
 import 'package:travelguide/models/plan_plan_model.dart';
-import 'package:travelguide/models/user_model.dart';
 
 class PlanService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -25,6 +24,47 @@ class PlanService {
           'plan_plans': FieldValue.arrayUnion([plan])
         });
       }
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<BudgetPlanModel>> fetchBudgetPlans(String userId) async {
+    try {
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final budgetPlansData =
+          userDoc.data()?['budget_plans'] as List<dynamic>? ?? [];
+
+      return budgetPlansData.map((data) {
+        return BudgetPlanModel.fromJson(data as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<DayPlanModel>> fetchDayPlans(String userId) async {
+    try {
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final dayPlansData = userDoc.data()?['day_plans'] as List<dynamic>? ?? [];
+
+      return dayPlansData.map((data) {
+        return DayPlanModel.fromJson(data as Map<String, dynamic>);
+      }).toList();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  Future<List<PlanPlanModel>> fetchPlanPlans(String userId) async {
+    try {
+      final userDoc = await _firestore.collection('users').doc(userId).get();
+      final planPlansData =
+          userDoc.data()?['plan_plans'] as List<dynamic>? ?? [];
+
+      return planPlansData.map((data) {
+        return PlanPlanModel.fromJson(data as Map<String, dynamic>);
+      }).toList();
     } catch (e) {
       throw e;
     }
