@@ -190,7 +190,15 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
                         const CustomOrDivider(),
                         const SizedBox(height: 10),
-                        Logo(Logos.google),
+                        GestureDetector(
+                    onTap: () {
+                      // Google sign in logic here
+                    },
+                    child: Image.asset(
+                      'assets/images/google_logo.webp',
+                      height: screenHeight * 0.09,
+                    ),
+                  ),
                         const SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
