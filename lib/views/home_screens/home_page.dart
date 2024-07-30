@@ -58,8 +58,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         extendBody: true,
         body: _pages[_selectedIndex],
-          resizeToAvoidBottomInset: false,
-
+        resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
@@ -81,7 +80,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: Container(
           color: Colors.transparent,
           child: AnimatedBottomNavigationBar.builder(
-            height: 70,
+            height: 55,
             itemCount: _icons.length,
             tabBuilder: (int index, bool isActive) {
               final color = isActive ? Colors.white : Colors.white;

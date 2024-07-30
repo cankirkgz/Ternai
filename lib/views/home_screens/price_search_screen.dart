@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/models/category_model.dart';
@@ -9,8 +7,8 @@ import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_dropdown_button.dart';
-import 'result_screen.dart'; // ResultScreen'i import ediyoruz
-import 'package:travelguide/services/api_service.dart'; // ApiService'i import ediyoruz
+import 'result_screen.dart';
+import 'package:travelguide/services/api_service.dart';
 
 class PriceSearchScreen extends StatefulWidget {
   const PriceSearchScreen({super.key});
@@ -23,14 +21,14 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
   final _formKey = GlobalKey<FormState>();
   Country? selectedCountry;
   Category? selectedCategory;
-  ProductService? selectedSubCategory;
+  ProductModel? selectedSubCategory;
   bool isLoading = false;
 
-  final ApiService _apiService = ApiService(); // ApiService'i oluştur
+  final ApiService _apiService = ApiService();
 
   List<Country> countries = [];
   List<Category> categories = [];
-  List<ProductService> productServices = [];
+  List<ProductModel> productServices = [];
 
   @override
   void initState() {
@@ -63,7 +61,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
 
   Future<void> _loadProductServices(String categoryId) async {
     try {
-      List<ProductService> loadedProductServices =
+      List<ProductModel> loadedProductServices =
           await _apiService.getProductServices();
       setState(() {
         productServices = loadedProductServices
@@ -84,35 +82,34 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        automaticallyImplyLeading: false,
-        title: const Text("Fiyat arama sayfası"),
-      ),
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            opacity: 0.65,
-            image: AssetImage("assets/images/welcome_page.jpeg"),
-            fit: BoxFit.cover,
+          gradient: LinearGradient(
+            colors: [AppColors.primaryColor, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
           ),
         ),
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: screenWidth * 0.1, vertical: screenHeight * 0.1),
+            horizontal: screenWidth * 0.1,
+            vertical: screenHeight * 0.1,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text(
-                    "Bilgi almak istediğiniz hizmet ile ilgili:",
-                    style:
-                        TextStyle(fontSize: 24, color: AppColors.primaryColor),
+                Text(
+                  "Bilgi almak istediğiniz hizmet ile ilgili:",
+                  style: TextStyle(
+                    fontSize: 24,
+                    color: Colors.blue.shade900,
+                    fontWeight: FontWeight.bold,
                   ),
+                  textAlign: TextAlign.center,
                 ),
+                const SizedBox(height: 20),
                 CustomDropDownButton(
                   listName: "Ülke",
                   items: {
@@ -127,6 +124,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
                     });
                   },
                 ),
+                SizedBox(height: 10),
                 CustomDropDownButton(
                   listName: "Kategori",
                   items: {
@@ -145,58 +143,58 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
                   },
                 ),
                 if (selectedCategory != null && productServices.isNotEmpty)
-                  CustomDropDownButton(
-                    listName: "Ürün veya Hizmet",
-                    items: {for (var ps in productServices) ps.id: ps.name},
-                    validator: (value) => value == null
-                        ? "Lütfen bir ürün veya hizmet seçiniz"
-                        : null,
-                    onChanged: (value) {
-                      setState(() {
-                        selectedSubCategory =
-                            productServices.firstWhere((ps) => ps.id == value);
-                      });
-                    },
-                  ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                  Column(
                     children: [
-                      isLoading
-                          ? CircularProgressIndicator()
-                          : CustomButton(
-                              text: "Ara",
-                              onPressed: () async {
-                                if (_formKey.currentState?.validate() ??
-                                    false) {
-                                  setState(() {
-                                    isLoading = true;
-                                  });
-
-                                  //await _apiService.addPrices();
-                                  await Future.delayed(Duration(seconds: 1));
-                                  setState(() {
-                                    isLoading = false;
-                                  });
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ResultScreen(
-                                        country: selectedCountry!,
-                                        category: selectedCategory!,
-                                        subCategory: selectedSubCategory,
-                                        userCountry:
-                                            authViewModel.user!.country,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              },
-                              color: AppColors.primaryColor,
-                            ),
+                      SizedBox(height: 10),
+                      CustomDropDownButton(
+                        listName: "Ürün veya Hizmet",
+                        items: {for (var ps in productServices) ps.id: ps.name},
+                        validator: (value) => value == null
+                            ? "Lütfen bir ürün veya hizmet seçiniz"
+                            : null,
+                        onChanged: (value) {
+                          setState(() {
+                            selectedSubCategory = productServices
+                                .firstWhere((ps) => ps.id == value);
+                          });
+                        },
+                      ),
                     ],
                   ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    isLoading
+                        ? CircularProgressIndicator()
+                        : CustomButton(
+                            text: "Ara",
+                            onPressed: () async {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                setState(() {
+                                  isLoading = true;
+                                });
+
+                                await Future.delayed(Duration(seconds: 1));
+                                setState(() {
+                                  isLoading = false;
+                                });
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ResultScreen(
+                                      country: selectedCountry!,
+                                      category: selectedCategory!,
+                                      subCategory: selectedSubCategory,
+                                      userCountry: authViewModel.user!.country!,
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            color: AppColors.primaryColor,
+                          ),
+                  ],
                 ),
               ],
             ),

@@ -1,13 +1,13 @@
-class ProductService {
+class ProductModel {
   String id;
   String categoryId;
   String name;
 
-  ProductService(
+  ProductModel(
       {required this.id, required this.categoryId, required this.name});
 
-  factory ProductService.fromMap(Map<String, dynamic> data, String documentId) {
-    return ProductService(
+  factory ProductModel.fromMap(Map<String, dynamic> data, String documentId) {
+    return ProductModel(
       id: documentId,
       categoryId: data['category_id'],
       name: data['name'],

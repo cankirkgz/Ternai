@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
+import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/settings_screen.dart';
+import 'package:travelguide/models/post_model.dart';
 
 final AuthService _authService = AuthService();
 
@@ -24,11 +26,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? _profileImageUrl;
   final ImagePicker _picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  List<PostModel> _posts = [];
+  int _vacationCount = 0;
+  int _postCount = 0;
 
   @override
   void initState() {
     super.initState();
     _loadProfileImage();
+    _loadUserPosts();
+    _loadUserVacationCount();
   }
 
   Future<void> _loadProfileImage() async {
@@ -36,7 +43,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final userId = authViewModel.user?.userId;
 
     if (userId != null) {
-      // Veritabanından profil resmi yüklemesi
       DocumentSnapshot userDoc = await FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -44,6 +50,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (userDoc.exists && userDoc['profile_image_url'] != null) {
         setState(() {
           _profileImageUrl = userDoc['profile_image_url'];
+        });
+      }
+    }
+  }
+
+  Future<void> _loadUserPosts() async {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final userId = authViewModel.user?.userId;
+
+    if (userId != null) {
+      QuerySnapshot postsSnapshot = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('user.userId', isEqualTo: userId)
+          .get();
+
+      if (postsSnapshot.docs.isNotEmpty) {
+        setState(() {
+          _posts = postsSnapshot.docs
+              .map((doc) =>
+                  PostModel.fromJson(doc.data() as Map<String, dynamic>))
+              .toList();
+          _postCount = _posts.length;
+        });
+      }
+    }
+  }
+
+  Future<void> _loadUserVacationCount() async {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final userId = authViewModel.user?.userId;
+
+    if (userId != null) {
+      QuerySnapshot vacationsSnapshot = await FirebaseFirestore.instance
+          .collection('vacations')
+          .where('user.userId', isEqualTo: userId)
+          .get();
+
+      if (vacationsSnapshot.docs.isNotEmpty) {
+        setState(() {
+          _vacationCount = vacationsSnapshot.docs.length;
         });
       }
     }
@@ -92,8 +138,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Profil fotoğrafını güncelle'),
-          content: const Text('Kaynak seçin'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: const Text('Profil Fotoğrafını Güncelle'),
+          content: const Text('Bir kaynak seçin'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -120,7 +169,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Fotoğrafı onayla'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: const Text('Fotoğrafı Onayla'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -132,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Vazgeç'),
+              child: const Text('İptal'),
             ),
             TextButton(
               onPressed: () {
@@ -157,10 +209,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text(userName),
+        automaticallyImplyLeading: false,
+        title: Text(
+          userName,
+          style: const TextStyle(
+            color: Colors.black,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         centerTitle: true,
-        titleTextStyle: const TextStyle(
-            color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -175,7 +233,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const PopupMenuItem<String>(
                   value: 'settings',
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Icon(Icons.settings),
                       SizedBox(width: 8),
                       Text('Ayarlar'),
@@ -185,7 +243,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const PopupMenuItem<String>(
                   value: 'logout',
                   child: Row(
-                    children: [
+                    children: <Widget>[
                       Icon(Icons.logout),
                       SizedBox(width: 8),
                       Text('Çıkış Yap'),
@@ -197,69 +255,135 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/images/profile_background.png"),
-                fit: BoxFit.cover,
-              ),
+              decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                AppColors.primaryColor,
+                Colors.white,
+              ],
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 200,
-            ),
-            child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3, // Her satırda 3 kutucuk
-              ),
-              itemCount: 25,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(2.0),
-                  child: Container(
-                    color: Colors.primaries[index %
-                        Colors.primaries.length], // Her kutucuğa renk atayın
-                    child: Center(
-                      child: Text('Memento $index'),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
+          )),
           Positioned.fill(
-            top: 0,
-            left: 0,
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height - keyboardHeight,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: keyboardHeight),
               child: Column(
                 children: [
                   const SizedBox(height: 120),
-                  InkWell(
+                  GestureDetector(
                     onTap: _showImageSourceDialog,
                     child: CircleAvatar(
                       radius: 80,
-                      backgroundImage: _profileImageUrl != null
-                          ? NetworkImage(_profileImageUrl!)
-                          : const AssetImage(
-                                  "assets/images/default_profile.png")
-                              as ImageProvider,
+                      backgroundColor: Colors.grey[200],
+                      backgroundImage: _image != null
+                          ? FileImage(_image!)
+                          : _profileImageUrl != null
+                              ? NetworkImage(_profileImageUrl!)
+                              : const AssetImage(
+                                      "assets/images/default_profile.png")
+                                  as ImageProvider,
                       child: _image == null && _profileImageUrl == null
-                          ? const Icon(Icons.camera_alt, size: 80)
+                          ? const Icon(Icons.camera_alt,
+                              size: 80, color: Colors.black)
                           : null,
                     ),
                   ),
+                  const SizedBox(height: 20),
+                  Text(
+                    userName,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildStatisticCard('Vacations', _vacationCount),
+                      const SizedBox(width: 20),
+                      _buildStatisticCard('Posts', _postCount),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  const Text(
+                    'Gönderiler',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  _posts.isNotEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 8.0,
+                            ),
+                            itemCount: _posts.length,
+                            itemBuilder: (context, index) {
+                              return ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  _posts[index].photoUrls.first,
+                                  fit: BoxFit.cover,
+                                ),
+                              );
+                            },
+                          ),
+                        )
+                      : const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: Center(
+                            child: Text(
+                              'Henüz bir gönderi yok',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStatisticCard(String title, int count) {
+    return Column(
+      children: [
+        Text(
+          count.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 

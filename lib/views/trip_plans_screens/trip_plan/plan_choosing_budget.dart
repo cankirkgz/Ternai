@@ -80,8 +80,9 @@ class _PlanChoosingBudgetPageState
                   double.tryParse(_budgetController.text) == null) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Lütfen geçerli bir bütçe giriniz'),
+                    content: Text('Lütfen geçerli bir bütçe girin!'),
                     backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
                   ),
                 );
               } else {
