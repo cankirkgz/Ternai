@@ -49,12 +49,12 @@ dependencies:
   http: ^1.2.2
   google_generative_ai: ^0.4.3
   image_picker: ^1.1.2
+  photo_manager: ^3.2.2
   firebase_storage: ^12.1.1
   flutter_markdown: ^0.7.3
   google_fonts: ^4.0.3
   google_sign_in: ^6.2.1
   uuid: ^3.0.6
-  flutter_svg_provider: ^1.0.7
 
 dev_dependencies:
   flutter_test:

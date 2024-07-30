@@ -58,8 +58,7 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         extendBody: true,
         body: _pages[_selectedIndex],
-          resizeToAvoidBottomInset: false,
-
+        resizeToAvoidBottomInset: false,
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(

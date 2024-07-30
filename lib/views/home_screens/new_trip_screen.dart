@@ -12,28 +12,35 @@ class NewTripScreen extends StatelessWidget {
     final double buttonSize = MediaQuery.of(context).size.width * 0.4;
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        title: const Text('Tatil Planı Oluştur',
-            style: TextStyle(color: AppColors.textColor)),
-        centerTitle: false,
+        title: const Text(
+          'Tatil Planı Oluştur',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [AppColors.primaryColor, Colors.white],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(20.0),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
                 child: Text(
                   'Tatil Planınızı Yapın',
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textColor,
+                    color: Colors.blue.shade900,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -102,8 +109,8 @@ class NewTripScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15),
         ),
-        color: Colors.white.withOpacity(0.9),
-        elevation: 5,
+        color: Colors.white.withOpacity(0.95),
+        elevation: 8,
         child: Container(
           width: size,
           height: size,
@@ -111,12 +118,12 @@ class NewTripScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(icon, color: AppColors.primaryColor, size: 40),
+              Icon(icon, color: AppColors.primaryColor, size: 50),
               const SizedBox(height: 10),
               Text(
                 text,
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),

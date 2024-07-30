@@ -28,121 +28,124 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      onPopInvoked: (bool) {
-        ref.read(travelInformationProvider.notifier).reset();
-      },
-      child: Scaffold(
-          backgroundColor: AppColors.backgroundColor,
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: const Text(
-              'Tatil Günü Hesaplama',
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        title: const Text(
+          'Tatil Günü Hesaplama',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+      ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [AppColors.primaryColor, Colors.white],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
             ),
           ),
-          body: Consumer(
+          Consumer(
             builder: (context, ref, _) {
               final _currentIndex = ref.watch(bottomNavigationBarProvider);
-              return Container(
-                  child: _pages[_currentIndex]);
+              return _pages[_currentIndex];
             },
           ),
-          bottomNavigationBar: Consumer(builder: (context, ref, _) {
-            final _currentIndex = ref.watch(bottomNavigationBarProvider);
-            return BottomNavigationBar(
-              backgroundColor: Colors.blue,
-              useLegacyColorScheme: false,
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                bool selectedValue = true;
+        ],
+      ),
+      bottomNavigationBar: Consumer(builder: (context, ref, _) {
+        final _currentIndex = ref.watch(bottomNavigationBarProvider);
+        return BottomNavigationBar(
+          backgroundColor: Colors.blueAccent,
+          selectedItemColor: AppColors.primaryColor,
+          unselectedItemColor: Colors.black,
+          currentIndex: _currentIndex,
+          onTap: (index) {
+            bool selectedValue = true;
 
-                if (index == 1) {
-                  final travelInformation = ref.read(travelInformationProvider);
-                  if (travelInformation.toCountry.isEmpty) {
-                    selectedValue = false;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lütfen bir ülke seçin!'),
-                        backgroundColor: Colors.red,
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  }
-                }
+            if (index == 1) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.toCountry.isEmpty) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen bir ülke seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
 
-                if (index == 2) {
-                  final travelInformation = ref.read(travelInformationProvider);
-                  if (travelInformation.numberOfPeople == 0) {
-                    selectedValue = false;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lütfen kişi sayısı seçin!'),
-                        backgroundColor: Colors.red,
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  }
-                }
+            if (index == 2) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.numberOfPeople == 0) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen kişi sayısı seçin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
 
-                if (index == 3) {
-                  final travelInformation = ref.read(travelInformationProvider);
-                  if (travelInformation.budget == 0) {
-                    selectedValue = false;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Lütfen geçerli bir bütçe girin!'),
-                        backgroundColor: Colors.red,
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  }
-                }
+            if (index == 3) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.budget == 0) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Lütfen geçerli bir bütçe girin!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
 
-                if (index == 4) {
-                  final travelInformation = ref.read(travelInformationProvider);
-                  if (travelInformation.breakfastPlan.isEmpty ||
-                      travelInformation.foodPreferences.isEmpty ||
-                      travelInformation.placesToVisit.isEmpty ||
-                      travelInformation.entertainmentPreferences.isEmpty ||
-                      travelInformation.shoppingPlans.isEmpty ||
-                      travelInformation.specialRequests.isEmpty) {
-                    selectedValue = false;
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content:
-                            Text('Lütfen tüm tatil planı alanlarını doldurun!'),
-                        backgroundColor: Colors.red,
-                        duration: Duration(seconds: 1),
-                      ),
-                    );
-                  }
-                }
+            if (index == 4) {
+              final travelInformation = ref.read(travelInformationProvider);
+              if (travelInformation.breakfastPlan.isEmpty ||
+                  travelInformation.foodPreferences.isEmpty ||
+                  travelInformation.placesToVisit.isEmpty ||
+                  travelInformation.entertainmentPreferences.isEmpty ||
+                  travelInformation.shoppingPlans.isEmpty ||
+                  travelInformation.specialRequests.isEmpty) {
+                selectedValue = false;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content:
+                        Text('Lütfen tüm tatil planı alanlarını doldurun!'),
+                    backgroundColor: Colors.red,
+                    duration: Duration(seconds: 1),
+                  ),
+                );
+              }
+            }
 
-                if (selectedValue) {
-                  setState(() {
-                    ref
-                        .read(bottomNavigationBarProvider.notifier)
-                        .changePage(index);
-                  });
-                }
-              },
-              items: const [
-                BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.people), label: 'Kişi Sayısı'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.money), label: 'Bütçe'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.place), label: 'Yerler'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.schedule), label: 'Plan'),
-                BottomNavigationBarItem(
-                    icon: Icon(Icons.calendar_today), label: 'Gün Sayısı')
-              ],
-            );
-          })),
+            if (selectedValue) {
+              ref.read(bottomNavigationBarProvider.notifier).changePage(index);
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.flag), label: 'Ülke'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.people), label: 'Kişi Sayısı'),
+            BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Bütçe'),
+            BottomNavigationBarItem(icon: Icon(Icons.place), label: 'Yerler'),
+            BottomNavigationBarItem(icon: Icon(Icons.schedule), label: 'Plan'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_today), label: 'Gün Sayısı')
+          ],
+        );
+      }),
     );
   }
 }
@@ -156,6 +159,6 @@ class BottomNavigationBarNotifier extends StateNotifier<int> {
 }
 
 final bottomNavigationBarProvider =
-    AutoDisposeStateNotifierProvider<BottomNavigationBarNotifier, int>((ref) {
+    StateNotifierProvider<BottomNavigationBarNotifier, int>((ref) {
   return BottomNavigationBarNotifier();
 });
