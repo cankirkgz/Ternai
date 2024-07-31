@@ -8,6 +8,8 @@ class CustomButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool isLoading;
   final Widget? child;
+  final Color? borderColor;
+  final Color? textColor;
 
   const CustomButton({
     required this.text,
@@ -16,6 +18,8 @@ class CustomButton extends StatelessWidget {
     this.onPressed,
     this.isLoading = false,
     this.child,
+    this.borderColor,
+    this.textColor,
     super.key,
   });
 
@@ -29,6 +33,7 @@ class CustomButton extends StatelessWidget {
           backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
+            side: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none,
           ),
         ),
         child: Padding(
@@ -40,7 +45,7 @@ class CustomButton extends StatelessWidget {
                     text,
                     style: GoogleFonts.poppins(
                       fontSize: 18.0,
-                      color: Colors.white,
+                      color: textColor ?? Colors.white,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

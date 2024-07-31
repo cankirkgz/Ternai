@@ -33,20 +33,20 @@ class OnboardingScreen1 extends StatelessWidget {
             child: const Text(
               "Yapay zeka destekli bütçe planlamasıyla Zekice Seyahat Edin!",
               style: TextStyle(
-                fontSize: 30.0,
+                fontSize: 25.0,
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),
           Container(
-            alignment: Alignment(0, 0.6),
+            alignment: const Alignment(0, 0.6),
             child: CustomButton(
               text: "Yolculuğa Başla",
               color: AppColors.primaryColor,
               onPressed: () {
                 controller.nextPage(
-                  duration: Duration(milliseconds: 500),
+                  duration: const Duration(milliseconds: 500),
                   curve: Curves.easeInOut,
                 );
               },

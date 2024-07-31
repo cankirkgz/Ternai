@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:travelguide/models/budget_plan_model.dart';
 import 'package:travelguide/models/day_plan_model.dart';
@@ -58,3 +59,13 @@ class PlanViewModel extends ChangeNotifier {
     }
   }
 }
+
+
+Future<List<PlanPlanModel>> fetchPlanPlans(String userId) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final planPlansData = userDoc.data()?['plan_plans'] as List<dynamic>? ?? [];
+
+    return planPlansData.map((data) {
+      return PlanPlanModel.fromJson(data as Map<String, dynamic>);
+    }).toList();
+  }

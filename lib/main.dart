@@ -18,13 +18,15 @@ void main() async {
           provider.ChangeNotifierProvider(create: (_) => PlanViewModel()),
           provider.ChangeNotifierProvider(create: (_) => PostViewModel()),
         ],
-        child: MyApp(),
+        child: const MyApp(),
       ),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home: LaunchScreen(),
+      home:  LaunchScreen(),
     );
   }
 }

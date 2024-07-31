@@ -60,7 +60,7 @@ class _PlanChoosingBudgetPageState
               Expanded(
                 child: CustomDropDownButton(
                   listName: 'Para Birimi',
-                  items: {'TRY': 'Türk Lirası', 'EUR': 'Euro'},
+                  items: const {'TRY': 'Türk Lirası', 'EUR': 'Euro'},
                   onChanged: (value) {
                     if (value != null) {
                       setState(() {

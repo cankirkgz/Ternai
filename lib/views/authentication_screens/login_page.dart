@@ -183,20 +183,13 @@ class _LoginPageState extends State<LoginPage> {
                               }
                             }
                           },
-                          width: screenWidth * 0.7,
+                          width: screenWidth * 0.5,
                         ),
                         const SizedBox(height: 30),
                         const CustomOrDivider(),
-                        const SizedBox(height: 30),
-                        ElevatedButton.icon(
-                          icon: Logo(Logos.google),
-                          label: const Text(
-                            "Google ile Giriş Yap",
-                            style: TextStyle(
-                              color: Colors.black54,
-                            ),
-                          ),
-                          onPressed: () async {
+                        const SizedBox(height: 10),
+                        GestureDetector(
+                          onTap: () async {
                             try {
                               User? user =
                                   await AuthService().signInWithGoogle();
@@ -215,8 +208,12 @@ class _LoginPageState extends State<LoginPage> {
                               );
                             }
                           },
+                          child: Image.asset(
+                            'assets/images/google_logo.webp',
+                            height: screenHeight * 0.09,
+                          ),
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 10),
                         RichText(
                           text: TextSpan(
                             children: [

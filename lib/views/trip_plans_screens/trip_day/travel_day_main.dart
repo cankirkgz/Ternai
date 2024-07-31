@@ -22,8 +22,8 @@ class _TravelDayMainPageState extends ConsumerState<TravelDayMain> {
     const DayChoosingPeoplePage(),
     const DayChoosingBudgetPage(),
     DayChoosingPlansPage(),
-    DayPlanPage(),
-    DayResultPage()
+    const DayPlanPage(),
+    const DayResultPage()
   ];
 
   @override

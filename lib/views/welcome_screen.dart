@@ -1,20 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
+import 'package:travelguide/services/google_login_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
-import 'package:travelguide/views/authentication_screens/birth_date_select_page.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
+import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
-import 'package:travelguide/views/home_screens/home_page.dart'; // HomePage'i import et
+import 'package:travelguide/views/home_screens/home_page.dart';
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
+  WelcomeScreen({super.key});
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {
@@ -74,73 +76,37 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     },
                   ),
                   const SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          try {
-                            User? user = await AuthService().signInWithGoogle();
-                            if (user != null) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomePage()),
-                              );
-                            }
-                          } catch (e) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(e.toString()),
-                              ),
-                            );
-                          }
-                        },
-                        child: _isLoading
-                            ? CircularProgressIndicator()
-                            : Image.asset(
-                                'assets/logo/google-logo.png',
-                                height: screenHeight * 0.07,
-                              ),
-                      ),
-                      const SizedBox(width: 15),
-                      GestureDetector(
-                        onTap: () async {
-                          setState(() {
-                            _isLoading = true;
-                          });
+                  CustomButton(
+                    text: "Üye Olmadan Devam Et",
+                    color: Colors.white,
+                    textColor: AppColors.primaryColor,
+                    borderColor: AppColors.primaryColor,
+                    width: screenWidth * 0.8,
+                    onPressed: () async {
+                      setState(() {
+                        _isLoading = true;
+                      });
 
-                          try {
-                            bool isSuccess =
-                                await authViewModel.signInWithAnonymously();
-                            if (isSuccess) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const HomePage(), // HomePage'e yönlendirme
-                                ),
-                              );
-                            } else {
-                              _showErrorDialog('Anonim Giriş Hatası',
-                                  'Lütfen Tekrar Deneyin.');
-                            }
-                          } catch (e) {
-                            _showErrorDialog('Error', e.toString());
-                          } finally {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                          }
-                        },
-                        child: _isLoading
-                            ? CircularProgressIndicator()
-                            : Image.asset(
-                                'assets/logo/user-logo.png',
-                                height: screenHeight * 0.07,
-                              ),
-                      ),
-                    ],
+                      try {
+                        bool isSuccess = await authViewModel.signInWithAnonymously();
+                        if (isSuccess) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomePage(),
+                            ),
+                          );
+                        } else {
+                          _showErrorDialog('Anonim Giriş Hatası', 'Lütfen Tekrar Deneyin.');
+                        }
+                      } catch (e) {
+                        _showErrorDialog('Error', e.toString());
+                      } finally {
+                        setState(() {
+                          _isLoading = false;
+                        });
+                      }
+                    },
                   ),
                 ],
               ),

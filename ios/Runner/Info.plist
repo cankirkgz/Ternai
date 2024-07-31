@@ -47,8 +47,10 @@
 		<true/>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
-		<!-- Put me in the [my_project]/ios/Runner/Info.plist file -->
-		<!-- Google Sign-in Section -->
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Bu uygulama fotoğraflarınıza erişmek istiyor.</string>
+		<key>NSCameraUsageDescription</key>
+		<string>Bu uygulama kamerayı kullanmak istiyor.</string>
 		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
@@ -56,12 +58,9 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<!-- TODO Replace this value: -->
-					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
 					<string>com.googleusercontent.apps.877090275985-ig9absnt293bja9ms44phv3borj5cel8</string>
 				</array>
 			</dict>
 		</array>
-		<!-- End of the Google Sign-in Section -->
 	</dict>
 </plist>

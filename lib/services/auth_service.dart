@@ -112,10 +112,8 @@ class AuthService {
   }
 
    Future<User?> signInWithGoogle() async {
-    // Google ile oturum aç
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     if (googleUser == null) {
-      // Kullanıcı oturum açma işlemini iptal etti
       return null;
     }
 
@@ -125,7 +123,6 @@ class AuthService {
       idToken: googleAuth.idToken,
     );
 
-    // Firebase ile kimlik doğrulama
     UserCredential userCredential = await _auth.signInWithCredential(credential);
     return userCredential.user;
   }

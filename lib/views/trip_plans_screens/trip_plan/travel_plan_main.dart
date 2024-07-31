@@ -21,7 +21,7 @@ class _TravelPlanMainPageState extends ConsumerState<TravelPlanMain> {
   final List<Widget> _pages = [
     const PlanChoosingCountryPage(),
     const PlanChoosingBudgetPage(),
-    PlanChoosingDayPage(),
+    const PlanChoosingDayPage(),
     const PlanChoosingPeoplePage(),
     PlanChoosingPlansPage(),
     const PlanPlanPage(),
