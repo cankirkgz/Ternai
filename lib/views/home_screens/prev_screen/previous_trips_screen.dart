@@ -5,6 +5,7 @@ import 'package:travelguide/models/budget_plan_model.dart';
 import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/models/day_plan_model.dart';
 import 'package:travelguide/models/plan_plan_model.dart';
+import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_budget/budget_result_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_day/day_result_page.dart';
 import 'package:travelguide/views/trip_plans_screens/trip_plan/plan_result_page.dart';
@@ -158,46 +159,63 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
         automaticallyImplyLeading: false,
         title: const Text('Önceki Tatil Planlarım'),
       ),
-      body: FutureBuilder<List<dynamic>>(
-        future: _futurePlans,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return const Center(child: Text('Error fetching plans'));
-          } else if (snapshot.hasData) {
-            final plans = snapshot.data!;
-            if (plans.isEmpty) {
-              return const Center(
-                  child:
-                      Text('No plans found', style: TextStyle(fontSize: 24)));
-            }
-            return ListView.builder(
-              itemCount: plans.length,
-              itemBuilder: (context, index) {
-                final plan = plans[index];
-                return FutureBuilder<Country?>(
-                  future: _fetchCountry(plan.toCountry),
-                  builder: (context, countrySnapshot) {
-                    if (countrySnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (countrySnapshot.hasError ||
-                        !countrySnapshot.hasData) {
-                      return const Center(
-                          child: Text('Error loading country data'));
-                    } else {
-                      final country = countrySnapshot.data!;
-                      return _buildPlanCard(plan, country);
-                    }
+      body: Stack(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.primaryColor,
+                  Colors.white,
+                ],
+              ),
+            ),
+          ),
+          FutureBuilder<List<dynamic>>(
+            future: _futurePlans,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return const Center(child: Text('Error fetching plans'));
+              } else if (snapshot.hasData) {
+                final plans = snapshot.data!;
+                if (plans.isEmpty) {
+                  return const Center(
+                      child: Text('No plans found',
+                          style: TextStyle(fontSize: 24)));
+                }
+                return ListView.builder(
+                  itemCount: plans.length,
+                  itemBuilder: (context, index) {
+                    final plan = plans[index];
+                    return FutureBuilder<Country?>(
+                      future: _fetchCountry(plan.toCountry),
+                      builder: (context, countrySnapshot) {
+                        if (countrySnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (countrySnapshot.hasError ||
+                            !countrySnapshot.hasData) {
+                          return const Center(
+                              child: Text('Error loading country data'));
+                        } else {
+                          final country = countrySnapshot.data!;
+                          return _buildPlanCard(plan, country);
+                        }
+                      },
+                    );
                   },
                 );
-              },
-            );
-          } else {
-            return const Center(child: Text('Henüz bir plan'));
-          }
-        },
+              } else {
+                return const Center(child: Text('Henüz bir plan'));
+              }
+            },
+          ),
+        ],
       ),
     );
   }
