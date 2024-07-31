@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
 import 'package:travelguide/theme/theme.dart';
@@ -231,7 +230,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         const CustomOrDivider(),
                         const SizedBox(height: 10),
                         ElevatedButton.icon(
-                          icon: Logo(Logos.google),
+                          icon: Image.asset(
+                            'assets/logo/google-logo.png',
+                            height: screenHeight * 0.05,
+                          ),
                           label: const Text(
                             "Google ile Giriş Yap",
                             style: TextStyle(

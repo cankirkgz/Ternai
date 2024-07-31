@@ -7,14 +7,12 @@ class CustomDropDownButton extends FormField<String> {
   final ValueChanged<String?>? onChanged;
 
   CustomDropDownButton({
-    Key? key,
+    super.key,
     required this.items,
     required this.listName,
     this.onChanged,
-    FormFieldValidator<String>? validator,
+    super.validator,
   }) : super(
-          key: key,
-          validator: validator,
           builder: (FormFieldState<String> state) {
             return Padding(
               padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -57,7 +55,7 @@ class CustomDropDownButton extends FormField<String> {
                 onChanged: (item) {
                   state.didChange(item);
                   if (onChanged != null) {
-                    onChanged!(item);
+                    onChanged(item);
                   }
                 },
                 dropdownBuilder: (context, selectedItem) {

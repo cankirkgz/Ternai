@@ -10,8 +10,8 @@ class CustomCheckbox extends StatelessWidget {
     required this.value,
     required this.onChanged,
     required this.text,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

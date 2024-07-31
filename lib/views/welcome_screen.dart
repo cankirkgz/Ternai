@@ -1,20 +1,23 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
+import 'package:travelguide/services/google_login_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
-import 'package:travelguide/views/authentication_screens/birth_date_select_page.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
+import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/home_screens/home_page.dart'; // HomePage'i import et
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({super.key});
+  WelcomeScreen({super.key});
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
 class _WelcomeScreenState extends State<WelcomeScreen> {

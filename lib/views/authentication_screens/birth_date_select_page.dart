@@ -39,7 +39,7 @@ class _BirthDateSelectPageState extends State<BirthDateSelectPage> {
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
             content: Text(
                 'Doğum tarihi seçilirken bir hata oluştu. Lütfen tekrar deneyin.')),
       );
@@ -63,7 +63,7 @@ class _BirthDateSelectPageState extends State<BirthDateSelectPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Kullanıcı Bilgileri"),
+        title: const Text("Kullanıcı Bilgileri"),
       ),
       body: Center(
         child: Padding(
@@ -77,19 +77,19 @@ class _BirthDateSelectPageState extends State<BirthDateSelectPage> {
                 if (authViewModel.user != null)
                   Text(
                     "Hoşgeldin ${authViewModel.user?.name}!",
-                    style: TextStyle(fontSize: 24),
+                    style: const TextStyle(fontSize: 24),
                   ),
-                SizedBox(height: 16),
-                Text(
+                const SizedBox(height: 16),
+                const Text(
                   "Şimdi senden birkaç bilgi alalım. Doğum gününü kutlamak için doğum tarihini bizimle paylaşır mısın? 🎉",
                   style: TextStyle(fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 InkWell(
                   onTap: () => _selectDate(context),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
                       borderRadius: BorderRadius.circular(8),
@@ -101,21 +101,21 @@ class _BirthDateSelectPageState extends State<BirthDateSelectPage> {
                           _selectedDate == null
                               ? 'Doğum Tarihini Seç'
                               : DateFormat('dd/MM/yyyy').format(_selectedDate!),
-                          style: TextStyle(fontSize: 16, color: Colors.black),
+                          style: const TextStyle(fontSize: 16, color: Colors.black),
                         ),
-                        Icon(Icons.calendar_today, color: Colors.grey),
+                        const Icon(Icons.calendar_today, color: Colors.grey),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 CustomButton(
                   text: "Kaydet",
                   color: AppColors.primaryColor,
                   onPressed: () async {
                     if (_selectedDate == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                             content: Text('Lütfen doğum tarihinizi seçin.')),
                       );
                       return;
@@ -152,7 +152,7 @@ class _BirthDateSelectPageState extends State<BirthDateSelectPage> {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       'Yaşınız: $_calculatedAge',
-                      style: TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 18),
                     ),
                   ),
               ],

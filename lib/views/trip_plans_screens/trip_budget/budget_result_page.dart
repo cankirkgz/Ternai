@@ -11,7 +11,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 
 class BudgetResultPage extends ConsumerWidget {
-
   final BudgetPlanModel? plan;
 
   const BudgetResultPage({super.key, this.plan});
@@ -84,40 +83,41 @@ class BudgetResultPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (plan == null) CustomButton(
-                    text: 'Kaydet',
-                    onPressed: () async {
-                      final BudgetPlanModel plan = BudgetPlanModel(
-                        id: uuid.v4(),
-                        fromCountry: authViewModel.user!.country!.name,
-                        toCountry: travelInformation.country,
-                        numberOfDays: travelInformation.numberOfDays,
-                        numberOfPeople: travelInformation.numberOfPeople,
-                        kids: travelInformation.children,
-                        breakfastPlan: travelInformation.breakfastPlan,
-                        mealPlan: travelInformation.foodPreferences,
-                        entertainmentPreferences:
-                            travelInformation.placesToVisit,
-                        shoppingPlans: travelInformation.shoppingPlans,
-                        specialRequests: travelInformation.specialRequests,
-                        result: budget,
-                      );
-                      await planViewModel.createPlan(
-                          authViewModel.user!.userId, plan.toJson());
+                  if (plan == null)
+                    CustomButton(
+                      text: 'Kaydet',
+                      onPressed: () async {
+                        final BudgetPlanModel plan = BudgetPlanModel(
+                          id: uuid.v4(),
+                          fromCountry: authViewModel.user!.country!.name,
+                          toCountry: travelInformation.country,
+                          numberOfDays: travelInformation.numberOfDays,
+                          numberOfPeople: travelInformation.numberOfPeople,
+                          kids: travelInformation.children,
+                          breakfastPlan: travelInformation.breakfastPlan,
+                          mealPlan: travelInformation.foodPreferences,
+                          entertainmentPreferences:
+                              travelInformation.placesToVisit,
+                          shoppingPlans: travelInformation.shoppingPlans,
+                          specialRequests: travelInformation.specialRequests,
+                          result: budget,
+                        );
+                        await planViewModel.createPlan(
+                            authViewModel.user!.userId, plan.toJson());
 
-                      // Başarı mesajı göster
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Plan başarıyla kaydedildi!'),
-                        ),
-                      );
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const NewTripScreen()));
-                    },
-                    color: AppColors.primaryColor,
-                  ),
+                        // Başarı mesajı göster
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Plan başarıyla kaydedildi!'),
+                          ),
+                        );
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const NewTripScreen()));
+                      },
+                      color: AppColors.primaryColor,
+                    ),
                   const SizedBox(height: 10)
                 ],
               ),

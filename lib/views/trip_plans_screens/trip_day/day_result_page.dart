@@ -13,7 +13,6 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:uuid/uuid.dart';
 
 class DayResultPage extends ConsumerWidget {
-
   final DayPlanModel? plan;
 
   const DayResultPage({super.key, this.plan});
@@ -87,44 +86,45 @@ class DayResultPage extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  if (plan == null) CustomButton(
-                    text: 'Kaydet',
-                    onPressed: () async {
-                      final DayPlanModel dayPlanModel = DayPlanModel(
-                        id: uuid.v4(),
-                        fromCountry: "Türkiye",
-                        toCountry: travelInformation.toCountry,
-                        numberOfDays: travelInformation.numberOfDays,
-                        numberOfPeople: travelInformation.numberOfPeople,
-                        kids: travelInformation.children,
-                        budget: travelInformation.budget,
-                        currency: travelInformation.currency,
-                        breakfastPlan: travelInformation.breakfastPlan,
-                        mealPlan: travelInformation.foodPreferences,
-                        entertainmentPreferences:
-                            travelInformation.entertainmentPreferences,
-                        shoppingPlans: travelInformation.shoppingPlans,
-                        specialRequests: travelInformation.specialRequests,
-                        result: day,
-                      );
-                      await planViewModel.createPlan(
-                          authViewModel.user!.userId, dayPlanModel.toJson());
+                  if (plan == null)
+                    CustomButton(
+                      text: 'Kaydet',
+                      onPressed: () async {
+                        final DayPlanModel dayPlanModel = DayPlanModel(
+                          id: uuid.v4(),
+                          fromCountry: "Türkiye",
+                          toCountry: travelInformation.toCountry,
+                          numberOfDays: travelInformation.numberOfDays,
+                          numberOfPeople: travelInformation.numberOfPeople,
+                          kids: travelInformation.children,
+                          budget: travelInformation.budget,
+                          currency: travelInformation.currency,
+                          breakfastPlan: travelInformation.breakfastPlan,
+                          mealPlan: travelInformation.foodPreferences,
+                          entertainmentPreferences:
+                              travelInformation.entertainmentPreferences,
+                          shoppingPlans: travelInformation.shoppingPlans,
+                          specialRequests: travelInformation.specialRequests,
+                          result: day,
+                        );
+                        await planViewModel.createPlan(
+                            authViewModel.user!.userId, dayPlanModel.toJson());
 
-                      // Kullanıcıya başarı mesajı göster
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Plan başarıyla kaydedildi!'),
-                        ),
-                      );
+                        // Kullanıcıya başarı mesajı göster
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Plan başarıyla kaydedildi!'),
+                          ),
+                        );
 
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => NewTripScreen()),
-                      );
-                    },
-                    color: AppColors.primaryColor,
-                  ),
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewTripScreen()),
+                        );
+                      },
+                      color: AppColors.primaryColor,
+                    ),
                   const SizedBox(height: 10)
                 ],
               ),

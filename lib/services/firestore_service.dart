@@ -11,7 +11,7 @@ class FirestoreService {
     try {
       await _firestore.collection('users').doc(user.userId).set(user.toMap());
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -41,7 +41,7 @@ class FirestoreService {
           .doc(user.userId)
           .update(user.toMap());
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -50,7 +50,7 @@ class FirestoreService {
     try {
       await _firestore.collection('users').doc(userId).update(fields);
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -58,7 +58,7 @@ class FirestoreService {
     try {
       await _firestore.collection('users').doc(userId).delete();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

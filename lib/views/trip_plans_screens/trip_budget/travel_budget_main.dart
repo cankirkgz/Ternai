@@ -20,7 +20,7 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
   final List<Widget> _pages = [
     const BudgetChoosingCountryPage(),
     const BudgetChoosingPeoplePage(),
-    BudgetChoosingDayPage(),
+    const BudgetChoosingDayPage(),
     BudgetChoosingPlansPage(),
     const BudgetPlanPage(),
     BudgetResultPage(),

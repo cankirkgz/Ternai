@@ -100,12 +100,8 @@ class UserModel {
       age: map['age'],
       birthDate:
           map['birth_date'] != null ? DateTime.parse(map['birth_date']) : null,
-      country: map['country'] != null
-          ? Country.fromMap(
-              map['country'],
-              '',
-            )
-          : null,
+      country:
+          map['country'] != null ? Country.fromMap(map['country'], '') : null,
       emailVerified: map['email_verified'] ?? false,
       profileImageUrl: map['profile_image_url'],
       posts: map['posts'] != null
