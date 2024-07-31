@@ -196,18 +196,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         const SizedBox(height: 10),
                         const CustomOrDivider(),
                         const SizedBox(height: 10),
-                        ElevatedButton.icon(
-                          icon: Image.asset(
-                            'assets/logo/google-logo.png',
-                            height: screenHeight * 0.05,
-                          ),
-                          label: const Text(
-                            "Google ile Giriş Yap",
-                            style: TextStyle(
-                              color: Colors.black54,
-                            ),
-                          ),
-                          onPressed: () async {
+                        GestureDetector(
+                          onTap: () async {
                             try {
                               User? user =
                                   await AuthService().signInWithGoogle();
@@ -226,6 +216,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               );
                             }
                           },
+                          child: Image.asset(
+                            'assets/images/google_logo.webp',
+                            height: screenHeight * 0.09,
+                          ),
                         ),
                         const SizedBox(height: 10),
                         RichText(
