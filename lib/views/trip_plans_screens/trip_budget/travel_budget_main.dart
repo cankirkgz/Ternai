@@ -111,7 +111,6 @@ class _TravelBudgetMainPageState extends ConsumerState<TravelBudgetMain> {
                 );
               }
             }
-
             if (index == 4) {
               final travelInformation = ref.read(travelInformationProvider);
               if (travelInformation.breakfastPlan.isEmpty ||

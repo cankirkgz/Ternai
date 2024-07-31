@@ -1,11 +1,15 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:travelguide/services/auth_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/authentication_screens/forgot_password_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
+import 'package:travelguide/views/home_screens/home_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_or_divider.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';
@@ -56,32 +60,23 @@ class _LoginPageState extends State<LoginPage> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/login_background.png"),
-                  fit: BoxFit.cover,
-                ),
+                color: AppColors.primaryColor,
               ),
-              child: const Column(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 60),
+                  const SizedBox(height: 70),
                   Padding(
-                    padding: EdgeInsets.only(left: 20, top: 80),
+                    padding: const EdgeInsets.only(left: 20, top: 80),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
                           "Giriş Yap",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: Colors.white,
-                            fontSize: 40,
-                          ),
-                        ),
-                        Text(
-                          "Hoş Geldiniz",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 35,
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
                       ],
@@ -97,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                  topRight: Radius.circular(60),
+                  topLeft: Radius.circular(100),
+                  topRight: Radius.circular(100),
                 ),
               ),
               height: screenHeight * 0.7,
@@ -112,13 +107,14 @@ class _LoginPageState extends State<LoginPage> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 40),
                         CustomTextField(
                           controller: _emailController,
                           labelText: "E-mail",
                           hintText: "E-mail",
                           suffixIcon: CupertinoIcons.envelope,
                           validator: _emailValidator,
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         CustomTextField(
                           controller: _passwordController,
@@ -189,11 +185,38 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           width: screenWidth * 0.7,
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 30),
                         const CustomOrDivider(),
-                        const SizedBox(height: 10),
-                        Logo(Logos.google),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 30),
+                        ElevatedButton.icon(
+                          icon: Logo(Logos.google),
+                          label: const Text(
+                            "Google ile Giriş Yap",
+                            style: TextStyle(
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onPressed: () async {
+                            try {
+                              User? user =
+                                  await AuthService().signInWithGoogle();
+                              if (user != null) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
+                                );
+                              }
+                            } catch (e) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(e.toString()),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 30),
                         RichText(
                           text: TextSpan(
                             children: [

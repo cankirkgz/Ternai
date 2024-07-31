@@ -110,4 +110,23 @@ class AuthService {
       await user.reauthenticateWithCredential(credential);
     }
   }
+
+   Future<User?> signInWithGoogle() async {
+    // Google ile oturum aç
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      // Kullanıcı oturum açma işlemini iptal etti
+      return null;
+    }
+
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Firebase ile kimlik doğrulama
+    UserCredential userCredential = await _auth.signInWithCredential(credential);
+    return userCredential.user;
+  }
 }

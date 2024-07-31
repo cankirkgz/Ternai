@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/viewmodels/post_viewmodel.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/home_screens/new_post_screen.dart';
@@ -40,9 +43,17 @@ class _HomeScreenState extends State<HomeScreen> {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
 
     return Scaffold(
+      backgroundColor: Color(0xFFF5F5F5),
       appBar: AppBar(
+        backgroundColor: Color(0xFFF5F5F5),
         automaticallyImplyLeading: false,
-        title: const Text('Ana Sayfa'),
+        centerTitle: true,
+        title: Text(
+          'Ternai',
+          style: GoogleFonts.pacifico(
+            color: AppColors.textColor,
+          )
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),

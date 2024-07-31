@@ -10,7 +10,9 @@ class CustomTextField extends StatelessWidget {
   final InputDecoration? decoration;
   final TextStyle? style;
   final bool enabled;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
+  final void Function(String)? onChanged;
+  final void Function()? onTap;
 
   const CustomTextField({
     required this.controller,
@@ -22,17 +24,19 @@ class CustomTextField extends StatelessWidget {
     this.style,
     this.decoration,
     this.enabled = true,
-    this.keyboardType = TextInputType.text,
+    this.keyboardType,
+    this.onChanged,
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: TextFormField(
         controller: controller,
-        keyboardType: keyboardType,
+        keyboardType: keyboardType ?? TextInputType.text,
         obscureText: obscureText,
         enabled: enabled,
         decoration: InputDecoration(
@@ -65,6 +69,8 @@ class CustomTextField extends StatelessWidget {
               : null,
         ),
         validator: validator,
+        onChanged: onChanged,
+        onTap: onTap,
       ),
     );
   }

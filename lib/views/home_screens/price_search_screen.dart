@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/models/category_model.dart';
 import 'package:travelguide/models/country_model.dart';
@@ -81,6 +82,7 @@ class _PriceSearchScreenState extends State<PriceSearchScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: AppColors.backgroundColor,
       extendBodyBehindAppBar: true,
       body: Container(
         decoration: BoxDecoration(

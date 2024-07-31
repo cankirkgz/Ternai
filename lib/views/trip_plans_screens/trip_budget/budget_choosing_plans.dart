@@ -198,6 +198,7 @@ class BudgetChoosingPlansPage extends ConsumerWidget {
                 },
                 color: AppColors.primaryColor,
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),

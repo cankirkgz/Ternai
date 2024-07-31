@@ -36,18 +36,17 @@ class DayChoosingPlansPage extends ConsumerWidget {
                   "Tatilde geçireceğiniz gün sayısını hesaplayalım!",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 18,
                       color: AppColors.primaryColor,
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              const SizedBox(height: 20),
               const Text(
                 'Tatilinizde yapmak istediğiniz her şeyi anlatın:',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Column(
@@ -205,6 +204,7 @@ class DayChoosingPlansPage extends ConsumerWidget {
                 },
                 color: AppColors.primaryColor,
               ),
+              const SizedBox(height: 20),
             ],
           ),
         ),
