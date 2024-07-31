@@ -1,6 +1,6 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,9 +8,13 @@ import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/viewmodels/budget_plan_model.dart';
+import 'package:travelguide/viewmodels/day_plan_model.dart';
+import 'package:travelguide/viewmodels/plan_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/settings_screen.dart';
 import 'package:travelguide/models/post_model.dart';
+import 'package:travelguide/views/widgets/post_card.dart';
 
 final AuthService _authService = AuthService();
 
@@ -27,15 +31,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final ImagePicker _picker = ImagePicker();
   final FirebaseStorage _storage = FirebaseStorage.instance;
   List<PostModel> _posts = [];
-  int _vacationCount = 0;
   int _postCount = 0;
+  late Future<List<dynamic>> _futurePlans;
 
   @override
   void initState() {
     super.initState();
     _loadProfileImage();
     _loadUserPosts();
-    _loadUserVacationCount();
+    _futurePlans = fetchAllPlans();
   }
 
   Future<void> _loadProfileImage() async {
@@ -62,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (userId != null) {
       QuerySnapshot postsSnapshot = await FirebaseFirestore.instance
           .collection('posts')
-          .where('user.userId', isEqualTo: userId)
+          .where('userId', isEqualTo: userId)
           .get();
 
       if (postsSnapshot.docs.isNotEmpty) {
@@ -73,26 +77,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               .toList();
           _postCount = _posts.length;
         });
+      } else {
+        setState(() {
+          _posts = [];
+          _postCount = 0;
+        });
       }
     }
   }
 
-  Future<void> _loadUserVacationCount() async {
-    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final userId = authViewModel.user?.userId;
-
-    if (userId != null) {
-      QuerySnapshot vacationsSnapshot = await FirebaseFirestore.instance
-          .collection('vacations')
-          .where('user.userId', isEqualTo: userId)
-          .get();
-
-      if (vacationsSnapshot.docs.isNotEmpty) {
-        setState(() {
-          _vacationCount = vacationsSnapshot.docs.length;
-        });
-      }
+  Future<List<dynamic>> fetchAllPlans() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception('User is not logged in');
     }
+    final userId = user.uid;
+
+    final budgetPlans = await fetchBudgetPlans(userId);
+    final dayPlans = await fetchDayPlans(userId);
+    final planPlans = await fetchPlanPlans(userId);
+
+    return [...budgetPlans, ...dayPlans, ...planPlans];
   }
 
   Future<void> _pickImage(ImageSource source) async {
@@ -112,7 +117,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (_image == null || userId == null) return;
 
     try {
-      String fileName = 'profile_pics/$userId.png';
+      String fileName = 'profile_pics/${userId}.png';
       await _storage.ref(fileName).putFile(_image!);
 
       String downloadURL = await _storage.ref(fileName).getDownloadURL();
@@ -203,22 +208,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context);
     final userName = authViewModel.user?.name ?? 'Kullanıcı Adı';
-    double keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
-        title: Text(
-          userName,
-          style: const TextStyle(
-            color: Colors.black,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        centerTitle: true,
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -269,11 +264,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           )),
           Positioned.fill(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: keyboardHeight),
-              child: Column(
-                children: [
-                  const SizedBox(height: 120),
+            child: ListView(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              children: [
+                Column(children: [
                   GestureDetector(
                     onTap: _showImageSourceDialog,
                     child: CircleAvatar(
@@ -296,7 +291,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Text(
                     userName,
                     style: const TextStyle(
-                      fontSize: 24,
+                      color: Colors.white,
+                      fontSize: 34,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -304,64 +300,227 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      _buildStatisticCard('Vacations', _vacationCount),
+                      FutureBuilder<List<dynamic>>(
+                        future: _futurePlans,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return _buildStatisticCard('Vacations', 0);
+                          } else if (snapshot.hasError) {
+                            return _buildStatisticCard('Vacations', 0);
+                          } else if (snapshot.hasData) {
+                            final plans = snapshot.data!;
+                            return _buildStatisticCard(
+                                'Vacations', _futurePlans.toString().length);
+                          } else {
+                            return _buildStatisticCard('Vacations', 0);
+                          }
+                        },
+                      ),
                       const SizedBox(width: 20),
                       _buildStatisticCard('Posts', _postCount),
                     ],
                   ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Gönderiler',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
+                  SizedBox(
+                    height: 34,
                   ),
-                  const SizedBox(height: 10),
-                  _posts.isNotEmpty
-                      ? Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 8.0,
-                              mainAxisSpacing: 8.0,
-                            ),
-                            itemCount: _posts.length,
-                            itemBuilder: (context, index) {
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
+                  Container(
+                    color: Colors.lightBlueAccent,
+                    height: 3,
+                  ),
+                ]),
+                Container(
+                  height: 34,
+                  color: Colors.lightBlueAccent.withAlpha(90),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 21,
+                      ),
+                      Icon(Icons.grid_on_outlined,
+                          color: Colors.white, size: 21),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      const Text(
+                        'POST',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 45,
+                      ),
+                      Icon(Icons.health_and_safety_rounded,
+                          color: Colors.white30, size: 21),
+                      SizedBox(
+                        width: 3,
+                      ),
+                      const Text(
+                        'LIKED',
+                        style: TextStyle(
+                          fontSize: 19,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white54,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                _posts.isNotEmpty
+                    ? Container(
+                        color: Colors.lightBlueAccent.withAlpha(90),
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 4.0,
+                            mainAxisSpacing: 4.0,
+                          ),
+                          itemCount: _posts.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              color: Colors.blueGrey,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showFullScreenImages(context, index);
+
+                                  // PostCard(post: posts[index];
+                                },
                                 child: Image.network(
                                   _posts[index].photoUrls.first,
                                   fit: BoxFit.cover,
                                 ),
-                              );
-                            },
-                          ),
-                        )
-                      : const Padding(
-                          padding: EdgeInsets.all(20),
-                          child: Center(
-                            child: Text(
-                              'Henüz bir gönderi yok',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.white,
                               ),
+                            );
+                          },
+                        ),
+                      )
+                    : const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Center(
+                          child: Text(
+                            'Henüz bir gönderi paylaşmadınız',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
                             ),
                           ),
                         ),
-                ],
-              ),
+                      ),
+                Container(
+                  color: Colors.lightBlueAccent.withAlpha(70),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 30,
+                      ),
+                      TextButton(
+                          style: ButtonStyle(
+                            // foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                                Colors.lightBlueAccent),
+                          ),
+                          child: const Text(
+                            'BAŞA DÖN',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white),
+                          ),
+                          onPressed: () {}),
+                      SizedBox(
+                        height: 200,
+                      )
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  void _showFullScreenImages(BuildContext context, int index) {
+    int _currentImageIndex = index;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Stack(
+            children: [
+              PageView.builder(
+                itemCount: _posts[index].photoUrls.length,
+                controller: PageController(initialPage: _currentImageIndex),
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentImageIndex = index;
+                  });
+                },
+                itemBuilder: (context, pageIndex) {
+                  return InteractiveViewer(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 8,
+                        left: 8,
+                        right: 8,
+                        
+                      ),
+                      child: Center(
+                        child: PostCard(post: _posts[index]),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Positioned(
+                top: 40,
+                right: 20,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '/ ${_posts[index].postDate.toString().trimLeft(  )}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -371,16 +530,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Text(
           count.toString(),
           style: const TextStyle(
-            fontSize: 20,
+            color: Colors.white,
+            fontSize: 29,
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 0.1),
         Text(
           title,
           style: const TextStyle(
-            fontSize: 16,
-            color: Colors.grey,
+            fontSize: 21,
+            fontWeight: FontWeight.bold,
+            color: Colors.white70,
           ),
         ),
       ],

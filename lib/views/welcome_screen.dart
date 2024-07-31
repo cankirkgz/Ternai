@@ -1,14 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+import 'package:travelguide/services/google_login_service.dart';
 import 'package:travelguide/theme/theme.dart';
+import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
+import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 
-class WelcomeScreen extends StatelessWidget {
-  const WelcomeScreen({super.key});
+class WelcomeScreen extends StatefulWidget {
+  WelcomeScreen({super.key});
+
+  @override
+  State<WelcomeScreen> createState() => _WelcomeScreenState();
+}
+
+class _WelcomeScreenState extends State<WelcomeScreen> {
+  final googleController = Get.put(GoogleLoginService());
+  final _formKey = GlobalKey<FormState>();
+  bool rememberMe = true;
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<AuthViewModel>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -75,8 +90,37 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20.0),
                   GestureDetector(
-                    onTap: () {
-                      // Google sign in logic here
+                    onTap: () async {
+                      await googleController.login();
+                      setState(() {
+                        print(
+                            googleController.googleAccont.value?.displayName ??
+                                'Kullanıcı');
+                        print(googleController.googleAccont.value?.email ??
+                            'email');
+                        print(googleController.googleAccont.value?.id ?? 'id');
+                        print(googleController.googleAccont.value?.serverAuthCode ??
+                            '?');
+                      });
+                      // if (_formKey.currentState!.validate()) {
+                      //   try {
+                      //     await authViewModel.signInWithEmail(
+                      //       _emailController.text,
+                      //       _passwordController.text,
+                      //     );
+                      //     Navigator.pushReplacement(
+                      //       context,
+                      //       MaterialPageRoute(
+                      //           builder: (context) => const HomePage()),
+                      //     );
+                      //   } catch (e) {
+                      //     ScaffoldMessenger.of(context).showSnackBar(
+                      //       SnackBar(
+                      //         content: Text(e.toString()),
+                      //       ),
+                      //     );
+                      //   }
+                      // }
                     },
                     child: Image.asset(
                       'assets/images/google_logo.webp',

@@ -25,7 +25,7 @@ class OnboardingView extends StatelessWidget {
             const OnboardingScreen3(),
             const OnboardingScreen4(),
             const OnboardingScreen5(),
-            const WelcomeScreen()
+             WelcomeScreen()
           ],
         ),
         Container(
