@@ -87,13 +87,19 @@ class FirestoreService {
 
   Future<List<PostModel>> getAllPosts() async {
     try {
-      QuerySnapshot querySnapshot = await _firestore.collection('posts').get();
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('posts')
+          .orderBy('postDate', descending: true) // Tarihe göre sırala
+          .get();
+
       List<PostModel> posts = querySnapshot.docs.map((doc) {
         final data = doc.data() as Map<String, dynamic>;
         return PostModel.fromJson(data);
       }).toList();
+
       return posts;
     } catch (e) {
+      print("Error fetching posts: $e");
       throw e;
     }
   }

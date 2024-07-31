@@ -15,9 +15,13 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   Future<void> _initializeUser() async {
-    _user = await _authService.getCurrentUser();
-    if (_user != null) {
-      _user = await _firestoreService.getUser(_user!.userId);
+    try {
+      _user = await _authService.getCurrentUser();
+      if (_user != null) {
+        _user = await _firestoreService.getUser(_user!.userId);
+      }
+    } catch (e) {
+      print("Error initializing user: $e");
     }
     notifyListeners();
   }
@@ -29,6 +33,34 @@ class AuthViewModel extends ChangeNotifier {
       _user = await _firestoreService.getUser(_user!.userId);
     }
     notifyListeners();
+  }
+
+  Future<bool> signInWithAnonymously() async {
+    try {
+      bool isSuccess = await _authService.signInWithAnonymously();
+      if (isSuccess) {
+        String? userId = await _authService.getCurrentUserId();
+        if (userId != null) {
+          _user = await _firestoreService.getUser(userId);
+          if (_user == null) {
+            await _firestoreService.createUser(UserModel(
+              userId: userId,
+              email: null,
+              name: "Anonim Kullanıcı",
+              createdAt: DateTime.now(),
+              isAnonymous: true,
+            ));
+            _user = await _firestoreService.getUser(userId);
+          }
+          notifyListeners();
+          return true;
+        }
+      }
+      return false;
+    } catch (e) {
+      print('Error during anonymous sign in: $e');
+      return false;
+    }
   }
 
   Future<void> signUpWithEmail(

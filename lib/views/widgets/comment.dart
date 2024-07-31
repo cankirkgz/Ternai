@@ -25,7 +25,7 @@ class CommentWidget extends StatelessWidget {
             backgroundImage: NetworkImage(comment.user.profileImageUrl!),
             radius: 25,
           ),
-          title: Text(comment.user.name),
+          title: Text(comment.user.name!),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -1,19 +1,46 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travelguide/models/user_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   Future<UserModel?> getCurrentUser() async {
-    User? user = _auth.currentUser;
-    if (user != null) {
-      return UserModel.fromFirebaseUser(user);
+    try {
+      User? user = _auth.currentUser;
+      if (user != null) {
+        return UserModel.fromFirebaseUser(user);
+      }
+    } catch (e) {
+      print("Error getting current user: $e");
     }
     return null;
   }
 
   Future<void> signInWithEmail(String email, String password) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password);
+  }
+
+  Future<bool> signInWithAnonymously() async {
+    try {
+      UserCredential result = await _auth.signInAnonymously();
+      User? user = result.user;
+      return user != null;
+    } catch (e) {
+      print('Anonymous Sign In Error: $e');
+      return false;
+    }
+  }
+
+  Future<String?> getCurrentUserId() async {
+    try {
+      User? user = _auth.currentUser;
+      return user?.uid;
+    } catch (error) {
+      print('Get Current User ID Error: $error');
+      return null;
+    }
   }
 
   Future<void> signUpWithEmail(
