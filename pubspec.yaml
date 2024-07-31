@@ -53,9 +53,10 @@ dependencies:
   photo_manager: ^3.2.2
   firebase_storage: ^12.1.1
   flutter_markdown: ^0.7.3
-  uuid: ^3.0.6
+  uuid: ^4.4.2
   intl: any
   get: ^4.6.6
+  image: ^4.2.0
 
 dev_dependencies:
   flutter_test:

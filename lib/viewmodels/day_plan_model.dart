@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travelguide/models/day_plan_model.dart';
 import 'package:travelguide/models/kid_model.dart';
 
 class TravelInformation {
@@ -167,3 +169,13 @@ final travelInformationProvider =
     StateNotifierProvider<TravelInformationNotifier, TravelInformation>((ref) {
   return TravelInformationNotifier();
 });
+
+Future<List<DayPlanModel>> fetchDayPlans(String userId) async {
+    final userDoc = await FirebaseFirestore.instance.collection('users').doc(userId).get();
+    final dayPlansData = userDoc.data()?['day_plans'] as List<dynamic>? ?? [];
+
+    return dayPlansData.map((data) {
+      return DayPlanModel.fromJson(data as Map<String, dynamic>);
+    }).toList();
+  }
+
