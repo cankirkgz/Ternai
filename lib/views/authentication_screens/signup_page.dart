@@ -30,41 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _hasDigit = false;
   bool _hasSpecialChar = false;
   bool _hasMinLength = false;
-
-  String? _usernameValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen isiminizi ve soyisminizi giriniz';
-    }
-    return null;
-  }
-
-  String? _emailValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen e-mailinizi giriniz';
-    }
-    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
-    if (!emailRegex.hasMatch(value)) {
-      return 'Geçerli bir e-mail giriniz';
-    }
-    return null;
-  }
-
-  String? _passwordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen şifrenizi giriniz';
-    }
-    return null;
-  }
-
-  String? _confirmPasswordValidator(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Lütfen şifrenizi onaylayınız';
-    }
-    if (value != _passwordController.text) {
-      return 'Şifreler eşleşmiyor';
-    }
-    return null;
-  }
+  bool _showPasswordConditions = false;
 
   void _validatePassword(String value) {
     setState(() {
@@ -74,6 +40,15 @@ class _SignUpPageState extends State<SignUpPage> {
       _hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
       _hasMinLength = value.length >= 8;
     });
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,15 +64,12 @@ class _SignUpPageState extends State<SignUpPage> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/login_background.png"),
-                  fit: BoxFit.cover,
-                ),
+                color: Colors.black,
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 60),
+                  SizedBox(height: 70),
                   Padding(
                     padding: EdgeInsets.only(left: 20, top: 80),
                     child: Column(
@@ -107,14 +79,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           "Kayıt Ol",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 40,
-                          ),
-                        ),
-                        Text(
-                          "Hoş Geldiniz",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                            fontSize: 35,
+                            fontWeight: FontWeight.w800,
                           ),
                         ),
                       ],
@@ -130,16 +96,15 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(60),
-                  topRight: Radius.circular(60),
+                  topLeft: Radius.circular(80),
+                  topRight: Radius.circular(80),
                 ),
               ),
               height: screenHeight * 0.7,
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -168,22 +133,28 @@ class _SignUpPageState extends State<SignUpPage> {
                           suffixIcon: CupertinoIcons.lock,
                           validator: _passwordValidator,
                           onChanged: _validatePassword,
+                          onTap: () {
+                            setState(() {
+                              _showPasswordConditions = true;
+                            });
+                          },
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Şifre Şartları:',
-                              style: TextStyle(
-                                  color: Colors.black, fontSize: 16),
-                            ),
-                            _buildPasswordCondition('En az 8 karakter', _hasMinLength),
-                            _buildPasswordCondition('Bir büyük harf', _hasUpperCase),
-                            _buildPasswordCondition('Bir küçük harf', _hasLowerCase),
-                            _buildPasswordCondition('Bir rakam', _hasDigit),
-                            _buildPasswordCondition('Bir özel karakter', _hasSpecialChar),
-                          ],
-                        ),
+                        if (_showPasswordConditions)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Şifre Şartları:',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                              ),
+                              _buildPasswordCondition('En az 8 karakter', _hasMinLength),
+                              _buildPasswordCondition('Bir büyük harf', _hasUpperCase),
+                              _buildPasswordCondition('Bir küçük harf', _hasLowerCase),
+                              _buildPasswordCondition('Bir rakam', _hasDigit),
+                              _buildPasswordCondition('Bir özel karakter', _hasSpecialChar),
+                            ],
+                          ),
                         CustomTextField(
                           controller: _confirmPasswordController,
                           labelText: "Şifreyi Onayla",
@@ -206,8 +177,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const BirthDateSelectPage()),
+                                      builder: (context) => const BirthDateSelectPage()),
                                 );
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -240,8 +210,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LoginPage()),
+                                          builder: (context) => const LoginPage()),
                                     );
                                   },
                                   child: const Text(
@@ -266,6 +235,41 @@ class _SignUpPageState extends State<SignUpPage> {
         ],
       ),
     );
+  }
+
+  String? _usernameValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'İsim soyisim giriniz';
+    }
+    return null;
+  }
+
+  String? _emailValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'E-mail giriniz';
+    }
+    // Burada daha fazla e-mail doğrulama ekleyebilirsiniz
+    return null;
+  }
+
+  String? _passwordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Şifre giriniz';
+    }
+    if (!_hasUpperCase || !_hasLowerCase || !_hasDigit || !_hasSpecialChar || !_hasMinLength) {
+      return 'Şifre kriterlerine uymuyor';
+    }
+    return null;
+  }
+
+  String? _confirmPasswordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Şifrenizi onaylayınız';
+    }
+    if (value != _passwordController.text) {
+      return 'Şifreler eşleşmiyor';
+    }
+    return null;
   }
 
   Widget _buildPasswordCondition(String condition, bool isValid) {

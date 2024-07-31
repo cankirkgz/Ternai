@@ -12,7 +12,7 @@ class CustomTextField extends StatelessWidget {
   final bool enabled;
   final TextInputType keyboardType;
   final void Function(String)? onChanged;
-  final void Function()? onTap; // Burayı ekleyin
+  final void Function()? onTap;
 
   const CustomTextField({
     required this.controller,
@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
     this.enabled = true,
     this.keyboardType = TextInputType.text,
     this.onChanged,
-    this.onTap, // Burayı ekleyin
+    this.onTap,
     Key? key,
   }) : super(key: key);
 
@@ -39,6 +39,8 @@ class CustomTextField extends StatelessWidget {
         keyboardType: keyboardType,
         obscureText: obscureText,
         enabled: enabled,
+        onChanged: onChanged,
+        onTap: onTap,
         decoration: InputDecoration(
           labelText: labelText,
           hintText: hintText,

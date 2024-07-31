@@ -92,8 +92,8 @@ class _LoginPageState extends State<LoginPage> {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(100),
-                  topRight: Radius.circular(100),
+                  topLeft: Radius.circular(80),
+                  topRight: Radius.circular(80),
                 ),
               ),
               height: screenHeight * 0.7,
