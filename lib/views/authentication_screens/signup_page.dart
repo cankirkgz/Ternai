@@ -39,6 +39,8 @@ class _SignUpPageState extends State<SignUpPage> {
       _hasDigit = value.contains(RegExp(r'[0-9]'));
       _hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
       _hasMinLength = value.length >= 8;
+
+      _showPasswordConditions = !(_hasUpperCase && _hasLowerCase && _hasDigit && _hasSpecialChar && _hasMinLength);
     });
   }
 
@@ -64,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: AppColors.primaryColor,
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

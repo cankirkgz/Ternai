@@ -60,7 +60,7 @@ class _LoginPageState extends State<LoginPage> {
           Positioned.fill(
             child: Container(
               decoration: const BoxDecoration(
-                color: Colors.black,
+                color: AppColors.primaryColor,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -114,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: "E-mail",
                           suffixIcon: CupertinoIcons.envelope,
                           validator: _emailValidator,
+                          keyboardType: TextInputType.emailAddress,
                         ),
                         CustomTextField(
                           controller: _passwordController,
@@ -193,10 +194,12 @@ class _LoginPageState extends State<LoginPage> {
                             "Google ile Giriş Yap",
                             style: TextStyle(
                               color: Colors.black54,
-                            ),),
+                            ),
+                          ),
                           onPressed: () async {
                             try {
-                              User? user = await AuthService().signInWithGoogle();
+                              User? user =
+                                  await AuthService().signInWithGoogle();
                               if (user != null) {
                                 Navigator.pushReplacement(
                                   context,

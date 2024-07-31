@@ -20,11 +20,20 @@ class _PostCardState extends State<PostCard> {
   bool isLiked = false;
   int _currentImageIndex = 0;
   final TextEditingController _commentController = TextEditingController();
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
     _checkIfLiked();
+    _pageController = PageController(initialPage: _currentImageIndex);
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose();
+    _pageController.dispose();
+    super.dispose();
   }
 
   void _checkIfLiked() {
@@ -34,20 +43,28 @@ class _PostCardState extends State<PostCard> {
     if (userId != null && widget.post.likedUserIds.contains(userId)) {
       setState(() {
         isLiked = true;
+        print("isAnonymous: ${authViewModel.user?.isAnonymous}");
       });
     }
   }
 
   void _toggleLike() {
-    final postViewModel = Provider.of<PostViewModel>(context, listen: false);
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
-    final userId = authViewModel.user?.userId;
+    final user = authViewModel.user;
 
-    if (userId != null) {
-      postViewModel.toggleLike(widget.post, userId);
-      setState(() {
-        isLiked = !isLiked;
-      });
+    if (user != null) {
+      if (user.isAnonymous) {
+        _showAnonymousWarning();
+      } else {
+        final postViewModel =
+            Provider.of<PostViewModel>(context, listen: false);
+        final userId = user.userId;
+
+        postViewModel.toggleLike(widget.post, userId);
+        setState(() {
+          isLiked = !isLiked;
+        });
+      }
     }
   }
 
@@ -68,84 +85,93 @@ class _PostCardState extends State<PostCard> {
   }
 
   void _showComments(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (BuildContext context) {
-        return FractionallySizedBox(
-          heightFactor: 0.5,
-          child: Column(
-            children: [
-              Expanded(
-                child: FutureBuilder<List<CommentModel>>(
-                  future: Provider.of<PostViewModel>(context, listen: false)
-                      .fetchComments(widget.post.id),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return const Center(
-                          child: Text('Yorumlar yüklenirken hata oluştu.'));
-                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                      return const Center(child: Text('Henüz bir yorum yok.'));
-                    }
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    final user = authViewModel.user;
 
-                    final comments = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: comments.length,
-                      itemBuilder: (context, index) {
-                        CommentModel comment = comments[index];
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage: comment.user.profileImageUrl !=
-                                      null
-                                  ? NetworkImage(comment.user.profileImageUrl!)
-                                  : const AssetImage(
-                                          'assets/images/default_profile.png')
-                                      as ImageProvider,
-                              radius: 25,
+    if (user != null && user.isAnonymous) {
+      _showAnonymousWarning();
+    } else {
+      showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return FractionallySizedBox(
+            heightFactor: 0.5,
+            child: Column(
+              children: [
+                Expanded(
+                  child: FutureBuilder<List<CommentModel>>(
+                    future: Provider.of<PostViewModel>(context, listen: false)
+                        .fetchComments(widget.post.id),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return const Center(
+                            child: Text('Yorumlar yüklenirken hata oluştu.'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(
+                            child: Text('Henüz bir yorum yok.'));
+                      }
+
+                      final comments = snapshot.data!;
+                      return ListView.builder(
+                        itemCount: comments.length,
+                        itemBuilder: (context, index) {
+                          CommentModel comment = comments[index];
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                backgroundImage: comment.user.profileImageUrl !=
+                                        null
+                                    ? NetworkImage(
+                                        comment.user.profileImageUrl!)
+                                    : const AssetImage(
+                                            'assets/images/default_profile.png')
+                                        as ImageProvider,
+                                radius: 25,
+                              ),
+                              title: Text(
+                                comment.user.name!,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                              subtitle: Text(
+                                comment.content,
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
-                            title: Text(
-                              comment.user.name,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                            subtitle: Text(
-                              comment.content,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: ListTile(
-                  title: TextField(
-                    controller: _commentController,
-                    decoration: const InputDecoration(
-                      labelText: 'Yorum Yaz',
-                    ),
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.send),
-                    onPressed: () {
-                      _addComment(context);
+                          );
+                        },
+                      );
                     },
                   ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+                Padding(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: ListTile(
+                    title: TextField(
+                      controller: _commentController,
+                      decoration: const InputDecoration(
+                        labelText: 'Yorum Yaz',
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.send),
+                      onPressed: () {
+                        _addComment(context);
+                      },
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
   }
 
   void _addComment(BuildContext context) {
@@ -153,7 +179,9 @@ class _PostCardState extends State<PostCard> {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final user = authViewModel.user;
 
-    if (user != null && _commentController.text.isNotEmpty) {
+    if (user != null &&
+        !user.isAnonymous &&
+        _commentController.text.isNotEmpty) {
       final newComment = CommentModel(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         content: _commentController.text,
@@ -172,7 +200,30 @@ class _PostCardState extends State<PostCard> {
       _commentController.clear();
       Navigator.of(context).pop();
       _showComments(context); // Yorum eklendikten sonra yorumları tekrar göster
+    } else if (user != null && user.isAnonymous) {
+      _showAnonymousWarning();
     }
+  }
+
+  void _showAnonymousWarning() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Anonim Kullanıcı'),
+          content: const Text(
+              'Anonim kullanıcı olarak sadece fiyat araması yapabilirsiniz. Diğer özelliklere erişmek için kayıt olmalısınız.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Tamam'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -277,7 +328,7 @@ class _PostCardState extends State<PostCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user.name,
+                              user.name!,
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -359,7 +410,7 @@ class _PostCardState extends State<PostCard> {
             children: [
               PageView.builder(
                 itemCount: widget.post.photoUrls.length,
-                controller: PageController(initialPage: _currentImageIndex),
+                controller: _pageController,
                 onPageChanged: (index) {
                   setState(() {
                     _currentImageIndex = index;

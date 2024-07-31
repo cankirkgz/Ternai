@@ -56,7 +56,7 @@ class _LaunchScreenState extends State<LaunchScreen> {
     return Scaffold(
       body: Center(
         child: Image.asset(
-          'assets/logo/logo-fin-transparent.png',
+          'assets/logo/ternai-logo.png',
         ),
       ),
     );

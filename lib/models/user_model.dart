@@ -7,27 +7,31 @@ import 'package:travelguide/models/post_model.dart';
 
 class UserModel {
   final String userId;
-  final String name;
-  final String email;
+  final String? name;
+  final String? email;
   final int? age;
   final DateTime? birthDate;
   final Country? country;
   final DateTime createdAt;
-  final DateTime updatedAt;
-  final bool emailVerified;
+  final DateTime? updatedAt;
+  final bool? emailVerified;
   final String? profileImageUrl;
   final List<PostModel> posts;
   final List<BudgetPlanModel> budgetPlans;
   final List<DayPlanModel> dayPlans;
   final List<PlanPlanModel> planPlans;
+  final int vacationPlanCount;
+  final int postCount;
+  final int status;
+  final bool isAnonymous;
 
   UserModel({
     required this.userId,
-    required this.name,
-    required this.email,
+    this.name,
+    this.email,
     required this.createdAt,
-    required this.updatedAt,
-    required this.emailVerified,
+    this.updatedAt,
+    this.emailVerified,
     this.age,
     this.birthDate,
     this.country,
@@ -36,17 +40,23 @@ class UserModel {
     this.budgetPlans = const [],
     this.dayPlans = const [],
     this.planPlans = const [],
+    this.vacationPlanCount = 0,
+    this.postCount = 0,
+    this.status = 3,
+    this.isAnonymous = false,
   });
 
   factory UserModel.fromFirebaseUser(User user) {
     return UserModel(
       userId: user.uid,
       name: user.displayName ?? '',
-      email: user.email!,
+      email: user.email ?? '',
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       emailVerified: user.emailVerified,
       profileImageUrl: user.photoURL,
+      status: 3,
+      isAnonymous: user.isAnonymous,
     );
   }
 
@@ -56,7 +66,7 @@ class UserModel {
       'name': name,
       'email': email,
       'created_at': createdAt.toIso8601String(),
-      'updated_at': updatedAt.toIso8601String(),
+      'updated_at': updatedAt?.toIso8601String(),
       'age': age,
       'birth_date': birthDate?.toIso8601String(),
       'country': country?.toMap(),
@@ -66,6 +76,10 @@ class UserModel {
       'budget_plans': budgetPlans.map((plan) => plan.toJson()).toList(),
       'day_plans': dayPlans.map((plan) => plan.toJson()).toList(),
       'plan_plans': planPlans.map((plan) => plan.toJson()).toList(),
+      'vacation_plan_count': vacationPlanCount,
+      'post_count': postCount,
+      'status': status,
+      'is_anonymous': isAnonymous,
     };
   }
 
@@ -81,14 +95,17 @@ class UserModel {
       createdAt: map['created_at'] != null
           ? DateTime.parse(map['created_at'])
           : DateTime.now(),
-      updatedAt: map['updated_at'] != null
-          ? DateTime.parse(map['updated_at'])
-          : DateTime.now(),
+      updatedAt:
+          map['updated_at'] != null ? DateTime.parse(map['updated_at']) : null,
       age: map['age'],
       birthDate:
           map['birth_date'] != null ? DateTime.parse(map['birth_date']) : null,
-      country:
-          map['country'] != null ? Country.fromMap(map['country'], '') : null,
+      country: map['country'] != null
+          ? Country.fromMap(
+              map['country'],
+              '',
+            )
+          : null,
       emailVerified: map['email_verified'] ?? false,
       profileImageUrl: map['profile_image_url'],
       posts: map['posts'] != null
@@ -107,6 +124,10 @@ class UserModel {
           ? List<PlanPlanModel>.from((map['plan_plans'] as List)
               .map((plan) => PlanPlanModel.fromJson(plan)))
           : [],
+      vacationPlanCount: map['vacation_plan_count'] ?? 0,
+      postCount: map['post_count'] ?? 0,
+      status: map['status'] ?? 3,
+      isAnonymous: map['is_anonymous'] ?? false,
     );
   }
 }
