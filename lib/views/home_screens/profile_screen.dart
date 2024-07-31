@@ -14,6 +14,7 @@ import 'package:travelguide/viewmodels/plan_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/home_screens/settings_screen.dart';
 import 'package:travelguide/models/post_model.dart';
+import 'package:travelguide/views/widgets/post_card.dart';
 
 final AuthService _authService = AuthService();
 
@@ -288,9 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Mücahit GÖKÇE'
-                    //userName
-                    ,
+                    userName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 34,
@@ -355,7 +354,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SizedBox(
                         width: 45,
                       ),
-                      Icon(Icons.health_and_safety_rounded, color: Colors.white30, size: 21),
+                      Icon(Icons.health_and_safety_rounded,
+                          color: Colors.white30, size: 21),
                       SizedBox(
                         width: 3,
                       ),
@@ -372,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 _posts.isNotEmpty
                     ? Container(
-                         color: Colors.lightBlueAccent.withAlpha(90),
+                        color: Colors.lightBlueAccent.withAlpha(90),
                         child: GridView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -385,10 +385,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           itemCount: _posts.length,
                           itemBuilder: (context, index) {
                             return Container(
-                              color: Colors.red,
-                              child: Image.network(
-                                _posts[index].photoUrls.first,
-                                fit: BoxFit.cover,
+                              color: Colors.blueGrey,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showFullScreenImages(context, index);
+
+                                  // PostCard(post: posts[index];
+                                },
+                                child: Image.network(
+                                  _posts[index].photoUrls.first,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             );
                           },
@@ -410,22 +417,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Container(
                   color: Colors.lightBlueAccent.withAlpha(70),
                   child: Column(
-                    
                     children: [
                       SizedBox(
                         height: 30,
                       ),
                       TextButton(
-                        style: ButtonStyle(
-                          // foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                          backgroundColor: WidgetStateProperty.all<Color>(Colors.lightBlueAccent),  
-                        ),
-                        child: const Text('BAŞA DÖN',
-                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),),
-                        onPressed: () {}
-                       
-                      ),
+                          style: ButtonStyle(
+                            // foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
+                            backgroundColor: WidgetStateProperty.all<Color>(
+                                Colors.lightBlueAccent),
+                          ),
+                          child: const Text(
+                            'BAŞA DÖN',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Colors.white),
+                          ),
+                          onPressed: () {}),
                       SizedBox(
                         height: 200,
                       )
@@ -437,6 +446,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showFullScreenImages(BuildContext context, int index) {
+    int _currentImageIndex = index;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Scaffold(
+          backgroundColor: Colors.black,
+          body: Stack(
+            children: [
+              PageView.builder(
+                itemCount: _posts[index].photoUrls.length,
+                controller: PageController(initialPage: _currentImageIndex),
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentImageIndex = index;
+                  });
+                },
+                itemBuilder: (context, pageIndex) {
+                  return InteractiveViewer(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 8,
+                        left: 8,
+                        right: 8,
+                        
+                      ),
+                      child: Center(
+                        child: PostCard(post: _posts[index]),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Positioned(
+                top: 40,
+                right: 20,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.close,
+                    color: Colors.white,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              Positioned(
+                top: 20,
+                left: 20,
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.black54,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    '/ ${_posts[index].postDate.toString().trimLeft(  )}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

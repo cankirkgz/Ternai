@@ -195,6 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                     onTap: () {
                       // Google sign in logic here
                     },
+                   
                     child: Image.asset(
                       'assets/images/google_logo.webp',
                       height: screenHeight * 0.09,
