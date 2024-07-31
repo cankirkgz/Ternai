@@ -25,6 +25,12 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  bool _hasUpperCase = false;
+  bool _hasLowerCase = false;
+  bool _hasDigit = false;
+  bool _hasSpecialChar = false;
+  bool _hasMinLength = false;
+
   String? _usernameValidator(String? value) {
     if (value == null || value.isEmpty) {
       return 'Lütfen isiminizi ve soyisminizi giriniz';
@@ -58,6 +64,16 @@ class _SignUpPageState extends State<SignUpPage> {
       return 'Şifreler eşleşmiyor';
     }
     return null;
+  }
+
+  void _validatePassword(String value) {
+    setState(() {
+      _hasUpperCase = value.contains(RegExp(r'[A-Z]'));
+      _hasLowerCase = value.contains(RegExp(r'[a-z]'));
+      _hasDigit = value.contains(RegExp(r'[0-9]'));
+      _hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+      _hasMinLength = value.length >= 8;
+    });
   }
 
   @override
@@ -151,6 +167,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           obscureText: true,
                           suffixIcon: CupertinoIcons.lock,
                           validator: _passwordValidator,
+                          onChanged: _validatePassword,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Şifre Şartları:',
+                              style: TextStyle(
+                                  color: Colors.black, fontSize: 16),
+                            ),
+                            _buildPasswordCondition('En az 8 karakter', _hasMinLength),
+                            _buildPasswordCondition('Bir büyük harf', _hasUpperCase),
+                            _buildPasswordCondition('Bir küçük harf', _hasLowerCase),
+                            _buildPasswordCondition('Bir rakam', _hasDigit),
+                            _buildPasswordCondition('Bir özel karakter', _hasSpecialChar),
+                          ],
                         ),
                         CustomTextField(
                           controller: _confirmPasswordController,
@@ -229,6 +261,29 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
               ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPasswordCondition(String condition, bool isValid) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2.0),
+      child: Row(
+        children: [
+          Icon(
+            isValid ? Icons.check_circle : Icons.radio_button_unchecked,
+            color: isValid ? Colors.green : Colors.black,
+            size: 20,
+          ),
+          const SizedBox(width: 8),
+          Text(
+            condition,
+            style: TextStyle(
+              color: isValid ? Colors.green : Colors.black,
+              fontSize: 14,
             ),
           ),
         ],

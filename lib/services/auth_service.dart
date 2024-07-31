@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:travelguide/models/user_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -82,5 +83,24 @@ class AuthService {
       );
       await user.reauthenticateWithCredential(credential);
     }
+  }
+
+   Future<User?> signInWithGoogle() async {
+    // Google ile oturum aç
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      // Kullanıcı oturum açma işlemini iptal etti
+      return null;
+    }
+
+    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+    final OAuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Firebase ile kimlik doğrulama
+    UserCredential userCredential = await _auth.signInWithCredential(credential);
+    return userCredential.user;
   }
 }

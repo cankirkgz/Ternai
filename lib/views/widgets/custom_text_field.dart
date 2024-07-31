@@ -11,6 +11,8 @@ class CustomTextField extends StatelessWidget {
   final TextStyle? style;
   final bool enabled;
   final TextInputType keyboardType;
+  final void Function(String)? onChanged;
+  final void Function()? onTap; // Burayı ekleyin
 
   const CustomTextField({
     required this.controller,
@@ -23,13 +25,15 @@ class CustomTextField extends StatelessWidget {
     this.decoration,
     this.enabled = true,
     this.keyboardType = TextInputType.text,
+    this.onChanged,
+    this.onTap, // Burayı ekleyin
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8.0),
       child: TextFormField(
         controller: controller,
         keyboardType: keyboardType,

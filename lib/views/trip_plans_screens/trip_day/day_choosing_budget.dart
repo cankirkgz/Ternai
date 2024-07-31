@@ -27,8 +27,11 @@ class _DayChoosingBudgetPageState extends ConsumerState<DayChoosingBudgetPage> {
         children: [
           const Text(
             'Tatilde geçireceğiniz gün sayısını hesaplayalım!',
+            textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                fontSize: 18, 
+                fontWeight: FontWeight.bold,
+                color: Colors.blue),
           ),
           const SizedBox(height: 20),
           const Text('Bütçeniz:',

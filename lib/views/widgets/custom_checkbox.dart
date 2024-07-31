@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travelguide/theme/theme.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final bool value;
@@ -19,7 +20,7 @@ class CustomCheckbox extends StatelessWidget {
         Checkbox(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.blue,
+          activeColor: AppColors.secondaryColor,
         ),
         Text(
           text,
