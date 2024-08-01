@@ -11,6 +11,7 @@ import 'package:travelguide/views/authentication_screens/signup_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomeScreen extends StatefulWidget {
   WelcomeScreen({super.key});
@@ -38,6 +39,16 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 fit: BoxFit.cover,
                 colorFilter: ColorFilter.mode(
                     Colors.black.withOpacity(0.65), BlendMode.dstATop),
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.topCenter, // Üstte ortalar
+            child: Padding(
+              padding:
+                  EdgeInsets.only(top: screenHeight * 0.2), // Üstten boşluk ver
+              child: SvgPicture.asset(
+                'assets/logo/ternai-company_title_final.svg',
               ),
             ),
           ),
@@ -88,7 +99,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       });
 
                       try {
-                        bool isSuccess = await authViewModel.signInWithAnonymously();
+                        bool isSuccess =
+                            await authViewModel.signInWithAnonymously();
                         if (isSuccess) {
                           Navigator.pushReplacement(
                             context,
@@ -97,7 +109,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             ),
                           );
                         } else {
-                          _showErrorDialog('Anonim Giriş Hatası', 'Lütfen Tekrar Deneyin.');
+                          _showErrorDialog(
+                              'Anonim Giriş Hatası', 'Lütfen Tekrar Deneyin.');
                         }
                       } catch (e) {
                         _showErrorDialog('Error', e.toString());

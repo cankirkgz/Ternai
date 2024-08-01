@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/viewmodels/post_viewmodel.dart';
@@ -47,15 +48,27 @@ class _HomeScreenState extends State<HomeScreen> {
           return <Widget>[
             SliverAppBar(
               floating: true,
+              automaticallyImplyLeading: false,
               snap: true,
               leading: null, // Geri ikonunu kaldırır
-              backgroundColor: Colors.white, // Arka planı şeffaf yapar
+              backgroundColor: Colors.white, // Arka planı beyaz yapar
               elevation: 0, // Yükseklik efekti yok
               centerTitle: true,
-              title: Text(
-                'Ternai',
-                style: GoogleFonts.pacifico(
-                  color: AppColors.textColor,
+              title: ShaderMask(
+                shaderCallback: (bounds) => const LinearGradient(
+                  colors: [
+                    Colors.blue,
+                    Colors.purple,
+                  ],
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                ).createShader(bounds),
+                child: Text(
+                  'Ternai',
+                  style: GoogleFonts.pacifico(
+                    color: Colors.white, // Gradient için beyaz metin
+                    fontSize: 25,
+                  ),
                 ),
               ),
               actions: [
@@ -95,6 +108,29 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Consumer<PostViewModel>(
               builder: (context, postViewModel, child) {
+                if (postViewModel.isLoading) {
+                  return ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenWidth * 0.05,
+                      vertical: 10.0,
+                    ),
+                    itemCount: 10, // Belirli bir sayıda shimmer elemanı
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: Shimmer.fromColors(
+                          baseColor: Colors.grey[300]!,
+                          highlightColor: Colors.grey[100]!,
+                          child: Container(
+                            height: 150,
+                            color: Colors.white,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }
+
                 if (postViewModel.posts.isEmpty) {
                   return const Center(child: Text("Henüz gönderi yok"));
                 }

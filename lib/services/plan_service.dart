@@ -9,7 +9,6 @@ class PlanService {
   Future<void> createPlan(String userId, Map<String, dynamic> plan) async {
     try {
       final planType = plan['type'];
-      final planId = plan['id'];
 
       if (planType == 'budget') {
         await _firestore.collection('users').doc(userId).update({
@@ -24,6 +23,10 @@ class PlanService {
           'plan_plans': FieldValue.arrayUnion([plan])
         });
       }
+
+      await _firestore.collection('users').doc(userId).update({
+        'vacation_plan_count': FieldValue.increment(1),
+      });
     } catch (e) {
       throw e;
     }

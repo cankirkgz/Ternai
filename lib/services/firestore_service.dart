@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/post_model.dart';
 import '../models/user_model.dart';
 import '../models/comment_model.dart';
+import '../models/country_model.dart';
 
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -66,6 +67,10 @@ class FirestoreService {
   Future<void> createPost(PostModel post) async {
     try {
       await _firestore.collection('posts').doc(post.id).set(post.toJson());
+      await _firestore
+          .collection('users')
+          .doc(post.userId)
+          .update({'post_count': FieldValue.increment(1)});
     } catch (e) {
       throw e;
     }
@@ -160,15 +165,12 @@ class FirestoreService {
     }
   }
 
-// Yorum işlemleri
+  // Yorum işlemleri
   Future<void> addComment(String postId, CommentModel comment) async {
     try {
       DocumentReference postRef = _firestore.collection('posts').doc(postId);
       DocumentReference commentRef =
           postRef.collection('comments').doc(comment.id);
-
-      // Yorumun JSON verisini yazdır
-      print("Adding comment: ${comment.toJson()}");
 
       await commentRef.set(comment.toJson());
     } catch (e) {
@@ -190,6 +192,23 @@ class FirestoreService {
       return comments;
     } catch (e) {
       print("Error fetching comments: $e");
+      throw e;
+    }
+  }
+
+  // Ülke işlemleri
+  Future<List<Country>> getCountries() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await _firestore.collection('countries').get();
+
+      List<Country> countries = querySnapshot.docs.map((doc) {
+        return Country.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+      }).toList();
+
+      return countries;
+    } catch (e) {
+      print("Error fetching countries: $e");
       throw e;
     }
   }

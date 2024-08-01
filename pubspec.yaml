@@ -58,6 +58,8 @@ dependencies:
   intl: any
   get: ^4.6.6
   image: ^4.2.0
+  timeago: ^3.7.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

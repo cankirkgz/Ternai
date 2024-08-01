@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:travelguide/services/auth_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
@@ -34,10 +35,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<PostModel> _posts = [];
   int _postCount = 0;
   int _vacationCount = 0;
+  bool _isLoadingProfile = true; // Profil verilerinin yüklenme durumu
+  bool _isLoadingPosts = true; // Postların yüklenme durumu
 
   @override
   void initState() {
     super.initState();
+    _loadProfileData();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loadProfileData(); // Profil sayfasına her dönüldüğünde verileri yeniden yükle
+  }
+
+  Future<void> _loadProfileData() async {
     _loadProfileImage();
     _loadUserPosts();
     _loadVacationCount();
@@ -55,6 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (userDoc.exists && userDoc['profile_image_url'] != null) {
         setState(() {
           _profileImageUrl = userDoc['profile_image_url'];
+          _isLoadingProfile = false; // Profil verileri yüklendi
         });
       }
     }
@@ -76,6 +90,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 (doc) => PostModel.fromJson(doc.data() as Map<String, dynamic>))
             .toList();
         _postCount = _posts.length;
+        _isLoadingPosts = false;
       });
     }
   }
@@ -311,37 +326,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: CircleAvatar(
                         radius: 80,
                         backgroundColor: Colors.grey[200],
-                        backgroundImage: _image != null
-                            ? FileImage(_image!)
-                            : _profileImageUrl != null
-                                ? NetworkImage(_profileImageUrl!)
-                                : const AssetImage(
-                                        "assets/images/default_profile.png")
-                                    as ImageProvider,
-                        child: _image == null && _profileImageUrl == null
-                            ? const Icon(Icons.camera_alt,
-                                size: 80, color: Colors.black)
+                        backgroundImage: _isLoadingProfile
+                            ? null
+                            : (_image != null
+                                ? FileImage(_image!)
+                                : _profileImageUrl != null
+                                    ? NetworkImage(_profileImageUrl!)
+                                    : const AssetImage(
+                                            "assets/images/default_profile.png")
+                                        as ImageProvider),
+                        child: _isLoadingProfile
+                            ? Shimmer.fromColors(
+                                baseColor: Colors.grey[300]!,
+                                highlightColor: Colors.grey[100]!,
+                                child: CircleAvatar(
+                                  radius: 80,
+                                  backgroundColor: Colors.grey[200],
+                                ),
+                              )
                             : null,
                       ),
                     ),
                     const SizedBox(height: 20),
-                    Text(
-                      userName,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 34,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    _isLoadingProfile
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 150,
+                              height: 20,
+                              color: Colors.grey[300],
+                            ),
+                          )
+                        : Text(
+                            userName,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 34,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildStatisticCard('Tatil Planları', _vacationCount),
-                        const SizedBox(width: 20),
-                        _buildStatisticCard('Gönderiler', _postCount),
-                      ],
-                    ),
+                    _isLoadingProfile
+                        ? Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              width: 100,
+                              height: 20,
+                              color: Colors.grey[300],
+                            ),
+                          )
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              _buildStatisticCard(
+                                  'Tatil Planları', _vacationCount),
+                              const SizedBox(width: 20),
+                              _buildStatisticCard('Gönderiler', _postCount),
+                            ],
+                          ),
                     const SizedBox(height: 34),
                     Container(
                       height: 3,
@@ -349,48 +393,56 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ],
                 ),
-                _posts.isNotEmpty
-                    ? GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          crossAxisSpacing: 4.0,
-                          mainAxisSpacing: 4.0,
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 4.0,
+                    mainAxisSpacing: 4.0,
+                  ),
+                  itemCount: _isLoadingPosts ? 9 : _postCount,
+                  itemBuilder: (context, index) {
+                    if (_isLoadingPosts) {
+                      return Shimmer.fromColors(
+                        baseColor: Colors.grey[300]!,
+                        highlightColor: Colors.grey[100]!,
+                        child: Container(
+                          color: Colors.white,
+                          height: 100,
+                          width: 100,
                         ),
-                        itemCount: _posts.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      PostScreen(post: _posts[index]),
-                                ),
-                              );
-                            },
+                      );
+                    } else {
+                      if (index < _posts.length) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PostScreen(post: _posts[index]),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey, // Border rengi
+                                width: 0.2, // Border kalınlığı
+                              ),
+                            ),
                             child: Image.network(
                               _posts[index].photoUrls.first,
                               fit: BoxFit.cover,
                             ),
-                          );
-                        },
-                      )
-                    : const Padding(
-                        padding: EdgeInsets.all(20),
-                        child: Center(
-                          child: Text(
-                            'Henüz bir gönderi paylaşmadınız',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
                           ),
-                        ),
-                      ),
+                        );
+                      }
+                      return Container(); // Boş geri döndür
+                    }
+                  },
+                ),
               ],
             ),
           ),

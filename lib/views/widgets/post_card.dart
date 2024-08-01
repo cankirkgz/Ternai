@@ -5,7 +5,8 @@ import 'package:travelguide/models/user_model.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/viewmodels/post_viewmodel.dart';
 import 'package:travelguide/models/comment_model.dart';
-import 'package:intl/intl.dart';
+import 'package:timeago/timeago.dart' as timeago;
+import 'package:timeago/timeago.dart';
 
 class PostCard extends StatefulWidget {
   final PostModel post;
@@ -16,34 +17,47 @@ class PostCard extends StatefulWidget {
   _PostCardState createState() => _PostCardState();
 }
 
-class _PostCardState extends State<PostCard> {
+class _PostCardState extends State<PostCard>
+    with SingleTickerProviderStateMixin {
   bool isLiked = false;
   int _currentImageIndex = 0;
   final TextEditingController _commentController = TextEditingController();
   late PageController _pageController;
+  late AnimationController _animationController;
+  late Animation<double> _animation;
+  UserModel? _userModel;
 
   @override
   void initState() {
     super.initState();
     _checkIfLiked();
     _pageController = PageController(initialPage: _currentImageIndex);
+    _animationController = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 500),
+    );
+    _animation = Tween<double>(begin: 1.0, end: 1.3)
+        .chain(CurveTween(curve: Curves.easeInOut))
+        .animate(_animationController);
+    _fetchUserData(); // Kullanıcı verisini çek
+    // Türkçe dil desteğini etkinleştir
+    timeago.setLocaleMessages('tr', timeago.TrMessages());
   }
 
   @override
   void dispose() {
     _commentController.dispose();
     _pageController.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   void _checkIfLiked() {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final userId = authViewModel.user?.userId;
-
     if (userId != null && widget.post.likedUserIds.contains(userId)) {
       setState(() {
         isLiked = true;
-        print("isAnonymous: ${authViewModel.user?.isAnonymous}");
       });
     }
   }
@@ -51,7 +65,6 @@ class _PostCardState extends State<PostCard> {
   void _toggleLike() {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final user = authViewModel.user;
-
     if (user != null) {
       if (user.isAnonymous) {
         _showAnonymousWarning();
@@ -59,35 +72,48 @@ class _PostCardState extends State<PostCard> {
         final postViewModel =
             Provider.of<PostViewModel>(context, listen: false);
         final userId = user.userId;
-
-        postViewModel.toggleLike(widget.post, userId);
         setState(() {
           isLiked = !isLiked;
+          if (isLiked) {
+            widget.post.likes += 1;
+            _animationController
+                .forward()
+                .then((_) => _animationController.reverse());
+          } else {
+            widget.post.likes -= 1;
+          }
+        });
+        postViewModel.toggleLike(widget.post, userId).catchError((error) {
+          setState(() {
+            isLiked = !isLiked;
+            if (isLiked) {
+              widget.post.likes += 1;
+            } else {
+              widget.post.likes -= 1;
+            }
+          });
         });
       }
     }
   }
 
-  String timeAgo(DateTime date) {
-    Duration diff = DateTime.now().difference(date);
-
-    if (diff.inDays > 7) {
-      return DateFormat.yMMMd().format(date); // Tarihi normal şekilde formatla
-    } else if (diff.inDays >= 1) {
-      return '${diff.inDays} gün önce';
-    } else if (diff.inHours >= 1) {
-      return '${diff.inHours} saat önce';
-    } else if (diff.inMinutes >= 1) {
-      return '${diff.inMinutes} dakika önce';
-    } else {
-      return 'az önce';
+  Future<void> _fetchUserData() async {
+    final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
+    UserModel user = await authViewModel.getUserWithId(widget.post.userId);
+    if (mounted) {
+      setState(() {
+        _userModel = user; // Çekilen kullanıcı verisini kaydet
+      });
     }
+  }
+
+  String timeAgo(DateTime date) {
+    return timeago.format(date, locale: 'tr');
   }
 
   void _showComments(BuildContext context) {
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final user = authViewModel.user;
-
     if (user != null && user.isAnonymous) {
       _showAnonymousWarning();
     } else {
@@ -113,7 +139,6 @@ class _PostCardState extends State<PostCard> {
                         return const Center(
                             child: Text('Henüz bir yorum yok.'));
                       }
-
                       final comments = snapshot.data!;
                       return ListView.builder(
                         itemCount: comments.length,
@@ -178,7 +203,6 @@ class _PostCardState extends State<PostCard> {
     final postViewModel = Provider.of<PostViewModel>(context, listen: false);
     final authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     final user = authViewModel.user;
-
     if (user != null &&
         !user.isAnonymous &&
         _commentController.text.isNotEmpty) {
@@ -190,16 +214,14 @@ class _PostCardState extends State<PostCard> {
         date: DateTime.now(),
       );
       postViewModel.addComment(widget.post, newComment);
-
       if (mounted) {
         setState(() {
           widget.post.comments.add(newComment);
         });
       }
-
       _commentController.clear();
       Navigator.of(context).pop();
-      _showComments(context); // Yorum eklendikten sonra yorumları tekrar göster
+      _showComments(context);
     } else if (user != null && user.isAnonymous) {
       _showAnonymousWarning();
     }
@@ -228,9 +250,6 @@ class _PostCardState extends State<PostCard> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthViewModel authViewModel =
-        Provider.of<AuthViewModel>(context, listen: false);
-
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: Card(
@@ -251,8 +270,9 @@ class _PostCardState extends State<PostCard> {
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: 300, // Kare görünüm için sabit yükseklik
+                        height: 300,
                         child: PageView.builder(
+                          controller: _pageController,
                           itemCount: widget.post.photoUrls.length,
                           onPageChanged: (index) {
                             setState(() {
@@ -287,9 +307,7 @@ class _PostCardState extends State<PostCard> {
                           child: Text(
                             '${_currentImageIndex + 1} / ${widget.post.photoUrls.length}',
                             style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
+                                color: Colors.white, fontSize: 12),
                           ),
                         ),
                       ),
@@ -299,67 +317,69 @@ class _PostCardState extends State<PostCard> {
               const SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: FutureBuilder<UserModel>(
-                  future: authViewModel.getUserWithId(widget.post.userId),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator(); // Yükleme göstergesi
-                    } else if (snapshot.hasError) {
-                      return const Text(
-                          "Kullanıcı yüklenirken hata oluştu"); // Hata mesajı
-                    } else if (!snapshot.hasData || snapshot.data == null) {
-                      return const Text(
-                          "Kullanıcı bulunamadı"); // Veri yok mesajı
-                    }
-
-                    UserModel user = snapshot.data!;
-                    return Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 30,
-                          backgroundImage: user.profileImageUrl != null
-                              ? NetworkImage(user.profileImageUrl!)
-                              : const AssetImage(
-                                      'assets/images/default_profile.png')
-                                  as ImageProvider,
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              user.name!,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            Text(
-                              widget.post.country.name,
-                              style: TextStyle(
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          icon: Icon(
-                            isLiked ? Icons.favorite : Icons.favorite_border,
-                            color: isLiked ? Colors.red : null,
+                child: _userModel == null
+                    ? const CircularProgressIndicator()
+                    : Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: _userModel!.profileImageUrl != null
+                                ? NetworkImage(_userModel!.profileImageUrl!)
+                                : const AssetImage(
+                                        'assets/images/default_profile.png')
+                                    as ImageProvider,
                           ),
-                          onPressed: _toggleLike,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.comment),
-                          onPressed: () {
-                            _showComments(context);
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                          const SizedBox(width: 10),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                _userModel!.name!,
+                                style: const TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                widget.post.country.name,
+                                style: TextStyle(color: Colors.grey[600]),
+                              ),
+                            ],
+                          ),
+                          const Spacer(),
+                          GestureDetector(
+                            onTap: _toggleLike,
+                            child: AnimatedBuilder(
+                              animation: _animationController,
+                              builder: (context, child) {
+                                return Transform.scale(
+                                  scale: _animation.value,
+                                  child: ShaderMask(
+                                    shaderCallback: (Rect bounds) {
+                                      return LinearGradient(
+                                        colors: isLiked
+                                            ? [Colors.pink, Colors.red]
+                                            : [Colors.grey, Colors.grey],
+                                        tileMode: TileMode.mirror,
+                                      ).createShader(bounds);
+                                    },
+                                    child: Icon(
+                                      isLiked
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.comment),
+                            onPressed: () {
+                              _showComments(context);
+                            },
+                          ),
+                        ],
+                      ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -368,24 +388,28 @@ class _PostCardState extends State<PostCard> {
                   children: [
                     Text(
                       widget.post.memories,
-                      style: const TextStyle(fontSize: 14),
+                      style: const TextStyle(fontSize: 18),
                     ),
                     const SizedBox(height: 5),
                     Text(
                       'Paylaşıldı: ${timeAgo(widget.post.postDate)}',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 12,
-                      ),
+                      style: TextStyle(color: Colors.grey[600], fontSize: 12),
                     ),
                     const SizedBox(height: 5),
                     GestureDetector(
                       onTap: () => _showComments(context),
-                      child: const Text(
-                        'Yorumları gör',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 16, // Daha büyük font
+                      child: ShaderMask(
+                        shaderCallback: (bounds) => LinearGradient(
+                          colors: [Colors.blue, Colors.purple],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ).createShader(bounds),
+                        child: const Text(
+                          'Yorumları gör',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
@@ -431,11 +455,7 @@ class _PostCardState extends State<PostCard> {
                 top: 40,
                 right: 20,
                 child: IconButton(
-                  icon: Icon(
-                    Icons.close,
-                    color: Colors.white,
-                    size: 30,
-                  ),
+                  icon: Icon(Icons.close, color: Colors.white, size: 30),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -453,10 +473,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                   child: Text(
                     '${_currentImageIndex + 1} / ${widget.post.photoUrls.length}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                    ),
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ),
               ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:travelguide/models/budget_plan_model.dart';
 import 'package:travelguide/models/country_model.dart';
 import 'package:travelguide/models/day_plan_model.dart';
@@ -47,7 +48,6 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
     try {
       final countryService = CountryService();
       final country = await countryService.getCountryByName(countryName);
-      print('Country data: $country');
       return country;
     } catch (e) {
       print('Error fetching country data: $e');
@@ -78,6 +78,46 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
         ),
       );
     }
+  }
+
+  Widget _buildShimmerLoading() {
+    return ListView.builder(
+      itemCount: 5, // Placeholder miktarı
+      itemBuilder: (context, index) {
+        return Shimmer.fromColors(
+          baseColor: Colors.grey[300]!,
+          highlightColor: Colors.grey[100]!,
+          child: Container(
+            margin:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 30.0),
+            child: Card(
+              color: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              elevation: 5,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Container(
+                    height: 120,
+                    color: Colors.grey,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      width: double.infinity,
+                      height: 15.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Widget _buildPlanCard(dynamic plan, Country country) {
@@ -177,15 +217,15 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
             future: _futurePlans,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+                return _buildShimmerLoading();
               } else if (snapshot.hasError) {
-                return const Center(child: Text('Error fetching plans'));
+                return const Center(
+                    child: Text('Planlar yüklenirken hata oluştu.'));
               } else if (snapshot.hasData) {
                 final plans = snapshot.data!;
                 if (plans.isEmpty) {
                   return const Center(
-                      child: Text('No plans found',
-                          style: TextStyle(fontSize: 24)));
+                      child: Text('Henüz bir plan oluşturulmadı.'));
                 }
                 return ListView.builder(
                   itemCount: plans.length,
@@ -196,12 +236,20 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
                       builder: (context, countrySnapshot) {
                         if (countrySnapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator());
+                          return Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 30.0),
+                              height: 120,
+                              color: Colors.grey,
+                            ),
+                          );
                         } else if (countrySnapshot.hasError ||
                             !countrySnapshot.hasData) {
                           return const Center(
-                              child: Text('Error loading country data'));
+                              child: Text('Ülke verisi yüklenemedi.'));
                         } else {
                           final country = countrySnapshot.data!;
                           return _buildPlanCard(plan, country);

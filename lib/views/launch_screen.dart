@@ -55,13 +55,10 @@ class _LaunchScreenState extends State<LaunchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Image.asset(
-          'assets/logo/ternai-logo.png',
+        child: SvgPicture.asset(
+          'assets/logo/ternai-company_title_final.svg',
         ),
       ),
     );
   }
 }
-
-
-

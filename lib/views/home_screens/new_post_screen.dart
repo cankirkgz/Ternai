@@ -8,6 +8,7 @@ import 'package:travelguide/models/post_model.dart';
 import 'package:travelguide/services/api_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
+import 'package:travelguide/viewmodels/post_viewmodel.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_dropdown_button.dart';
 import 'package:travelguide/models/country_model.dart';
@@ -24,41 +25,22 @@ class NewPostScreen extends StatefulWidget {
 class _NewPostScreenState extends State<NewPostScreen> {
   List<File> _images = [];
   Country? selectedCountry;
-  final uuid = Uuid();
-  final ApiService _apiService = ApiService();
-  final ImagePicker _picker = ImagePicker();
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-  final _scaffoldKey = GlobalKey<ScaffoldMessengerState>();
-  final TextEditingController _memoriesController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool isUploading = false; // Yükleme durumu
-
-  List<Country> countries = [];
+  final _memoriesController = TextEditingController();
+  bool isUploading = false;
 
   @override
   void initState() {
     super.initState();
-    _loadCountries();
     _images = widget.images ?? [];
-  }
-
-  Future<void> _loadCountries() async {
-    try {
-      List<Country> loadedCountries = await _apiService.getCountries();
-      setState(() {
-        countries = loadedCountries;
-      });
-    } catch (e) {
-      // Handle error
-    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final postViewModel = Provider.of<PostViewModel>(context);
     final authViewModel = Provider.of<AuthViewModel>(context);
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Yeni Gönderi'),
         backgroundColor: AppColors.primaryColor,
@@ -70,7 +52,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Row(
                   children: [
@@ -99,7 +80,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                           hintText: 'Anınızı paylaşın...',
                           hintStyle:
                               TextStyle(fontSize: 17, color: Colors.grey[500]),
-                          contentPadding: EdgeInsets.symmetric(
+                          contentPadding: const EdgeInsets.symmetric(
                               vertical: 15, horizontal: 20),
                         ),
                         validator: (value) {
@@ -112,26 +93,27 @@ class _NewPostScreenState extends State<NewPostScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 CustomDropDownButton(
                   listName: "Ülke",
                   items: {
-                    for (var country in countries) country.id: country.name
+                    for (var country in postViewModel.countries)
+                      country.id: country.name
                   },
                   validator: (value) =>
                       value == null ? "Lütfen bir ülke seçiniz" : null,
                   onChanged: (value) {
                     setState(() {
-                      selectedCountry =
-                          countries.firstWhere((c) => c.id == value);
+                      selectedCountry = postViewModel.countries
+                          .firstWhere((c) => c.id == value);
                     });
                   },
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 _images.isNotEmpty
                     ? Column(
                         children: [
-                          Container(
+                          SizedBox(
                             height: 100,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -161,7 +143,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                                             _images.removeAt(index);
                                           });
                                         },
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.close,
                                           color: Colors.red,
                                           size: 24,
@@ -177,7 +159,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                             padding: const EdgeInsets.only(top: 8.0),
                             child: GestureDetector(
                               onTap: _shareImage,
-                              child: Text(
+                              child: const Text(
                                 'Daha fazla fotoğraf eklemek için buraya tıklayın.',
                                 style: TextStyle(color: Colors.blue),
                               ),
@@ -204,7 +186,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                       ),
                 const SizedBox(height: 20),
                 isUploading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : CustomButton(
                         text: "Paylaş",
                         onPressed: () {
@@ -224,7 +206,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                               );
                               return;
                             }
-                            _uploadImages(context);
+                            _uploadImages(postViewModel, authViewModel);
                           }
                         },
                         color: AppColors.primaryColor,
@@ -235,77 +217,6 @@ class _NewPostScreenState extends State<NewPostScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _pickImages(ImageSource source) async {
-    final pickedFiles = source == ImageSource.camera
-        ? [await _picker.pickImage(source: ImageSource.camera)]
-        : await _picker.pickMultiImage();
-
-    if (pickedFiles != null && pickedFiles.isNotEmpty) {
-      setState(() {
-        _images.addAll(pickedFiles.map((file) => File(file!.path)));
-      });
-    }
-  }
-
-  Future<void> _uploadImages(BuildContext context) async {
-    if (_images.isNotEmpty) {
-      setState(() {
-        isUploading = true;
-      });
-
-      try {
-        final authViewModel =
-            Provider.of<AuthViewModel>(context, listen: false);
-        final userId = authViewModel.user?.userId;
-        if (userId != null) {
-          List<String> downloadUrls = [];
-          for (File image in _images) {
-            final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-            final storageRef =
-                _storage.ref().child('user_posts/$userId/$fileName');
-            final uploadTask = storageRef.putFile(image);
-            await uploadTask.whenComplete(() async {
-              final downloadUrl = await storageRef.getDownloadURL();
-              downloadUrls.add(downloadUrl);
-            });
-          }
-          PostModel newPost = PostModel(
-            id: uuid.v4(),
-            userId: authViewModel.user!.userId,
-            photoUrls: downloadUrls,
-            country: selectedCountry!,
-            memories: _memoriesController.text,
-            postDate: DateTime.now(),
-            lastUpdated: DateTime.now(),
-          );
-          await FirebaseFirestore.instance
-              .collection('posts')
-              .doc(newPost.id)
-              .set(newPost.toJson());
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(userId)
-              .update({
-            'posts': FieldValue.arrayUnion([newPost.toJson()])
-          });
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Fotoğraflar yüklendi!')),
-          );
-          Navigator.of(context).pop();
-        }
-      } catch (e) {
-        print('Error uploading images: $e');
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Fotoğraf yükleme hatası!')),
-        );
-      } finally {
-        setState(() {
-          isUploading = false;
-        });
-      }
-    }
   }
 
   void _shareImage() {
@@ -338,5 +249,47 @@ class _NewPostScreenState extends State<NewPostScreen> {
         );
       },
     );
+  }
+
+  Future<void> _pickImages(ImageSource source) async {
+    final pickedFiles = source == ImageSource.camera
+        ? [await ImagePicker().pickImage(source: ImageSource.camera)]
+        : await ImagePicker().pickMultiImage();
+
+    if (pickedFiles != null && pickedFiles.isNotEmpty) {
+      setState(() {
+        _images.addAll(pickedFiles.map((file) => File(file!.path)));
+      });
+    }
+  }
+
+  Future<void> _uploadImages(
+      PostViewModel postViewModel, AuthViewModel authViewModel) async {
+    setState(() {
+      isUploading = true;
+    });
+
+    try {
+      await postViewModel.addPost(
+        _images,
+        selectedCountry!,
+        _memoriesController.text,
+        authViewModel.user!.userId,
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Gönderi başarıyla paylaşıldı!')),
+      );
+      Navigator.of(context).pop();
+    } catch (e) {
+      print('Error uploading images: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Fotoğraf yükleme hatası!')),
+      );
+    } finally {
+      setState(() {
+        isUploading = false;
+      });
+    }
   }
 }

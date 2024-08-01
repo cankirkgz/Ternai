@@ -1,39 +1,91 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 import '../models/post_model.dart';
 import '../models/comment_model.dart';
+import '../models/country_model.dart';
 import '../services/firestore_service.dart';
 
 class PostViewModel extends ChangeNotifier {
   final FirestoreService _firestoreService = FirestoreService();
+  final FirebaseStorage _storage = FirebaseStorage.instance;
 
   List<PostModel> _posts = [];
   List<PostModel> get posts => _posts;
 
+  List<Country> _countries = [];
+  List<Country> get countries => _countries;
+
+  bool _isLoading = false; // isLoading durumu eklendi
+  bool get isLoading => _isLoading;
+
   PostViewModel() {
     fetchPosts();
+    fetchCountries();
   }
 
-  Future<List<PostModel>> fetchPosts() async {
+  Future<void> fetchCountries() async {
     try {
-      List<PostModel> posts = await _firestoreService.getAllPosts();
-      _posts = posts;
+      List<Country> loadedCountries = await _firestoreService.getCountries();
+      _countries = loadedCountries;
       notifyListeners();
-      return posts;
     } catch (e) {
-      print("Error fetching posts: $e");
+      print("Error fetching countries: $e");
       throw e;
     }
   }
 
-  Future<void> addPost(PostModel post) async {
+  Future<List<PostModel>> fetchPosts() async {
+    _isLoading = true; // Veriler yüklenmeye başlarken isLoading true yapılır
+    notifyListeners();
     try {
-      await _firestoreService.createPost(post);
-      _posts.insert(0, post); // Yeni postu listenin başına ekliyoruz.
+      List<PostModel> posts = await _firestoreService.getAllPosts();
+      _posts = posts;
+      return posts;
+    } catch (e) {
+      print("Error fetching posts: $e");
+      throw e;
+    } finally {
+      _isLoading = false; // Veriler yüklendikten sonra isLoading false yapılır
+      notifyListeners();
+    }
+  }
+
+  Future<void> addPost(List<File> images, Country country, String memories,
+      String userId) async {
+    try {
+      List<String> downloadUrls = await _uploadImages(images, userId);
+      PostModel newPost = PostModel(
+        id: Uuid().v4(),
+        userId: userId,
+        photoUrls: downloadUrls,
+        country: country,
+        memories: memories,
+        postDate: DateTime.now(),
+        lastUpdated: DateTime.now(),
+      );
+      await _firestoreService.createPost(newPost);
+      _posts.insert(0, newPost);
       notifyListeners();
     } catch (e) {
       print("Error adding post: $e");
       throw e;
     }
+  }
+
+  Future<List<String>> _uploadImages(List<File> images, String userId) async {
+    List<String> downloadUrls = [];
+    for (File image in images) {
+      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      final storageRef = _storage.ref().child('user_posts/$userId/$fileName');
+      final uploadTask = storageRef.putFile(image);
+      await uploadTask.whenComplete(() async {
+        final downloadUrl = await storageRef.getDownloadURL();
+        downloadUrls.add(downloadUrl);
+      });
+    }
+    return downloadUrls;
   }
 
   Future<void> updatePost(String postId, Map<String, dynamic> data) async {

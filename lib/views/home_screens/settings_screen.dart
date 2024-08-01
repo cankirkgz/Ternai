@@ -183,12 +183,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: const Text(
           'Ayarlar',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: AppColors.textColor),
         ),
         backgroundColor: AppColors.primaryColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          icon: const Icon(Icons.arrow_back, color: AppColors.textColor),
           onPressed: () {
             Navigator.of(context).pop();
           },
