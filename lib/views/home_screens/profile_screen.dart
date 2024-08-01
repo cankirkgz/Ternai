@@ -362,7 +362,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             userName,
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 34,
+                              fontSize: 28,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -458,7 +458,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           count.toString(),
           style: const TextStyle(
             color: Colors.white,
-            fontSize: 29,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
         ),

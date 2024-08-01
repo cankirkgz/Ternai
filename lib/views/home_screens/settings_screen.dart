@@ -178,6 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final emailVerified = authViewModel.user?.emailVerified ?? false;
 
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -207,7 +208,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 230),
+                SizedBox(height: screenHeight * 0.15),
                 CustomTextField(
                   controller: _usernameController,
                   labelText: 'Kullanıcı Adı',

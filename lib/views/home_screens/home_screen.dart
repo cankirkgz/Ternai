@@ -37,6 +37,10 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _refreshPosts() async {
+    await Provider.of<PostViewModel>(context, listen: false).fetchPosts();
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
@@ -108,49 +112,47 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Consumer<PostViewModel>(
               builder: (context, postViewModel, child) {
-                if (postViewModel.isLoading) {
-                  return ListView.builder(
+                return RefreshIndicator(
+                  onRefresh: _refreshPosts,
+                  child: ListView.builder(
                     padding: EdgeInsets.symmetric(
                       horizontal: screenWidth * 0.05,
                       vertical: 10.0,
                     ),
-                    itemCount: 10, // Belirli bir sayıda shimmer elemanı
+                    itemCount: postViewModel.isLoading
+                        ? 10
+                        : postViewModel.posts.isEmpty
+                            ? 1
+                            : postViewModel.posts.length + 1,
                     itemBuilder: (context, index) {
+                      if (postViewModel.isLoading) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: Shimmer.fromColors(
+                            baseColor: Colors.grey[300]!,
+                            highlightColor: Colors.grey[100]!,
+                            child: Container(
+                              height: 150,
+                              color: Colors.white,
+                            ),
+                          ),
+                        );
+                      }
+
+                      if (postViewModel.posts.isEmpty) {
+                        return const Center(child: Text("Henüz gönderi yok"));
+                      }
+
+                      if (index == postViewModel.posts.length) {
+                        return const SizedBox(height: 40);
+                      }
+
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10.0),
-                        child: Shimmer.fromColors(
-                          baseColor: Colors.grey[300]!,
-                          highlightColor: Colors.grey[100]!,
-                          child: Container(
-                            height: 150,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: PostCard(post: postViewModel.posts[index]),
                       );
                     },
-                  );
-                }
-
-                if (postViewModel.posts.isEmpty) {
-                  return const Center(child: Text("Henüz gönderi yok"));
-                }
-
-                final posts = postViewModel.posts;
-                return ListView.builder(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: screenWidth * 0.05,
-                    vertical: 10.0,
                   ),
-                  itemCount: posts.length + 1,
-                  itemBuilder: (context, index) {
-                    if (index == posts.length) {
-                      return const SizedBox(height: 40);
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: PostCard(post: posts[index]),
-                    );
-                  },
                 );
               },
             ),
