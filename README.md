@@ -419,6 +419,8 @@
             <td><img src="https://github.com/user-attachments/assets/dae4bb00-78d8-4dc6-9953-0335bbd7749e" alt="Önceki Tatiller Screenshot 1"></td>
             <td><img src="https://github.com/user-attachments/assets/59128b3b-c658-41f6-bfe0-a38e6bf68a32" alt="Önceki Tatiller Screenshot 2"></td>
             <td><img src="https://github.com/user-attachments/assets/2ad955fa-7b53-4b09-877c-632a41f2a435" alt="Önceki Tatiller Screenshot 3"></td>
+            <td><img src="https://github.com/user-attachments/assets/5298f0a7-f884-4d63-bce1-5a6d2cbb8cf1" alt="Önceki Tatiller Screenshot 4"></td>
+            <td><img src="https://github.com/user-attachments/assets/ac788cb7-cf61-4b22-866c-9d244bd43ff9" alt="Önceki Tatiller Screenshot 5"></td>
         </tr>
     </table>
     <h2>Profil Sayfası</h2>
