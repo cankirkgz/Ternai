@@ -23,6 +23,8 @@ class PreviousTripsScreen extends StatefulWidget {
 class _PreviousTripsScreenState extends State<PreviousTripsScreen>
     with _PreviousTripsScreenMixin {
   late Future<List<dynamic>> _futurePlans;
+  String _selectedFilter = 'Tümü';
+  String _searchCountry = '';
 
   @override
   void initState() {
@@ -78,6 +80,27 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
         ),
       );
     }
+  }
+
+  List<dynamic> _filterPlans(List<dynamic> plans) {
+    List<dynamic> filteredPlans = plans;
+    if (_selectedFilter == 'Bütçe Planları') {
+      filteredPlans = plans.where((plan) => plan is BudgetPlanModel).toList();
+    } else if (_selectedFilter == 'Gün Planları') {
+      filteredPlans = plans.where((plan) => plan is DayPlanModel).toList();
+    } else if (_selectedFilter == 'Tatil Planları') {
+      filteredPlans = plans.where((plan) => plan is PlanPlanModel).toList();
+    }
+
+    if (_searchCountry.isNotEmpty) {
+      filteredPlans = filteredPlans
+          .where((plan) => plan.toCountry
+              .toLowerCase()
+              .contains(_searchCountry.toLowerCase()))
+          .toList();
+    }
+
+    return filteredPlans;
   }
 
   Widget _buildShimmerLoading() {
@@ -158,6 +181,17 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
                       country.countryImageUrl,
                       height: 120,
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
+                          ),
+                        );
+                      },
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
                           height: 120,
@@ -198,6 +232,78 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
         elevation: 0,
         automaticallyImplyLeading: false,
         title: const Text('Önceki Tatil Planlarım'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: const Text('Tümü'),
+                        onTap: () {
+                          setState(() {
+                            _selectedFilter = 'Tümü';
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text('Bütçe Planları'),
+                        onTap: () {
+                          setState(() {
+                            _selectedFilter = 'Bütçe Planları';
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text('Gün Planları'),
+                        onTap: () {
+                          setState(() {
+                            _selectedFilter = 'Gün Planları';
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                      ListTile(
+                        title: const Text('Tatil Planları'),
+                        onTap: () {
+                          setState(() {
+                            _selectedFilter = 'Tatil Planları';
+                          });
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
+        ],
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Ülke adına göre ara...',
+                border: InputBorder.none,
+                hintStyle: TextStyle(color: Colors.white70),
+              ),
+              style: TextStyle(color: Colors.white),
+              onChanged: (value) {
+                setState(() {
+                  _searchCountry = value;
+                });
+              },
+            ),
+          ),
+        ),
       ),
       body: Stack(
         children: [
@@ -222,10 +328,10 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
                 return const Center(
                     child: Text('Planlar yüklenirken hata oluştu.'));
               } else if (snapshot.hasData) {
-                final plans = snapshot.data!;
+                final plans = _filterPlans(snapshot.data!);
                 if (plans.isEmpty) {
                   return const Center(
-                      child: Text('Henüz bir plan oluşturulmadı.'));
+                      child: Text('Henüz bir plan bulunamadı.'));
                 }
                 return ListView.builder(
                   itemCount: plans.length,
@@ -259,7 +365,8 @@ class _PreviousTripsScreenState extends State<PreviousTripsScreen>
                   },
                 );
               } else {
-                return const Center(child: Text('Henüz bir plan'));
+                return const Center(
+                    child: Text('Henüz bir plan oluşturulmadı.'));
               }
             },
           ),
