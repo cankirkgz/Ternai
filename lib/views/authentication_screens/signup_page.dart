@@ -41,7 +41,11 @@ class _SignUpPageState extends State<SignUpPage> {
       _hasSpecialChar = value.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
       _hasMinLength = value.length >= 8;
 
-      _showPasswordConditions = !(_hasUpperCase && _hasLowerCase && _hasDigit && _hasSpecialChar && _hasMinLength);
+      _showPasswordConditions = !(_hasUpperCase &&
+          _hasLowerCase &&
+          _hasDigit &&
+          _hasSpecialChar &&
+          _hasMinLength);
     });
   }
 
@@ -107,7 +111,8 @@ class _SignUpPageState extends State<SignUpPage> {
               width: double.infinity,
               child: SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -151,11 +156,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 16),
                               ),
-                              _buildPasswordCondition('En az 8 karakter', _hasMinLength),
-                              _buildPasswordCondition('Bir büyük harf', _hasUpperCase),
-                              _buildPasswordCondition('Bir küçük harf', _hasLowerCase),
+                              _buildPasswordCondition(
+                                  'En az 8 karakter', _hasMinLength),
+                              _buildPasswordCondition(
+                                  'Bir büyük harf', _hasUpperCase),
+                              _buildPasswordCondition(
+                                  'Bir küçük harf', _hasLowerCase),
                               _buildPasswordCondition('Bir rakam', _hasDigit),
-                              _buildPasswordCondition('Bir özel karakter', _hasSpecialChar),
+                              _buildPasswordCondition(
+                                  'Bir özel karakter', _hasSpecialChar),
                             ],
                           ),
                         CustomTextField(
@@ -177,10 +186,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                   _passwordController.text,
                                   _usernameController.text,
                                 );
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => const BirthDateSelectPage()),
+                                      builder: (context) =>
+                                          const BirthDateSelectPage()),
+                                  (Route<dynamic> route) => false,
                                 );
                               } catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
@@ -202,10 +213,11 @@ class _SignUpPageState extends State<SignUpPage> {
                               User? user =
                                   await AuthService().signInWithGoogle();
                               if (user != null) {
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()),
+                                  (Route<dynamic> route) => false,
                                 );
                               }
                             } catch (e) {
@@ -237,7 +249,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const LoginPage()),
+                                          builder: (context) =>
+                                              const LoginPage()),
                                     );
                                   },
                                   child: const Text(
@@ -283,7 +296,11 @@ class _SignUpPageState extends State<SignUpPage> {
     if (value == null || value.isEmpty) {
       return 'Şifre giriniz';
     }
-    if (!_hasUpperCase || !_hasLowerCase || !_hasDigit || !_hasSpecialChar || !_hasMinLength) {
+    if (!_hasUpperCase ||
+        !_hasLowerCase ||
+        !_hasDigit ||
+        !_hasSpecialChar ||
+        !_hasMinLength) {
       return 'Şifre kriterlerine uymuyor';
     }
     return null;

@@ -3,14 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:travelguide/services/auth_service.dart';
-import 'package:travelguide/services/google_login_service.dart';
 import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/viewmodels/auth_viewmodel.dart';
 import 'package:travelguide/views/authentication_screens/login_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
-import 'package:travelguide/views/home_screens/home_page.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class WelcomeScreen extends StatefulWidget {
@@ -102,11 +100,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                         bool isSuccess =
                             await authViewModel.signInWithAnonymously();
                         if (isSuccess) {
-                          Navigator.pushReplacement(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
                               builder: (context) => const HomePage(),
                             ),
+                            (Route<dynamic> route) => false,
                           );
                         } else {
                           _showErrorDialog(
@@ -141,7 +140,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            child: Text('OK'),
+            child: const Text('OK'),
           ),
         ],
       ),

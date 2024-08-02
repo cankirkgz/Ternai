@@ -71,13 +71,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<bool> _onWillPop() async {
-    if (_selectedIndex != 0) {
-      setState(() {
-        _selectedIndex = 0;
-      });
-      return false;
-    }
-    return true;
+    return true; // Geri tuşuna basıldığında uygulamayı kapatır
   }
 
   @override

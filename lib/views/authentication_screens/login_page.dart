@@ -9,7 +9,6 @@ import 'package:travelguide/theme/theme.dart';
 import 'package:travelguide/views/authentication_screens/forgot_password_page.dart';
 import 'package:travelguide/views/authentication_screens/signup_page.dart';
 import 'package:travelguide/views/home_screens/home_page.dart';
-import 'package:travelguide/views/home_screens/home_screen.dart';
 import 'package:travelguide/views/widgets/custom_button.dart';
 import 'package:travelguide/views/widgets/custom_or_divider.dart';
 import 'package:travelguide/views/widgets/custom_text_field.dart';
@@ -166,10 +165,11 @@ class _LoginPageState extends State<LoginPage> {
                                   _passwordController.text,
                                 );
                                 if (mounted) {
-                                  Navigator.pushReplacement(
+                                  Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => const HomePage()),
+                                    (Route<dynamic> route) => false,
                                   );
                                 }
                               } catch (e) {
@@ -194,10 +194,11 @@ class _LoginPageState extends State<LoginPage> {
                               User? user =
                                   await AuthService().signInWithGoogle();
                               if (user != null) {
-                                Navigator.pushReplacement(
+                                Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => const HomePage()),
+                                  (Route<dynamic> route) => false,
                                 );
                               }
                             } catch (e) {
