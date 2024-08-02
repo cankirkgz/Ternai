@@ -33,7 +33,9 @@ class CustomButton extends StatelessWidget {
           backgroundColor: color,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30.0),
-            side: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none,
+            side: borderColor != null
+                ? BorderSide(color: borderColor!)
+                : BorderSide.none,
           ),
         ),
         child: Padding(
@@ -43,6 +45,7 @@ class CustomButton extends StatelessWidget {
               : child ??
                   Text(
                     text,
+                    textAlign: TextAlign.center,
                     style: GoogleFonts.poppins(
                       fontSize: 18.0,
                       color: textColor ?? Colors.white,

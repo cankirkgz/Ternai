@@ -167,8 +167,9 @@ class PlanChoosingPlansPage extends ConsumerWidget {
               CustomButton(
                 text: 'Devam',
                 onPressed: () {
-                  final travelInfo = ref.read(travelInformationProvider.notifier);
-          
+                  final travelInfo =
+                      ref.read(travelInformationProvider.notifier);
+
                   if (kahvaltiController.text.isEmpty &&
                       yemekTercihleriController.text.isEmpty &&
                       gezilecekYerlerController.text.isEmpty &&
@@ -190,10 +191,11 @@ class PlanChoosingPlansPage extends ConsumerWidget {
                         .updatePlacesToVisit(gezilecekYerlerController.text);
                     travelInfo.updateEntertainmentPreferences(
                         eglenceTercihleriController.text);
-                    travelInfo.updateShoppingPlans(
-                        alisverisPlanlariController.text);
-                    travelInfo.updateSpecialRequests(ozelIsteklerController.text);
-          
+                    travelInfo
+                        .updateShoppingPlans(alisverisPlanlariController.text);
+                    travelInfo
+                        .updateSpecialRequests(ozelIsteklerController.text);
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
@@ -201,7 +203,9 @@ class PlanChoosingPlansPage extends ConsumerWidget {
                         backgroundColor: Colors.green,
                       ),
                     );
-                    ref.read(bottomNavigationBarProvider.notifier).changePage(5);
+                    ref
+                        .read(bottomNavigationBarProvider.notifier)
+                        .changePage(5);
                   }
                 },
                 color: AppColors.primaryColor,

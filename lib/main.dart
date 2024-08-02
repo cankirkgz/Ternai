@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         fontFamily: 'Poppins',
       ),
-      home:  LaunchScreen(),
+      home: LaunchScreen(),
     );
   }
 }

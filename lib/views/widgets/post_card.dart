@@ -39,8 +39,7 @@ class _PostCardState extends State<PostCard>
     _animation = Tween<double>(begin: 1.0, end: 1.3)
         .chain(CurveTween(curve: Curves.easeInOut))
         .animate(_animationController);
-    _fetchUserData(); // Kullanıcı verisini çek
-    // Türkçe dil desteğini etkinleştir
+    _fetchUserData();
     timeago.setLocaleMessages('tr', timeago.TrMessages());
   }
 
@@ -102,7 +101,7 @@ class _PostCardState extends State<PostCard>
     UserModel user = await authViewModel.getUserWithId(widget.post.userId);
     if (mounted) {
       setState(() {
-        _userModel = user; // Çekilen kullanıcı verisini kaydet
+        _userModel = user;
       });
     }
   }
@@ -319,66 +318,77 @@ class _PostCardState extends State<PostCard>
                 padding: const EdgeInsets.all(8.0),
                 child: _userModel == null
                     ? const CircularProgressIndicator()
-                    : Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 30,
-                            backgroundImage: _userModel!.profileImageUrl != null
-                                ? NetworkImage(_userModel!.profileImageUrl!)
-                                : const AssetImage(
-                                        'assets/images/default_profile.png')
-                                    as ImageProvider,
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    : LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Row(
                             children: [
-                              Text(
-                                _userModel!.name!,
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              CircleAvatar(
+                                radius: 30,
+                                backgroundImage: _userModel!.profileImageUrl !=
+                                        null
+                                    ? NetworkImage(_userModel!.profileImageUrl!)
+                                    : const AssetImage(
+                                            'assets/images/default_profile.png')
+                                        as ImageProvider,
                               ),
-                              Text(
-                                widget.post.country.name,
-                                style: TextStyle(color: Colors.grey[600]),
+                              const SizedBox(width: 10),
+                              Container(
+                                width: constraints.maxWidth * 0.5,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      _userModel!.name!,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      widget.post.country.name,
+                                      style: TextStyle(color: Colors.grey[600]),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              GestureDetector(
+                                onTap: _toggleLike,
+                                child: AnimatedBuilder(
+                                  animation: _animationController,
+                                  builder: (context, child) {
+                                    return Transform.scale(
+                                      scale: _animation.value,
+                                      child: ShaderMask(
+                                        shaderCallback: (Rect bounds) {
+                                          return LinearGradient(
+                                            colors: isLiked
+                                                ? [Colors.pink, Colors.red]
+                                                : [Colors.grey, Colors.grey],
+                                            tileMode: TileMode.mirror,
+                                          ).createShader(bounds);
+                                        },
+                                        child: Icon(
+                                          isLiked
+                                              ? Icons.favorite
+                                              : Icons.favorite_border,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.comment),
+                                onPressed: () {
+                                  _showComments(context);
+                                },
                               ),
                             ],
-                          ),
-                          const Spacer(),
-                          GestureDetector(
-                            onTap: _toggleLike,
-                            child: AnimatedBuilder(
-                              animation: _animationController,
-                              builder: (context, child) {
-                                return Transform.scale(
-                                  scale: _animation.value,
-                                  child: ShaderMask(
-                                    shaderCallback: (Rect bounds) {
-                                      return LinearGradient(
-                                        colors: isLiked
-                                            ? [Colors.pink, Colors.red]
-                                            : [Colors.grey, Colors.grey],
-                                        tileMode: TileMode.mirror,
-                                      ).createShader(bounds);
-                                    },
-                                    child: Icon(
-                                      isLiked
-                                          ? Icons.favorite
-                                          : Icons.favorite_border,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.comment),
-                            onPressed: () {
-                              _showComments(context);
-                            },
-                          ),
-                        ],
+                          );
+                        },
                       ),
               ),
               Padding(

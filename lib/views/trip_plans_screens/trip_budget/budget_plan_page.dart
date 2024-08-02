@@ -65,204 +65,202 @@ class _BudgetPlanPageState extends ConsumerState<BudgetPlanPage> {
   @override
   Widget build(BuildContext context) {
     final travelInformation = ref.watch(travelInformationProvider);
-
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                'Mükemmel bir tatil planı oluşturalım!',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-              ),
-              const SizedBox(height: 20),
-              Table(
-                border: TableBorder.all(),
-                children: [
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Ülke'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.country),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Kalacak gün'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:
-                              Text(travelInformation.numberOfDays.toString()),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Kişi sayısı'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:
-                              Text(travelInformation.numberOfPeople.toString()),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Çocuk var mı'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.kid ? 'Evet' : 'Hayır'),
-                        ),
-                      ]),
-                  if (travelInformation.kid) ...[
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(right: 18.0, left: 18.0, top: 90.0),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Table(
+                  border: TableBorder.all(),
+                  children: [
                     TableRow(
-                        decoration: BoxDecoration(
-                            color: Colors.orange.withOpacity(0.65)),
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
                         children: [
                           const Padding(
                             padding: EdgeInsets.all(8.0),
-                            child: Text('Çocuk Bilgileri'),
+                            child: Text('Ülke'),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: travelInformation.children.map((child) {
-                                return Text(
-                                    'Yaş: ${child.age}, Cinsiyet: ${child.gender}');
-                              }).toList(),
+                            child: Text(travelInformation.country),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Kalacak gün'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                                Text(travelInformation.numberOfDays.toString()),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Kişi sayısı'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                travelInformation.numberOfPeople.toString()),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Çocuk var mı'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                                Text(travelInformation.kid ? 'Evet' : 'Hayır'),
+                          ),
+                        ]),
+                    if (travelInformation.kid) ...[
+                      TableRow(
+                          decoration: BoxDecoration(
+                              color: Colors.orange.withOpacity(0.65)),
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('Çocuk Bilgileri'),
                             ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children:
+                                    travelInformation.children.map((child) {
+                                  return Text(
+                                      'Yaş: ${child.age}, Cinsiyet: ${child.gender}');
+                                }).toList(),
+                              ),
+                            ),
+                          ]),
+                    ],
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Kahvaltı planları'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(travelInformation.breakfastPlan),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Yemek tercihleri'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(travelInformation.foodPreferences),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Gezilecek yerler'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(travelInformation.placesToVisit),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Eğlence tercihleri'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                travelInformation.entertainmentPreferences),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration:
+                            BoxDecoration(color: Colors.blue.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Alışveriş planları'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(travelInformation.shoppingPlans),
+                          ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.65)),
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text('Özel istekler'),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(travelInformation.specialRequests),
                           ),
                         ]),
                   ],
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Kahvaltı planları'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.breakfastPlan),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Yemek tercihleri'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.foodPreferences),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Gezilecek yerler'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.placesToVisit),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Eğlence tercihleri'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child:
-                              Text(travelInformation.entertainmentPreferences),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.blue.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Alışveriş planları'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.shoppingPlans),
-                        ),
-                      ]),
-                  TableRow(
-                      decoration:
-                          BoxDecoration(color: Colors.white.withOpacity(0.65)),
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text('Özel istekler'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(travelInformation.specialRequests),
-                        ),
-                      ]),
-                ],
-              ),
-              const SizedBox(height: 20),
-              CustomButton(
-                text: 'Sonraki',
-                onPressed: () async {
-                  setState(() {
-                    isLoading = true;
-                  });
-                  final budget = await _calculateBudget(travelInformation);
-                  ref.read(budgetProvider.notifier).state = budget;
-                  setState(() {
-                    isLoading = false;
-                  });
-                  ref.read(bottomNavigationBarProvider.notifier).changePage(5);
-                },
-                color: AppColors.primaryColor,
-                child: isLoading
-                    ? const CircularProgressIndicator(
-                        color: Colors.white,
-                      )
-                    : const Text('Sonraki',
-                        style: TextStyle(color: Colors.white)),
-              ),
-            ],
+                ),
+                const SizedBox(height: 20),
+                CustomButton(
+                  text: 'Sonraki',
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+                    final budget = await _calculateBudget(travelInformation);
+                    ref.read(budgetProvider.notifier).state = budget;
+                    setState(() {
+                      isLoading = false;
+                    });
+                    ref
+                        .read(bottomNavigationBarProvider.notifier)
+                        .changePage(5);
+                  },
+                  color: AppColors.primaryColor,
+                  child: isLoading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text('Sonraki',
+                          style: TextStyle(color: Colors.white)),
+                ),
+              ],
+            ),
           ),
         ),
       ),

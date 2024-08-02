@@ -8,18 +8,15 @@ import 'package:travelguide/views/widgets/custom_button.dart';
 class DayChoosingPlansPage extends ConsumerWidget {
   DayChoosingPlansPage({super.key});
 
-  final TextEditingController breakfastPlanController = 
-    TextEditingController();
+  final TextEditingController breakfastPlanController = TextEditingController();
   final TextEditingController foodPreferencesController =
-    TextEditingController();
-  final TextEditingController placesToVisitController =
-    TextEditingController();
+      TextEditingController();
+  final TextEditingController placesToVisitController = TextEditingController();
   final TextEditingController entertainmentPreferencesController =
-    TextEditingController();
-  final TextEditingController shoppingPlansController =
-    TextEditingController();
-  final TextEditingController specialRequestsController = 
-    TextEditingController();
+      TextEditingController();
+  final TextEditingController shoppingPlansController = TextEditingController();
+  final TextEditingController specialRequestsController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -169,8 +166,9 @@ class DayChoosingPlansPage extends ConsumerWidget {
               CustomButton(
                 text: 'Devam',
                 onPressed: () {
-                  final travelInfo = ref.read(travelInformationProvider.notifier);
-          
+                  final travelInfo =
+                      ref.read(travelInformationProvider.notifier);
+
                   if (breakfastPlanController.text.isEmpty &&
                       foodPreferencesController.text.isEmpty &&
                       placesToVisitController.text.isEmpty &&
@@ -185,13 +183,19 @@ class DayChoosingPlansPage extends ConsumerWidget {
                       ),
                     );
                   } else {
-                    travelInfo.updateBreakfastPlan(breakfastPlanController.text);
-                    travelInfo.updateFoodPreferences(foodPreferencesController.text);
-                    travelInfo.updatePlacesToVisit(placesToVisitController.text);
-                    travelInfo.updateEntertainmentPreferences(entertainmentPreferencesController.text);
-                    travelInfo.updateShoppingPlans(shoppingPlansController.text);
-                    travelInfo.updateSpecialRequests(specialRequestsController.text);
-          
+                    travelInfo
+                        .updateBreakfastPlan(breakfastPlanController.text);
+                    travelInfo
+                        .updateFoodPreferences(foodPreferencesController.text);
+                    travelInfo
+                        .updatePlacesToVisit(placesToVisitController.text);
+                    travelInfo.updateEntertainmentPreferences(
+                        entertainmentPreferencesController.text);
+                    travelInfo
+                        .updateShoppingPlans(shoppingPlansController.text);
+                    travelInfo
+                        .updateSpecialRequests(specialRequestsController.text);
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
@@ -199,7 +203,9 @@ class DayChoosingPlansPage extends ConsumerWidget {
                         backgroundColor: Colors.green,
                       ),
                     );
-                    ref.read(bottomNavigationBarProvider.notifier).changePage(4);
+                    ref
+                        .read(bottomNavigationBarProvider.notifier)
+                        .changePage(4);
                   }
                 },
                 color: AppColors.primaryColor,

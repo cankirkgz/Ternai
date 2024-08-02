@@ -18,8 +18,11 @@ class PlanChoosingDayPage extends ConsumerWidget {
         children: [
           const Text(
             'Mükemmel bir tatil planı oluşturalım!',
+            textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor),
           ),
           const SizedBox(height: 20),
           const Text('Kalacak gün sayısı:',
@@ -53,16 +56,13 @@ class PlanChoosingDayPage extends ConsumerWidget {
           CustomButton(
             text: 'Devam',
             onPressed: () {
-              if(travelInformation.numberOfDays == 0)
-              {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Lütfen gün sayısı seçin!"),
-                    backgroundColor: Colors.red,
-                    duration: Duration(seconds: 1),
-                  )
-                );
-              }else{
+              if (travelInformation.numberOfDays == 0) {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("Lütfen gün sayısı seçin!"),
+                  backgroundColor: Colors.red,
+                  duration: Duration(seconds: 1),
+                ));
+              } else {
                 ref.read(bottomNavigationBarProvider.notifier).changePage(3);
               }
             },

@@ -16,7 +16,8 @@ class BudgetChoosingCountryPage extends ConsumerStatefulWidget {
       _BudgetChoosingCountryPageState();
 }
 
-class _BudgetChoosingCountryPageState extends ConsumerState<BudgetChoosingCountryPage> {
+class _BudgetChoosingCountryPageState
+    extends ConsumerState<BudgetChoosingCountryPage> {
   Country? selectedCountry;
   bool isLoading = false;
   final ApiService _apiService = ApiService();

@@ -83,13 +83,6 @@ class _PlanPlanPageState extends ConsumerState<PlanPlanPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Mükemmel bir tatil planı oluşturalım!',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue),
-              ),
               const SizedBox(height: 20),
               Table(
                 border: TableBorder.all(),

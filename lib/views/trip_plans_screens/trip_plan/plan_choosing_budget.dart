@@ -21,22 +21,25 @@ class _PlanChoosingBudgetPageState
 
   @override
   Widget build(BuildContext context) {
-    final travelInformation = ref.watch(travelInformationProvider);
-
     return Center(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Text(
             'Mükemmel bir tatil planı oluşturalım!',
+            textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blue),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor),
           ),
           const SizedBox(height: 20),
           const Text('Bütçeniz:',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Expanded(
                 child: CustomTextField(

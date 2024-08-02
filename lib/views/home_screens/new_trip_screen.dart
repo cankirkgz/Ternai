@@ -10,6 +10,7 @@ class NewTripScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double buttonSize = MediaQuery.of(context).size.width * 0.4;
+    final double titleFontSize = MediaQuery.of(context).size.width * 0.06;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -18,11 +19,10 @@ class NewTripScreen extends StatelessWidget {
         elevation: 0,
         title: const Text(
           'Tatil Planı Oluştur',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [AppColors.primaryColor, Colors.white],
             begin: Alignment.topCenter,
@@ -38,9 +38,9 @@ class NewTripScreen extends StatelessWidget {
                 child: Text(
                   'Tatil Planınızı Yapın',
                   style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue.shade900,
+                    fontSize: titleFontSize,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.primaryColor,
                   ),
                   textAlign: TextAlign.center,
                 ),
@@ -103,6 +103,11 @@ class NewTripScreen extends StatelessWidget {
       required String text,
       required double size,
       required Function() onTap}) {
+    // 12 harften uzun ise font size küçült
+    double fontSize = text.length > 14
+        ? MediaQuery.of(context).size.width * 0.04
+        : MediaQuery.of(context).size.width * 0.045;
+
     return GestureDetector(
       onTap: onTap,
       child: Card(
@@ -123,7 +128,7 @@ class NewTripScreen extends StatelessWidget {
               Text(
                 text,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryColor,
                 ),

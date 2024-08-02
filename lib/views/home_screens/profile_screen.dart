@@ -70,6 +70,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _profileImageUrl = userDoc['profile_image_url'];
           _isLoadingProfile = false; // Profil verileri yüklendi
         });
+      } else {
+        setState(() {
+          _isLoadingProfile = false; // Profil verileri yüklendi
+        });
       }
     }
   }
@@ -326,70 +330,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: CircleAvatar(
                         radius: 80,
                         backgroundColor: Colors.grey[200],
-                        backgroundImage: _isLoadingProfile
-                            ? null
-                            : (_image != null
-                                ? FileImage(_image!)
-                                : _profileImageUrl != null
-                                    ? NetworkImage(_profileImageUrl!)
-                                    : const AssetImage(
-                                            "assets/images/default_profile.png")
-                                        as ImageProvider),
-                        child: _isLoadingProfile
-                            ? Shimmer.fromColors(
-                                baseColor: Colors.grey[300]!,
-                                highlightColor: Colors.grey[100]!,
-                                child: CircleAvatar(
-                                  radius: 80,
-                                  backgroundColor: Colors.grey[200],
-                                ),
-                              )
-                            : null,
+                        backgroundImage: _image != null
+                            ? FileImage(_image!)
+                            : (_profileImageUrl != null
+                                ? NetworkImage(_profileImageUrl!)
+                                : const AssetImage(
+                                        "assets/images/default_profile.png")
+                                    as ImageProvider),
                       ),
                     ),
                     const SizedBox(height: 20),
-                    _isLoadingProfile
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: 150,
-                              height: 20,
-                              color: Colors.grey[300],
-                            ),
-                          )
-                        : Text(
-                            userName,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                    Text(
+                      userName,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     const SizedBox(height: 10),
-                    _isLoadingProfile
-                        ? Shimmer.fromColors(
-                            baseColor: Colors.grey[300]!,
-                            highlightColor: Colors.grey[100]!,
-                            child: Container(
-                              width: 100,
-                              height: 20,
-                              color: Colors.grey[300],
-                            ),
-                          )
-                        : Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              _buildStatisticCard(
-                                  'Tatil Planları', _vacationCount),
-                              const SizedBox(width: 20),
-                              _buildStatisticCard('Gönderiler', _postCount),
-                            ],
-                          ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildStatisticCard('Tatil Planları', _vacationCount),
+                        const SizedBox(width: 20),
+                        _buildStatisticCard('Gönderiler', _postCount),
+                      ],
+                    ),
                     const SizedBox(height: 34),
                     Container(
                       height: 3,
-                      color: Colors.transparent, // Şeffaf hale getirildi
+                      color: Colors.transparent,
                     ),
                   ],
                 ),
@@ -401,46 +372,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisSpacing: 4.0,
                     mainAxisSpacing: 4.0,
                   ),
-                  itemCount: _isLoadingPosts ? 9 : _postCount,
+                  itemCount: _postCount,
                   itemBuilder: (context, index) {
-                    if (_isLoadingPosts) {
-                      return Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          color: Colors.white,
-                          height: 100,
-                          width: 100,
-                        ),
-                      );
-                    } else {
-                      if (index < _posts.length) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    PostScreen(post: _posts[index]),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.grey, // Border rengi
-                                width: 0.2, // Border kalınlığı
-                              ),
-                            ),
-                            child: Image.network(
-                              _posts[index].photoUrls.first,
-                              fit: BoxFit.cover,
-                            ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                PostScreen(post: _posts[index]),
                           ),
                         );
-                      }
-                      return Container(); // Boş geri döndür
-                    }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: Colors.grey,
+                            width: 0.2,
+                          ),
+                        ),
+                        child: Image.network(
+                          _posts[index].photoUrls.first,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
                   },
                 ),
               ],
