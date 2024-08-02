@@ -3,7 +3,7 @@
 <p>Flutter Grup 22</p>
 
 <h1>2. Proje Adı</h1>
-<p>Travel Guide (Henüz kesinleşmedi)</p>
+<p>Ternai</p>
 
 <h1>3. Takım Üyeleri</h1>
 <table>
@@ -482,6 +482,9 @@
         <li>Sprint board update: Sprint board screenshotları: https://github.com/user-attachments/assets/40f9b9d8-5f6a-4898-a4a7-2f9111b20bf3 https://github.com/user-attachments/assets/47ca6dd9-3fd7-41d9-a34d-8b19e89bbd10 </li>
     </ul>
     <h2>Puanlama Mantığı</h2>
+    <p>Her story ve task, zorluk derecesine ve süresine göre puanlanacaktır.</p>
+    <p>Toplamda 300 puanlık backlog 3 sprint'e bölünerek, her sprint'in 100 puan olması hedeflenmiştir.</p>
+    <h2>Puan Tablosu</h2>
     <table>
         <tr>
             <th>Story/Task</th>
